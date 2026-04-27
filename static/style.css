@@ -2,28 +2,17 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --accent: #534AB7;
-  --accent-light: #EEEDFE;
-  --text: #1a1a1a;
-  --text-muted: #888;
-  --border: rgba(0,0,0,0.1);
-  --card-bg: #fff;
-  --bg: #f9f8f6;
-  --tag-bg: #f0eff8;
-  --tag-text: #534AB7;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --text: #f0eee8;
-    --text-muted: #888;
-    --border: rgba(255,255,255,0.1);
-    --card-bg: #1e1d2a;
-    --bg: #16151f;
-    --tag-bg: #2a2740;
-    --tag-text: #AFA9EC;
-    --accent-light: #26215C;
-  }
+  --accent: #a99ff0;
+  --accent-light: rgba(83,74,183,0.25);
+  --text: #ffffff;
+  --text-muted: rgba(255,255,255,0.45);
+  --border: rgba(255,255,255,0.15);
+  --card-bg: rgba(255,255,255,0.08);
+  --card-bg-hover: rgba(255,255,255,0.13);
+  --bg: #16151f;
+  --tag-bg: rgba(255,255,255,0.12);
+  --tag-text: #c8c2f8;
+  --overlay: rgba(0,0,0,0.52);
 }
 
 html { font-size: 16px; }
@@ -35,6 +24,30 @@ body {
   min-height: 100vh;
 }
 
+/* ── Background layers ───────────────────────────────────────────── */
+.bg-layer {
+  position: fixed;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  transition: opacity 0.8s ease;
+  z-index: 0;
+}
+
+/* bg-b starts invisible; ticker.js swaps which layer is on top */
+#bg-b { opacity: 0; }
+
+.bg-overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--overlay);
+  z-index: 1;
+}
+
+/* Everything else sits above the background */
+#app { position: relative; z-index: 2; }
+
 /* ── Hero ────────────────────────────────────────────────────────── */
 .hero {
   display: flex;
@@ -45,12 +58,6 @@ body {
   gap: 1.25rem;
 }
 
-/* "I make" sits at the top of the wrap, offset so it lines up
-   with the centre item. We use padding-top on the label equal to
-   2 item-heights so the label centre matches the list centre.
-   Simpler: keep align-items:center on headline — the wrap's centre
-   IS the focused item because we position the list so the focused
-   item is at 50% of the wrap height. */
 .headline {
   display: flex;
   align-items: center;
@@ -68,13 +75,8 @@ body {
 /* ── Ticker ──────────────────────────────────────────────────────── */
 .ticker-wrap {
   position: relative;
-  /* Show ~5 items. Each item is font-size * 1.35 line-height.
-     At clamp(2.5rem,6vw,4.5rem) the mid value ~3.5rem * 1.35 ≈ 4.7rem per item.
-     5 items ≈ 23.5rem. We clamp generously. */
   height: clamp(17rem, 40vw, 30rem);
   width: clamp(200px, 40vw, 420px);
-  /* No overflow:hidden — list extends beyond the box.
-     We clip with a mask-image instead so the fade is smooth. */
   mask-image: linear-gradient(
     to bottom,
     transparent 0%,
@@ -91,7 +93,6 @@ body {
   );
 }
 
-/* Keep the old fade divs in markup but hide them — mask-image handles fading now */
 .ticker-fade { display: none; }
 
 .ticker {
@@ -119,13 +120,8 @@ body {
   background: var(--accent-light);
 }
 
-.tick-item--centre {
-  color: var(--text);
-}
-
-.tick-item--locked {
-  color: var(--accent);
-}
+.tick-item--centre { color: var(--text); }
+.tick-item--locked { color: var(--accent); }
 
 /* ── Lock hint ───────────────────────────────────────────────────── */
 .lock-hint {
@@ -149,9 +145,7 @@ body {
   gap: 1rem;
 }
 
-.cards-enter .card {
-  animation: cardIn 0.3s ease both;
-}
+.cards-enter .card { animation: cardIn 0.3s ease both; }
 .cards-enter .card:nth-child(2) { animation-delay: 0.06s; }
 .cards-enter .card:nth-child(3) { animation-delay: 0.12s; }
 
@@ -169,12 +163,14 @@ body {
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
-  transition: border-color 0.15s, box-shadow 0.15s;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: background 0.15s, border-color 0.15s;
 }
 
 .card:hover {
-  border-color: var(--accent);
-  box-shadow: 0 0 0 3px rgba(83,74,183,0.08);
+  background: var(--card-bg-hover);
+  border-color: rgba(255,255,255,0.3);
 }
 
 .card-body { flex: 1; display: flex; flex-direction: column; gap: 0.4rem; }

@@ -1,7 +1,34 @@
 (function () {
-  const WORDS = ["websites", "games", "music", "art", "tools", "apps"];
+  const config = window.SITE_CONFIG;
+  const WORDS = config.words;
+  const SPEED = config.tickerSpeed;
+  const EXT   = config.imageExt || "jpg";
 
-  // Write a value into a hidden input and fire "input" so data-bind picks it up.
+  // ── Background crossfade ─────────────────────────────────────────
+  // We keep two layers (bg-a, bg-b). The "active" layer is fully opaque;
+  // the "inactive" one is transparent. To transition:
+  //   1. Load the new image onto the inactive layer.
+  //   2. Fade the inactive layer to opaque.
+  //   3. Fade the active layer to transparent.
+  //   4. Swap which layer is considered active.
+  let activeBg = "a";
+
+  function setBackground(word) {
+    const url = "/static/images/" + word + "." + EXT;
+    const incoming = activeBg === "a" ? "bg-b" : "bg-a";
+    const outgoing = activeBg === "a" ? "bg-a" : "bg-b";
+
+    const inEl  = document.getElementById(incoming);
+    const outEl = document.getElementById(outgoing);
+
+    inEl.style.backgroundImage = "url(" + url + ")";
+    inEl.style.opacity = "1";
+    outEl.style.opacity = "0";
+
+    activeBg = activeBg === "a" ? "b" : "a";
+  }
+
+  // ── Signal bridge ────────────────────────────────────────────────
   function patchSignal(id, value) {
     const el = document.getElementById(id);
     if (!el) return;
@@ -9,6 +36,7 @@
     el.dispatchEvent(new Event("input", { bubbles: true }));
   }
 
+  // ── Ticker setup ─────────────────────────────────────────────────
   const ticker = document.getElementById("ticker");
   const LINE_HEIGHT_REM = 1.35;
 
@@ -75,6 +103,11 @@
     if (offset < 0) offset += TH;
   }
 
+  function onWordChange(word) {
+    patchSignal("word-input", word);
+    setBackground(word);
+  }
+
   function onItemClick(word) {
     if (locked && lockedWord === word) {
       locked = false;
@@ -86,7 +119,7 @@
       lastWord = word;
       snapTo(word);
       patchSignal("locked-input", "true");
-      patchSignal("word-input", word);
+      onWordChange(word);
     }
     updateClasses();
   }
@@ -97,7 +130,7 @@
     lastT = ts;
 
     if (!locked) {
-      offset += (dt / 16) * 0.2;
+      offset += (dt / 16) * SPEED;
       normalise();
       ticker.style.transform = `translateY(${-offset}px)`;
       updateClasses();
@@ -105,17 +138,25 @@
       const w = wordAtCentre();
       if (w && w !== lastWord) {
         lastWord = w;
-        patchSignal("word-input", w);
+        onWordChange(w);
       }
     }
     requestAnimationFrame(step);
   }
 
+  // ── Init ─────────────────────────────────────────────────────────
   buildItems();
   const IH = itemH();
   offset = WORDS.length * IH - (wrapH() / 2 - IH / 2);
   normalise();
   ticker.style.transform = `translateY(${-offset}px)`;
   updateClasses();
+
+  // Set initial background immediately (no transition on first load)
+  const firstWord = WORDS[0];
+  document.getElementById("bg-a").style.backgroundImage =
+    "url(/static/images/" + firstWord + "." + EXT + ")";
+  document.getElementById("bg-a").style.opacity = "1";
+
   requestAnimationFrame(step);
 })();
