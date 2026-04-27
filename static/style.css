@@ -1,0 +1,219 @@
+/* ── Reset & base ─────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --accent: #534AB7;
+  --accent-light: #EEEDFE;
+  --text: #1a1a1a;
+  --text-muted: #888;
+  --border: rgba(0,0,0,0.1);
+  --card-bg: #fff;
+  --bg: #f9f8f6;
+  --tag-bg: #f0eff8;
+  --tag-text: #534AB7;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --text: #f0eee8;
+    --text-muted: #888;
+    --border: rgba(255,255,255,0.1);
+    --card-bg: #1e1d2a;
+    --bg: #16151f;
+    --tag-bg: #2a2740;
+    --tag-text: #AFA9EC;
+    --accent-light: #26215C;
+  }
+}
+
+html { font-size: 16px; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+}
+
+/* ── Hero ────────────────────────────────────────────────────────── */
+.hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 6rem 1rem 4rem;
+  gap: 1.25rem;
+}
+
+/* "I make" sits at the top of the wrap, offset so it lines up
+   with the centre item. We use padding-top on the label equal to
+   2 item-heights so the label centre matches the list centre.
+   Simpler: keep align-items:center on headline — the wrap's centre
+   IS the focused item because we position the list so the focused
+   item is at 50% of the wrap height. */
+.headline {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.i-make {
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--text);
+  white-space: nowrap;
+}
+
+/* ── Ticker ──────────────────────────────────────────────────────── */
+.ticker-wrap {
+  position: relative;
+  /* Show ~5 items. Each item is font-size * 1.35 line-height.
+     At clamp(2.5rem,6vw,4.5rem) the mid value ~3.5rem * 1.35 ≈ 4.7rem per item.
+     5 items ≈ 23.5rem. We clamp generously. */
+  height: clamp(17rem, 40vw, 30rem);
+  width: clamp(200px, 40vw, 420px);
+  /* No overflow:hidden — list extends beyond the box.
+     We clip with a mask-image instead so the fade is smooth. */
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    black 28%,
+    black 72%,
+    transparent 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    black 28%,
+    black 72%,
+    transparent 100%
+  );
+}
+
+/* Keep the old fade divs in markup but hide them — mask-image handles fading now */
+.ticker-fade { display: none; }
+
+.ticker {
+  display: flex;
+  flex-direction: column;
+  will-change: transform;
+}
+
+.tick-item {
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.35;
+  cursor: pointer;
+  color: var(--text-muted);
+  border-radius: 8px;
+  padding: 0 0.2rem;
+  transition: color 0.12s, background 0.12s;
+  white-space: nowrap;
+  user-select: none;
+}
+
+.tick-item:hover {
+  color: var(--text);
+  background: var(--accent-light);
+}
+
+.tick-item--centre {
+  color: var(--text);
+}
+
+.tick-item--locked {
+  color: var(--accent);
+}
+
+/* ── Lock hint ───────────────────────────────────────────────────── */
+.lock-hint {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  min-height: 1.4em;
+  text-align: center;
+}
+
+/* ── Projects section ────────────────────────────────────────────── */
+.projects {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 0 1.5rem 6rem;
+}
+
+/* ── Card grid ───────────────────────────────────────────────────── */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1rem;
+}
+
+.cards-enter .card {
+  animation: cardIn 0.3s ease both;
+}
+.cards-enter .card:nth-child(2) { animation-delay: 0.06s; }
+.cards-enter .card:nth-child(3) { animation-delay: 0.12s; }
+
+@keyframes cardIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Card ────────────────────────────────────────────────────────── */
+.card {
+  background: var(--card-bg);
+  border: 0.5px solid var(--border);
+  border-radius: 12px;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.card:hover {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(83,74,183,0.08);
+}
+
+.card-body { flex: 1; display: flex; flex-direction: column; gap: 0.4rem; }
+
+.card-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.card-desc {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  line-height: 1.55;
+}
+
+.card-footer {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: auto;
+}
+
+.tag {
+  font-size: 0.75rem;
+  font-weight: 500;
+  background: var(--tag-bg);
+  color: var(--tag-text);
+  border-radius: 6px;
+  padding: 2px 8px;
+}
+
+.card-link {
+  margin-left: auto;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--accent);
+  text-decoration: none;
+  white-space: nowrap;
+}
+.card-link:hover { text-decoration: underline; }

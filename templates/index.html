@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>I make _</title>
+  <script type="module" src="https://cdn.jsdelivr.net/gh/starfederation/datastar@v1.0.1/bundles/datastar.js"></script>
+  <link rel="stylesheet" href="/static/style.css" />
+  <!-- Config injected at render time — no extra request needed -->
+  <script>window.SITE_CONFIG = {{.}};</script>
+</head>
+<body>
+  <div id="app" data-signals='{"currentWord": "websites", "locked": false}'>
+
+    <section class="hero">
+      <div class="headline">
+        <span class="i-make">I make</span>
+
+        <input id="word-input"   type="text" data-bind:current-word value="websites" style="display:none" />
+        <input id="locked-input" type="text" data-bind:locked        value="false"    style="display:none" />
+
+        <div class="ticker-wrap">
+          <div class="ticker-fade ticker-fade--top"></div>
+          <div class="ticker-fade ticker-fade--bottom"></div>
+          <div class="ticker" id="ticker"></div>
+        </div>
+      </div>
+
+      <p
+        class="lock-hint"
+        data-text="$locked === 'true' ? 'locked on ' + $currentWord + ' — click again to unlock' : 'click any word to lock it'"
+      ></p>
+    </section>
+
+    <section
+      class="projects"
+      data-on-signal-patch="$currentWord && @get('/projects?word=' + $currentWord)"
+    >
+      <div id="card-grid" class="card-grid"></div>
+    </section>
+
+  </div>
+
+  <script src="/static/ticker.js"></script>
+</body>
+</html>
