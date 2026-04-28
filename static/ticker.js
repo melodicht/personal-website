@@ -1,30 +1,57 @@
 (function () {
-  const config = window.SITE_CONFIG;
-  const WORDS = config.words;
-  const SPEED = config.tickerSpeed;
-  const EXT   = config.imageExt || "jpg";
+  const config   = window.SITE_CONFIG;
+  const WORDS    = config.words;
+  const SPEED    = config.tickerSpeed;
+  const EXT      = config.imageExt || "jpg";
+  const PROJECTS = config.projects;
+
+  // ── Card rendering ───────────────────────────────────────────────
+  // Called by Datastar's data-effect whenever $currentWord changes.
+  // Props down via argument; no global state touched.
+  window.renderCards = function(word) {
+    const grid  = document.getElementById("card-grid");
+    const tmpl  = document.getElementById("card-template");
+    const cards = PROJECTS[word] || [];
+
+    grid.innerHTML = "";
+    cards.forEach(function(p) {
+      const node = tmpl.content.cloneNode(true);
+      node.querySelector(".card-title").textContent = p.title;
+      node.querySelector(".card-desc").textContent  = p.description;
+
+      const footer = node.querySelector(".card-footer");
+      p.tags.forEach(function(t) {
+        const tag = document.createElement("span");
+        tag.className   = "tag";
+        tag.textContent = t;
+        footer.appendChild(tag);
+      });
+
+      const link = document.createElement("a");
+      link.className   = "card-link";
+      link.href        = p.link;
+      link.textContent = "View →";
+      footer.appendChild(link);
+
+      grid.appendChild(node);
+    });
+
+    // Re-trigger entry animation
+    grid.classList.remove("cards-enter");
+    void grid.offsetWidth;
+    grid.classList.add("cards-enter");
+  };
 
   // ── Background crossfade ─────────────────────────────────────────
-  // We keep two layers (bg-a, bg-b). The "active" layer is fully opaque;
-  // the "inactive" one is transparent. To transition:
-  //   1. Load the new image onto the inactive layer.
-  //   2. Fade the inactive layer to opaque.
-  //   3. Fade the active layer to transparent.
-  //   4. Swap which layer is considered active.
   let activeBg = "a";
 
   function setBackground(word) {
-    const url = "/static/images/" + word + "." + EXT;
+    const url      = "/static/images/" + word + "." + EXT;
     const incoming = activeBg === "a" ? "bg-b" : "bg-a";
     const outgoing = activeBg === "a" ? "bg-a" : "bg-b";
-
-    const inEl  = document.getElementById(incoming);
-    const outEl = document.getElementById(outgoing);
-
-    inEl.style.backgroundImage = "url(" + url + ")";
-    inEl.style.opacity = "1";
-    outEl.style.opacity = "0";
-
+    document.getElementById(incoming).style.backgroundImage = "url(" + url + ")";
+    document.getElementById(incoming).style.opacity = "1";
+    document.getElementById(outgoing).style.opacity = "0";
     activeBg = activeBg === "a" ? "b" : "a";
   }
 
@@ -36,7 +63,7 @@
     el.dispatchEvent(new Event("input", { bubbles: true }));
   }
 
-  // ── Ticker setup ─────────────────────────────────────────────────
+  // ── Ticker ───────────────────────────────────────────────────────
   const ticker = document.getElementById("ticker");
   const LINE_HEIGHT_REM = 1.35;
 
@@ -46,12 +73,12 @@
 
   function buildItems() {
     ticker.innerHTML = "";
-    [...WORDS, ...WORDS, ...WORDS].forEach((w) => {
+    [...WORDS, ...WORDS, ...WORDS].forEach(function(w) {
       const el = document.createElement("div");
-      el.className = "tick-item";
-      el.textContent = w;
+      el.className    = "tick-item";
+      el.textContent  = w;
       el.dataset.word = w;
-      el.addEventListener("click", () => onItemClick(w));
+      el.addEventListener("click", function() { onItemClick(w); });
       ticker.appendChild(el);
     });
   }
@@ -65,7 +92,7 @@
   function wordAtCentre() {
     const IH = itemH(), centre = wrapH() / 2;
     let best = null, bestDist = Infinity;
-    getItems().forEach((el) => {
+    getItems().forEach(function(el) {
       const dist = Math.abs(el.offsetTop - offset + IH / 2 - centre);
       if (dist < bestDist) { bestDist = dist; best = el.dataset.word; }
     });
@@ -74,7 +101,7 @@
 
   function updateClasses() {
     const IH = itemH(), centre = wrapH() / 2;
-    getItems().forEach((el) => {
+    getItems().forEach(function(el) {
       const dist = Math.abs(el.offsetTop - offset + IH / 2 - centre);
       el.classList.toggle("tick-item--centre", dist < IH * 0.55 && !locked);
       el.classList.toggle("tick-item--locked", locked && el.dataset.word === lockedWord);
@@ -84,7 +111,7 @@
   function snapTo(word) {
     const IH = itemH(), centre = wrapH() / 2 - IH / 2, TH = totalH();
     let best = null, bestDist = Infinity;
-    getItems().filter(el => el.dataset.word === word).forEach((el) => {
+    getItems().filter(function(el) { return el.dataset.word === word; }).forEach(function(el) {
       const dist = Math.abs(el.offsetTop - offset - centre);
       if (dist < bestDist) { bestDist = dist; best = el; }
     });
@@ -94,32 +121,39 @@
     if (delta < -TH / 2) delta += TH;
     offset += delta;
     normalise();
-    ticker.style.transform = `translateY(${-offset}px)`;
+    ticker.style.transform = "translateY(" + (-offset) + "px)";
   }
 
   function normalise() {
     const TH = totalH();
     if (offset >= TH) offset -= TH;
-    if (offset < 0) offset += TH;
+    if (offset < 0)   offset += TH;
   }
 
   function onWordChange(word) {
-    patchSignal("word-input", word);
     setBackground(word);
+    patchSignal("word-input", word);
+  }
+
+  function patchLocked(val) {
+    const el = document.getElementById("locked-input");
+    if (!el) return;
+    el.checked = val;
+    el.dispatchEvent(new Event("change", { bubbles: true }));
   }
 
   function onItemClick(word) {
     if (locked && lockedWord === word) {
-      locked = false;
+      locked     = false;
       lockedWord = null;
-      patchSignal("locked-input", "false");
+      patchLocked(false);
     } else {
-      locked = true;
+      locked     = true;
       lockedWord = word;
-      lastWord = word;
+      lastWord   = word;
       snapTo(word);
-      patchSignal("locked-input", "true");
       onWordChange(word);
+      patchLocked(true);
     }
     updateClasses();
   }
@@ -128,18 +162,13 @@
     if (!lastT) lastT = ts;
     const dt = Math.min(ts - lastT, 50);
     lastT = ts;
-
     if (!locked) {
       offset += (dt / 16) * SPEED;
       normalise();
-      ticker.style.transform = `translateY(${-offset}px)`;
+      ticker.style.transform = "translateY(" + (-offset) + "px)";
       updateClasses();
-
       const w = wordAtCentre();
-      if (w && w !== lastWord) {
-        lastWord = w;
-        onWordChange(w);
-      }
+      if (w && w !== lastWord) { lastWord = w; onWordChange(w); }
     }
     requestAnimationFrame(step);
   }
@@ -149,14 +178,16 @@
   const IH = itemH();
   offset = WORDS.length * IH - (wrapH() / 2 - IH / 2);
   normalise();
-  ticker.style.transform = `translateY(${-offset}px)`;
+  ticker.style.transform = "translateY(" + (-offset) + "px)";
   updateClasses();
 
-  // Set initial background immediately (no transition on first load)
   const firstWord = WORDS[0];
-  document.getElementById("bg-a").style.backgroundImage =
-    "url(/static/images/" + firstWord + "." + EXT + ")";
+  document.getElementById("bg-a").style.backgroundImage = "url(/static/images/" + firstWord + "." + EXT + ")";
   document.getElementById("bg-a").style.opacity = "1";
+
+  // Trigger initial word signal so data-effect fires on load
+  setTimeout(function() { patchSignal("word-input", firstWord); }, 50);
+  lastWord = firstWord;
 
   requestAnimationFrame(step);
 })();

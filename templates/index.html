@@ -9,37 +9,53 @@
   <script>window.SITE_CONFIG = {{.}};</script>
 </head>
 <body>
-  <!-- Two background layers — ticker.js crossfades between them -->
   <div class="bg-layer" id="bg-a"></div>
   <div class="bg-layer" id="bg-b"></div>
-  <!-- Dark overlay to keep text readable -->
   <div class="bg-overlay"></div>
 
-  <div id="app" data-signals='{"currentWord": "websites", "locked": false}'>
+  <!--
+    Card template — pure HTML, no JS strings.
+    ticker.js clones this and fills in the data.
+  -->
+  <template id="card-template">
+    <article class="card">
+      <div class="card-body">
+        <h3 class="card-title"></h3>
+        <p class="card-desc"></p>
+      </div>
+      <div class="card-footer"></div>
+    </article>
+  </template>
 
+  <div
+    id="app"
+    data-signals='{"currentWord": "", "locked": false}'
+  >
     <section class="hero">
       <div class="headline">
         <span class="i-make">I make</span>
 
-        <input id="word-input"   type="text" data-bind:current-word value="websites" style="display:none" />
-        <input id="locked-input" type="text" data-bind:locked        value="false"    style="display:none" />
+        <input id="word-input"   type="text" data-bind:current-word style="display:none" />
+        <input id="locked-input" type="checkbox" data-bind:locked style="display:none" />
 
         <div class="ticker-wrap">
-          <div class="ticker-fade ticker-fade--top"></div>
-          <div class="ticker-fade ticker-fade--bottom"></div>
           <div class="ticker" id="ticker"></div>
         </div>
       </div>
 
       <p
         class="lock-hint"
-        data-text="$locked === 'true' ? 'locked on ' + $currentWord + ' — click again to unlock' : 'click any word to lock it'"
+        data-text="$locked ? 'locked on ' + $currentWord + ' — click again to unlock' : 'click any word to lock it'"
       ></p>
     </section>
 
+    <!--
+      data-effect re-runs whenever $currentWord changes.
+      renderCards() is defined in ticker.js and receives the word as an argument.
+    -->
     <section
       class="projects"
-      data-on-signal-patch="$currentWord && @get('/projects?word=' + $currentWord)"
+      data-effect="$currentWord && renderCards($currentWord)"
     >
       <div id="card-grid" class="card-grid"></div>
     </section>
