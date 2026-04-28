@@ -1,0 +1,74 @@
+// nav.js — the leftmost column nav ticker (no auto-scroll, click to snap)
+(function () {
+  const MODES = [
+    { id: "do",         label: "I do" },
+    { id: "worked-at",  label: "I worked at ____" },
+    { id: "worked-on",  label: "I worked on" },
+    { id: "about",      label: "I" },
+  ];
+
+  const container = document.getElementById("nav-ticker");
+  let currentMode = "do";
+
+  function patchSignal(id, value) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.value = value;
+    el.dispatchEvent(new Event("input", { bubbles: true }));
+  }
+
+  // Build nav items
+  MODES.forEach(function (m) {
+    const el = document.createElement("div");
+    el.className = "nav-item";
+    el.dataset.mode = m.id;
+    el.textContent = m.label;
+    el.addEventListener("click", function () { selectMode(m.id); });
+    container.appendChild(el);
+  });
+
+  // We need a hidden input for $mode signal
+  const modeInput = document.createElement("input");
+  modeInput.id = "mode-input";
+  modeInput.type = "text";
+  modeInput.style.display = "none";
+  modeInput.setAttribute("data-bind:mode", "");
+  document.getElementById("app").appendChild(modeInput);
+
+  // Wait for Datastar to pick up the dynamically added data-bind
+  // by dispatching after a microtask
+  function setMode(mode) {
+    modeInput.value = mode;
+    modeInput.dispatchEvent(new Event("input", { bubbles: true }));
+  }
+
+  function updateClasses(mode) {
+    container.querySelectorAll(".nav-item").forEach(function (el) {
+      el.classList.toggle("nav-item--active", el.dataset.mode === mode);
+    });
+  }
+
+  function snapToMode(mode) {
+    const el = container.querySelector("[data-mode='" + mode + "']");
+    if (!el) return;
+    const containerH = container.clientHeight;
+    const itemH = el.offsetHeight;
+    const targetScroll = el.offsetTop - containerH / 2 + itemH / 2;
+    container.scrollTo({ top: targetScroll, behavior: "smooth" });
+  }
+
+  function selectMode(mode) {
+    currentMode = mode;
+    setMode(mode);
+    updateClasses(mode);
+    snapToMode(mode);
+  }
+
+  // Init
+  updateClasses(currentMode);
+  // Set initial mode signal after Datastar has initialised
+  setTimeout(function () {
+    setMode(currentMode);
+    snapToMode(currentMode);
+  }, 50);
+})();

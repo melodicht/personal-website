@@ -3,20 +3,20 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>I make _</title>
+  <title>I</title>
   <script type="module" src="https://cdn.jsdelivr.net/gh/starfederation/datastar@v1.0.1/bundles/datastar.js"></script>
   <link rel="stylesheet" href="/static/style.css" />
-  <script>window.SITE_CONFIG = {{.}};</script>
+  <script>
+    window.SITE_CONFIG = {{.Config}};
+    window.SITE_DATA   = {{.SiteData}};
+  </script>
 </head>
 <body>
   <div class="bg-layer" id="bg-a"></div>
   <div class="bg-layer" id="bg-b"></div>
   <div class="bg-overlay"></div>
 
-  <!--
-    Card template — pure HTML, no JS strings.
-    ticker.js clones this and fills in the data.
-  -->
+  <!-- Card template -->
   <template id="card-template">
     <article class="card">
       <div class="card-body">
@@ -29,39 +29,72 @@
 
   <div
     id="app"
-    data-signals='{"currentWord": "", "locked": false}'
+    data-signals='{"mode": "do", "focus": "", "jobFocus": 0}'
   >
-    <section class="hero">
-      <div class="headline">
-        <span class="i-make">I make</span>
+    <!-- ── Three-column layout ──────────────────────────────────── -->
+    <div class="layout">
 
-        <input id="word-input"   type="text" data-bind:current-word style="display:none" />
-        <input id="locked-input" type="checkbox" data-bind:locked style="display:none" />
-
-        <div class="ticker-wrap">
-          <div class="ticker" id="ticker"></div>
+      <!-- ── Col 1: Nav ────────────────────────────────────────── -->
+      <nav class="col-nav">
+        <div class="nav-ticker" id="nav-ticker">
+          <!-- items injected by nav.js -->
         </div>
+      </nav>
+
+      <!-- ── Col 2: Picker (conditional) ──────────────────────── -->
+      <div class="col-picker" id="col-picker">
+
+        <!-- Tag ticker (mode = do) -->
+        <div id="picker-do" data-show="$mode === 'do'">
+          <input id="focus-input" type="text" data-bind:focus style="display:none" />
+          <div class="ticker-wrap">
+            <div class="ticker" id="tag-ticker"></div>
+          </div>
+        </div>
+
+        <!-- Job cells (mode = worked-at) -->
+        <div id="picker-worked-at" data-show="$mode === 'worked-at'">
+          <div class="job-list" id="job-list">
+            <!-- injected by jobs.js -->
+          </div>
+        </div>
+
       </div>
 
-      <p
-        class="lock-hint"
-        data-text="$locked ? 'locked on ' + $currentWord + ' — click again to unlock' : 'click any word to lock it'"
-      ></p>
-    </section>
+      <!-- ── Col 3: Content ────────────────────────────────────── -->
+      <main class="col-content">
 
-    <!--
-      data-effect re-runs whenever $currentWord changes.
-      renderCards() is defined in ticker.js and receives the word as an argument.
-    -->
-    <section
-      class="projects"
-      data-effect="$currentWord && renderCards($currentWord)"
-    >
-      <div id="card-grid" class="card-grid"></div>
-    </section>
+        <!-- I do: subproject cards filtered by tag -->
+        <section data-show="$mode === 'do'">
+          <div
+            id="card-grid"
+            class="card-grid"
+            data-effect="$focus && renderCards($focus)"
+          ></div>
+        </section>
 
+        <!-- I worked at: job detail -->
+        <section data-show="$mode === 'worked-at'" data-effect="$mode === 'worked-at' && renderJobDetail($jobFocus)">
+          <div id="job-detail"></div>
+        </section>
+
+        <!-- I worked on: projects by category -->
+        <section data-show="$mode === 'worked-on'">
+          <div id="worked-on-grid"></div>
+        </section>
+
+        <!-- I: bio -->
+        <section data-show="$mode === 'about'">
+          <div class="bio" id="bio-text"></div>
+        </section>
+
+      </main>
+    </div>
   </div>
 
+  <script src="/static/nav.js"></script>
   <script src="/static/ticker.js"></script>
+  <script src="/static/jobs.js"></script>
+  <script src="/static/render.js"></script>
 </body>
 </html>

@@ -1,61 +1,19 @@
+// ticker.js — tag ticker for "I do" mode
 (function () {
-  const config   = window.SITE_CONFIG;
-  const WORDS    = config.words;
-  const SPEED    = config.tickerSpeed;
-  const EXT      = config.imageExt || "jpg";
-  const PROJECTS = config.projects;
+  const config  = window.SITE_CONFIG;
+  const data    = window.SITE_DATA;
+  const SPEED   = config.tickerSpeed;
+  const EXT     = config.imageExt || "jpg";
 
-  // ── Card rendering ───────────────────────────────────────────────
-  // Called by Datastar's data-effect whenever $currentWord changes.
-  // Props down via argument; no global state touched.
-  window.renderCards = function(word) {
-    const grid  = document.getElementById("card-grid");
-    const tmpl  = document.getElementById("card-template");
-    const cards = PROJECTS[word] || [];
-
-    grid.innerHTML = "";
-    cards.forEach(function(p) {
-      const node = tmpl.content.cloneNode(true);
-      node.querySelector(".card-title").textContent = p.title;
-      node.querySelector(".card-desc").textContent  = p.description;
-
-      const footer = node.querySelector(".card-footer");
-      p.tags.forEach(function(t) {
-        const tag = document.createElement("span");
-        tag.className   = "tag";
-        tag.textContent = t;
-        footer.appendChild(tag);
-      });
-
-      const link = document.createElement("a");
-      link.className   = "card-link";
-      link.href        = p.link;
-      link.textContent = "View →";
-      footer.appendChild(link);
-
-      grid.appendChild(node);
+  // Derive unique tags from all subprojects
+  const tagSet = new Set();
+  data.projects.forEach(function (p) {
+    p.subprojects.forEach(function (sp) {
+      sp.tags.forEach(function (t) { tagSet.add(t); });
     });
+  });
+  const TAGS = Array.from(tagSet);
 
-    // Re-trigger entry animation
-    grid.classList.remove("cards-enter");
-    void grid.offsetWidth;
-    grid.classList.add("cards-enter");
-  };
-
-  // ── Background crossfade ─────────────────────────────────────────
-  let activeBg = "a";
-
-  function setBackground(word) {
-    const url      = "/static/images/" + word + "." + EXT;
-    const incoming = activeBg === "a" ? "bg-b" : "bg-a";
-    const outgoing = activeBg === "a" ? "bg-a" : "bg-b";
-    document.getElementById(incoming).style.backgroundImage = "url(" + url + ")";
-    document.getElementById(incoming).style.opacity = "1";
-    document.getElementById(outgoing).style.opacity = "0";
-    activeBg = activeBg === "a" ? "b" : "a";
-  }
-
-  // ── Signal bridge ────────────────────────────────────────────────
   function patchSignal(id, value) {
     const el = document.getElementById(id);
     if (!el) return;
@@ -63,55 +21,69 @@
     el.dispatchEvent(new Event("input", { bubbles: true }));
   }
 
-  // ── Ticker ───────────────────────────────────────────────────────
-  const ticker = document.getElementById("ticker");
+  // Background crossfade
+  let activeBg = "a";
+  function setBackground(tag) {
+    const slug = tag.replace(/\s+/g, "-");
+    const url  = "/static/images/tags/" + slug + "." + EXT;
+    const inc  = activeBg === "a" ? "bg-b" : "bg-a";
+    const out  = activeBg === "a" ? "bg-a" : "bg-b";
+    document.getElementById(inc).style.backgroundImage = "url(" + url + ")";
+    document.getElementById(inc).style.opacity = "1";
+    document.getElementById(out).style.opacity = "0";
+    activeBg = activeBg === "a" ? "b" : "a";
+  }
+
+  const ticker = document.getElementById("tag-ticker");
   const LINE_HEIGHT_REM = 1.35;
 
   function itemH() {
-    return parseFloat(getComputedStyle(document.querySelector(".i-make")).fontSize) * LINE_HEIGHT_REM;
+    const ref = document.querySelector(".i-do-label");
+    if (!ref) return 60;
+    return parseFloat(getComputedStyle(ref).fontSize) * LINE_HEIGHT_REM;
   }
 
   function buildItems() {
     ticker.innerHTML = "";
-    [...WORDS, ...WORDS, ...WORDS].forEach(function(w) {
+    [...TAGS, ...TAGS, ...TAGS].forEach(function (t) {
       const el = document.createElement("div");
-      el.className    = "tick-item";
-      el.textContent  = w;
-      el.dataset.word = w;
-      el.addEventListener("click", function() { onItemClick(w); });
+      el.className   = "tick-item";
+      el.textContent = t;
+      el.dataset.tag = t;
+      el.addEventListener("click", function () { onItemClick(t); });
       ticker.appendChild(el);
     });
   }
 
-  let offset = 0, locked = false, lockedWord = null, lastWord = null, lastT = null;
+  let offset = 0, locked = false, lockedTag = null, lastTag = null, lastT = null;
 
-  function totalH() { return WORDS.length * itemH(); }
-  function wrapH()  { return document.querySelector(".ticker-wrap").clientHeight; }
-  function getItems() { return [...ticker.querySelectorAll(".tick-item")]; }
+  function totalH()  { return TAGS.length * itemH(); }
+  function wrapH()   { return document.querySelector(".ticker-wrap") ? document.querySelector(".ticker-wrap").clientHeight : 400; }
+  function getItems(){ return [...ticker.querySelectorAll(".tick-item")]; }
 
-  function wordAtCentre() {
+  function tagAtCentre() {
     const IH = itemH(), centre = wrapH() / 2;
     let best = null, bestDist = Infinity;
-    getItems().forEach(function(el) {
+    getItems().forEach(function (el) {
       const dist = Math.abs(el.offsetTop - offset + IH / 2 - centre);
-      if (dist < bestDist) { bestDist = dist; best = el.dataset.word; }
+      if (dist < bestDist) { bestDist = dist; best = el.dataset.tag; }
     });
     return best;
   }
 
   function updateClasses() {
     const IH = itemH(), centre = wrapH() / 2;
-    getItems().forEach(function(el) {
+    getItems().forEach(function (el) {
       const dist = Math.abs(el.offsetTop - offset + IH / 2 - centre);
       el.classList.toggle("tick-item--centre", dist < IH * 0.55 && !locked);
-      el.classList.toggle("tick-item--locked", locked && el.dataset.word === lockedWord);
+      el.classList.toggle("tick-item--locked",  locked && el.dataset.tag === lockedTag);
     });
   }
 
-  function snapTo(word) {
+  function snapTo(tag) {
     const IH = itemH(), centre = wrapH() / 2 - IH / 2, TH = totalH();
     let best = null, bestDist = Infinity;
-    getItems().filter(function(el) { return el.dataset.word === word; }).forEach(function(el) {
+    getItems().filter(function (el) { return el.dataset.tag === tag; }).forEach(function (el) {
       const dist = Math.abs(el.offsetTop - offset - centre);
       if (dist < bestDist) { bestDist = dist; best = el; }
     });
@@ -130,30 +102,23 @@
     if (offset < 0)   offset += TH;
   }
 
-  function onWordChange(word) {
-    setBackground(word);
-    patchSignal("word-input", word);
+  function onTagChange(tag) {
+    setBackground(tag);
+    patchSignal("focus-input", tag);
   }
 
-  function patchLocked(val) {
-    const el = document.getElementById("locked-input");
-    if (!el) return;
-    el.checked = val;
-    el.dispatchEvent(new Event("change", { bubbles: true }));
-  }
-
-  function onItemClick(word) {
-    if (locked && lockedWord === word) {
-      locked     = false;
-      lockedWord = null;
-      patchLocked(false);
+  function onItemClick(tag) {
+    if (locked && lockedTag === tag) {
+      locked    = false;
+      lockedTag = null;
+      patchSignal("locked-input", "false");
     } else {
-      locked     = true;
-      lockedWord = word;
-      lastWord   = word;
-      snapTo(word);
-      onWordChange(word);
-      patchLocked(true);
+      locked    = true;
+      lockedTag = tag;
+      lastTag   = tag;
+      snapTo(tag);
+      onTagChange(tag);
+      patchSignal("locked-input", "true");
     }
     updateClasses();
   }
@@ -167,27 +132,33 @@
       normalise();
       ticker.style.transform = "translateY(" + (-offset) + "px)";
       updateClasses();
-      const w = wordAtCentre();
-      if (w && w !== lastWord) { lastWord = w; onWordChange(w); }
+      const t = tagAtCentre();
+      if (t && t !== lastTag) { lastTag = t; onTagChange(t); }
     }
     requestAnimationFrame(step);
   }
 
-  // ── Init ─────────────────────────────────────────────────────────
+  // locked hidden input
+  const lockedInput = document.createElement("input");
+  lockedInput.id = "locked-input";
+  lockedInput.type = "checkbox";
+  lockedInput.style.display = "none";
+  lockedInput.setAttribute("data-bind:locked", "");
+  document.getElementById("app").appendChild(lockedInput);
+
   buildItems();
   const IH = itemH();
-  offset = WORDS.length * IH - (wrapH() / 2 - IH / 2);
+  offset = TAGS.length * IH - (wrapH() / 2 - IH / 2);
   normalise();
   ticker.style.transform = "translateY(" + (-offset) + "px)";
   updateClasses();
 
-  const firstWord = WORDS[0];
-  document.getElementById("bg-a").style.backgroundImage = "url(/static/images/" + firstWord + "." + EXT + ")";
+  // Init first tag
+  const firstTag = TAGS[0];
+  document.getElementById("bg-a").style.backgroundImage =
+    "url(/static/images/tags/" + firstTag.replace(/\s+/g, "-") + "." + EXT + ")";
   document.getElementById("bg-a").style.opacity = "1";
-
-  // Trigger initial word signal so data-effect fires on load
-  setTimeout(function() { patchSignal("word-input", firstWord); }, 50);
-  lastWord = firstWord;
+  setTimeout(function () { patchSignal("focus-input", firstTag); lastTag = firstTag; }, 50);
 
   requestAnimationFrame(step);
 })();

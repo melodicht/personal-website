@@ -2,98 +2,126 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --accent: #a99ff0;
-  --accent-light: rgba(83,74,183,0.25);
-  --text: #ffffff;
-  --text-muted: rgba(255,255,255,0.45);
-  --border: rgba(255,255,255,0.15);
-  --card-bg: rgba(255,255,255,0.08);
-  --card-bg-hover: rgba(255,255,255,0.13);
-  --bg: #16151f;
-  --tag-bg: rgba(255,255,255,0.12);
-  --tag-text: #c8c2f8;
-  --overlay: rgba(0,0,0,0.52);
+  --accent:        #a99ff0;
+  --accent-light:  rgba(83,74,183,0.25);
+  --text:          #ffffff;
+  --text-muted:    rgba(255,255,255,0.45);
+  --text-dim:      rgba(255,255,255,0.25);
+  --border:        rgba(255,255,255,0.12);
+  --card-bg:       rgba(255,255,255,0.07);
+  --card-bg-hover: rgba(255,255,255,0.12);
+  --bg:            #16151f;
+  --tag-bg:        rgba(255,255,255,0.10);
+  --tag-text:      #c8c2f8;
+  --overlay:       rgba(0,0,0,0.55);
+
+  --nav-width:     14rem;   /* wide enough for "I worked at ____" */
+  --picker-width:  18rem;   /* wide enough for longest tag */
 }
 
-html { font-size: 16px; }
+html, body { height: 100%; }
 
 body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   background: var(--bg);
   color: var(--text);
-  min-height: 100vh;
+  overflow: hidden; /* columns scroll internally */
 }
 
-/* ── Background layers ───────────────────────────────────────────── */
+/* ── Background ──────────────────────────────────────────────────── */
 .bg-layer {
-  position: fixed;
-  inset: 0;
+  position: fixed; inset: 0;
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   transition: opacity 0.8s ease;
   z-index: 0;
 }
-
-/* bg-b starts invisible; ticker.js swaps which layer is on top */
 #bg-b { opacity: 0; }
-
 .bg-overlay {
-  position: fixed;
-  inset: 0;
+  position: fixed; inset: 0;
   background: var(--overlay);
   z-index: 1;
 }
 
-/* Everything else sits above the background */
-#app { position: relative; z-index: 2; }
+/* ── Layout ──────────────────────────────────────────────────────── */
+#app {
+  position: relative;
+  z-index: 2;
+  height: 100vh;
+}
 
-/* ── Hero ────────────────────────────────────────────────────────── */
-.hero {
+.layout {
+  display: flex;
+  height: 100vh;
+}
+
+/* ── Col 1: Nav ──────────────────────────────────────────────────── */
+.col-nav {
+  width: var(--nav-width);
+  flex-shrink: 0;
+  border-right: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  padding: 2rem 0;
+}
+
+.nav-ticker {
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+  scrollbar-width: none;
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
-  padding: 6rem 1rem 4rem;
-  gap: 1.25rem;
+  gap: 0.25rem;
+  padding: 40vh 0; /* top/bottom padding so first/last can reach centre */
 }
+.nav-ticker::-webkit-scrollbar { display: none; }
 
-.headline {
+.nav-item {
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  padding: 0.5rem 1.5rem;
+  cursor: pointer;
+  white-space: nowrap;
+  border-radius: 0 8px 8px 0;
+  transition: color 0.15s, background 0.15s;
+  user-select: none;
+}
+.nav-item:hover         { color: var(--text); background: var(--accent-light); }
+.nav-item--active       { color: var(--text); font-weight: 600; }
+
+/* ── Col 2: Picker ───────────────────────────────────────────────── */
+.col-picker {
+  width: var(--picker-width);
+  flex-shrink: 0;
+  border-right: 1px solid var(--border);
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  overflow: hidden;
+  padding: 2rem 0;
 }
 
-.i-make {
-  font-size: clamp(2.5rem, 6vw, 4.5rem);
-  font-weight: 600;
-  letter-spacing: -0.02em;
-  color: var(--text);
-  white-space: nowrap;
+#picker-do,
+#picker-worked-at {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
 }
 
-/* ── Ticker ──────────────────────────────────────────────────────── */
+/* Tag ticker inside picker */
 .ticker-wrap {
+  width: 100%;
+  height: 100%;
+  mask-image: linear-gradient(to bottom, transparent 0%, black 20%, black 80%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 20%, black 80%, transparent 100%);
+  overflow: hidden;
   position: relative;
-  height: clamp(17rem, 40vw, 30rem);
-  width: clamp(200px, 40vw, 420px);
-  mask-image: linear-gradient(
-    to bottom,
-    transparent 0%,
-    black 28%,
-    black 72%,
-    transparent 100%
-  );
-  -webkit-mask-image: linear-gradient(
-    to bottom,
-    transparent 0%,
-    black 28%,
-    black 72%,
-    transparent 100%
-  );
 }
-
-.ticker-fade { display: none; }
 
 .ticker {
   display: flex;
@@ -102,59 +130,79 @@ body {
 }
 
 .tick-item {
-  font-size: clamp(2.5rem, 6vw, 4.5rem);
-  font-weight: 600;
-  letter-spacing: -0.02em;
-  line-height: 1.35;
+  font-size: clamp(1rem, 2vw, 1.25rem);
+  font-weight: 500;
+  line-height: 1.5;
+  padding: 0.4rem 1.5rem;
   cursor: pointer;
   color: var(--text-muted);
-  border-radius: 8px;
-  padding: 0 0.2rem;
-  transition: color 0.12s, background 0.12s;
   white-space: nowrap;
   user-select: none;
+  transition: color 0.12s, background 0.12s;
+  border-radius: 0 8px 8px 0;
+}
+.tick-item:hover         { color: var(--text); background: var(--accent-light); }
+.tick-item--centre       { color: var(--text); font-weight: 600; }
+.tick-item--locked       { color: var(--accent); font-weight: 600; }
+
+/* Job list inside picker */
+.job-list {
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+  scrollbar-width: none;
+  padding: 40vh 0;
+}
+.job-list::-webkit-scrollbar { display: none; }
+
+.job-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  padding: 0.75rem 1.5rem;
+  cursor: pointer;
+  border-radius: 0 8px 8px 0;
+  transition: background 0.15s;
+  white-space: nowrap;
+}
+.job-cell:hover           { background: var(--accent-light); }
+.job-cell--active         { background: var(--accent-light); border-left: 2px solid var(--accent); }
+.job-cell-company         { font-size: 1rem; font-weight: 600; color: var(--text); }
+.job-cell-role            { font-size: 0.8rem; color: var(--text-muted); }
+.job-cell-range           { font-size: 0.75rem; color: var(--text-dim); }
+
+/* ── Col 3: Content ──────────────────────────────────────────────── */
+.col-content {
+  flex: 1;
+  min-width: 0;
+  overflow-y: auto;
+  padding: 3rem 2.5rem;
 }
 
-.tick-item:hover {
-  color: var(--text);
-  background: var(--accent-light);
-}
+.col-content section { min-height: 100%; }
 
-.tick-item--centre { color: var(--text); }
-.tick-item--locked { color: var(--accent); }
-
-/* ── Lock hint ───────────────────────────────────────────────────── */
-.lock-hint {
-  font-size: 0.875rem;
-  color: var(--text-muted);
-  min-height: 1.4em;
-  text-align: center;
-}
-
-/* ── Projects section ────────────────────────────────────────────── */
-.projects {
-  max-width: 960px;
-  margin: 0 auto;
-  padding: 0 1.5rem 6rem;
+/* "I do" label (used by ticker.js for font-size reference) */
+.i-do-label {
+  font-size: clamp(1rem, 2vw, 1.25rem);
 }
 
 /* ── Card grid ───────────────────────────────────────────────────── */
 .card-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
   gap: 1rem;
 }
 
 .cards-enter .card { animation: cardIn 0.3s ease both; }
-.cards-enter .card:nth-child(2) { animation-delay: 0.06s; }
-.cards-enter .card:nth-child(3) { animation-delay: 0.12s; }
+.cards-enter .card:nth-child(2) { animation-delay: 0.05s; }
+.cards-enter .card:nth-child(3) { animation-delay: 0.10s; }
+.cards-enter .card:nth-child(4) { animation-delay: 0.15s; }
 
 @keyframes cardIn {
   from { opacity: 0; transform: translateY(10px); }
   to   { opacity: 1; transform: translateY(0); }
 }
 
-/* ── Card ────────────────────────────────────────────────────────── */
 .card {
   background: var(--card-bg);
   border: 0.5px solid var(--border);
@@ -167,49 +215,181 @@ body {
   -webkit-backdrop-filter: blur(12px);
   transition: background 0.15s, border-color 0.15s;
 }
-
 .card:hover {
   background: var(--card-bg-hover);
-  border-color: rgba(255,255,255,0.3);
+  border-color: rgba(255,255,255,0.25);
 }
-
-.card-body { flex: 1; display: flex; flex-direction: column; gap: 0.4rem; }
-
-.card-title {
-  font-size: 1rem;
-  font-weight: 600;
-  color: var(--text);
-}
-
-.card-desc {
-  font-size: 0.875rem;
-  color: var(--text-muted);
-  line-height: 1.55;
-}
-
-.card-footer {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 0.4rem;
-  margin-top: auto;
-}
+.card-body   { flex: 1; display: flex; flex-direction: column; gap: 0.4rem; }
+.card-title  { font-size: 0.95rem; font-weight: 600; color: var(--text); }
+.card-desc   { font-size: 0.8rem; color: var(--text-muted); line-height: 1.55; }
+.card-footer { display: flex; align-items: center; flex-wrap: wrap; gap: 0.4rem; margin-top: auto; }
 
 .tag {
-  font-size: 0.75rem;
-  font-weight: 500;
-  background: var(--tag-bg);
-  color: var(--tag-text);
-  border-radius: 6px;
-  padding: 2px 8px;
+  font-size: 0.7rem; font-weight: 500;
+  background: var(--tag-bg); color: var(--tag-text);
+  border-radius: 6px; padding: 2px 8px;
 }
-
 .card-link {
-  margin-left: auto;
-  font-size: 0.8rem;
-  font-weight: 500;
-  color: var(--accent);
-  text-decoration: none;
-  white-space: nowrap;
+  margin-left: auto; font-size: 0.75rem; font-weight: 500;
+  color: var(--accent); text-decoration: none; white-space: nowrap;
 }
 .card-link:hover { text-decoration: underline; }
+
+/* ── Category headings ("I worked on") ───────────────────────────── */
+.category-heading {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  margin: 2rem 0 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.category-heading:first-child { margin-top: 0; }
+
+/* ── Job detail ("I worked at") ──────────────────────────────────── */
+.job-detail-hero {
+  position: relative;
+  height: 220px;
+  border-radius: 16px;
+  overflow: hidden;
+  background-size: cover;
+  background-position: center;
+  margin-bottom: 2rem;
+}
+.job-detail-hero-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.75), rgba(0,0,0,0.2));
+}
+.job-detail-hero-content {
+  position: absolute; inset: 0;
+  display: flex; align-items: flex-end;
+  gap: 1.25rem; padding: 1.5rem;
+}
+.job-portrait {
+  width: 72px; height: 72px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid rgba(255,255,255,0.3);
+  flex-shrink: 0;
+}
+.job-detail-titles      { display: flex; flex-direction: column; gap: 0.2rem; }
+.job-detail-company     { font-size: 1.5rem; font-weight: 700; color: #fff; }
+.job-detail-role        { font-size: 0.9rem; color: rgba(255,255,255,0.75); }
+.job-detail-range       { font-size: 0.8rem; color: rgba(255,255,255,0.5); }
+
+.job-detail-body        { display: flex; flex-direction: column; gap: 2rem; }
+.job-detail-desc        { font-size: 0.9rem; color: var(--text-muted); line-height: 1.65; }
+
+.job-reviews-heading {
+  font-size: 0.85rem; font-weight: 600; letter-spacing: 0.06em;
+  text-transform: uppercase; color: var(--text-dim);
+  margin-bottom: 1rem;
+}
+.job-reviews            { display: flex; flex-direction: column; gap: 1rem; }
+.review {
+  background: var(--card-bg); border: 0.5px solid var(--border);
+  border-radius: 12px; padding: 1.25rem;
+  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+}
+.review-header          { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem; }
+.review-avatar          { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; flex-shrink: 0; }
+.review-meta            { display: flex; flex-direction: column; gap: 0.1rem; }
+.review-name            { font-size: 0.875rem; font-weight: 600; color: var(--text); }
+.review-role            { font-size: 0.75rem; color: var(--text-muted); }
+.review-text            { font-size: 0.85rem; color: var(--text-muted); line-height: 1.65; }
+
+/* ── Bio ("I") ───────────────────────────────────────────────────── */
+.bio {
+  max-width: 60ch;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+.bio p { font-size: 1rem; color: var(--text-muted); line-height: 1.75; }
+
+/* ── Mobile: three rows ──────────────────────────────────────────── */
+@media (max-width: 680px) {
+  body { overflow: auto; }
+
+  .layout {
+    flex-direction: column;
+    height: auto;
+    min-height: 100vh;
+  }
+
+  .col-nav {
+    width: 100%;
+    height: auto;
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+    padding: 0;
+    overflow-x: auto;
+    overflow-y: hidden;
+  }
+
+  .nav-ticker {
+    flex-direction: row;
+    height: auto;
+    padding: 0 5vw;
+    gap: 0;
+    justify-content: flex-start;
+    overflow-x: auto;
+    overflow-y: hidden;
+  }
+
+  .nav-item {
+    padding: 1rem 1.25rem;
+    border-radius: 0;
+    flex-shrink: 0;
+    border-bottom: 2px solid transparent;
+  }
+  .nav-item--active { border-bottom-color: var(--accent); }
+
+  .col-picker {
+    width: 100%;
+    height: auto;
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+    padding: 0;
+    overflow-x: auto;
+    overflow-y: hidden;
+  }
+
+  #picker-do,
+  #picker-worked-at {
+    height: auto;
+    overflow-x: auto;
+  }
+
+  .ticker-wrap {
+    height: 3.5rem;
+    mask-image: linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%);
+    overflow: hidden;
+  }
+
+  .ticker {
+    flex-direction: row;
+    white-space: nowrap;
+  }
+
+  .tick-item { padding: 1rem 1.25rem; }
+
+  .job-list {
+    display: flex;
+    flex-direction: row;
+    padding: 0;
+    overflow-x: auto;
+    height: auto;
+  }
+
+  .job-cell { flex-direction: row; align-items: center; gap: 0.75rem; padding: 0.75rem 1.25rem; }
+  .job-cell--active { border-left: none; border-bottom: 2px solid var(--accent); }
+
+  .col-content {
+    padding: 2rem 1.25rem;
+    overflow-y: visible;
+  }
+}

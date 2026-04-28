@@ -13,8 +13,12 @@ server streams fresh project cards via SSE.
 ## Run locally
 
 ```bash
-go run .
-# → http://localhost:8080
+go build -o site.exe .
+.\site.exe -generate   # writes data.json
+
+# Then rebuild to embed the new data.json:
+go build -o site.exe .
+.\site.exe
 ```
 
 No dependencies to install. `go.mod` uses only the standard library.

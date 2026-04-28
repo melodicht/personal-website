@@ -1,35 +1,5 @@
 {
   "tickerSpeed": 0.4,
   "imageExt": "jpg",
-  "words": ["websites", "games", "music", "art", "tools", "apps"],
-  "projects": {
-    "websites": [
-      {"title": "Portfolio v2", "description": "A brutalist personal site built with plain HTML and a lot of opinions.", "tags": ["HTML", "CSS"], "link": "#"},
-      {"title": "Studio Nori", "description": "Branding site for a small ceramics studio. Scroll-driven animations, zero JS frameworks.", "tags": ["Astro", "CSS"], "link": "#"},
-      {"title": "Docs Redesign", "description": "Redesigned the docs for an open-source CLI tool used by 12k developers.", "tags": ["VitePress", "Figma"], "link": "#"}
-    ],
-    "games": [
-      {"title": "Dungeon Typist", "description": "A typing-speed roguelike where every keystroke is an action. Made in 72 hours for Ludum Dare.", "tags": ["Go", "Ebitengine"], "link": "#"},
-      {"title": "Gravity Flip", "description": "Puzzle platformer with one mechanic taken to its logical extreme.", "tags": ["Unity", "C#"], "link": "#"},
-      {"title": "Terminal Quest", "description": "Text adventure that runs inside your actual shell. ls to explore, rm to fight.", "tags": ["Go", "Bubble Tea"], "link": "#"}
-    ],
-    "music": [
-      {"title": "Slow Burn EP", "description": "Four tracks of ambient electronic music composed during a winter residency.", "tags": ["Ableton", "Max/MSP"], "link": "#"},
-      {"title": "Generative Drones", "description": "Infinite ambient music engine — no two listens are the same.", "tags": ["SuperCollider"], "link": "#"}
-    ],
-    "tools": [
-      {"title": "Grip", "description": "A fast grep-like CLI for structured logs. Parses JSON lines and filters by field.", "tags": ["Go", "CLI"], "link": "#"},
-      {"title": "Recap", "description": "Weekly digest generator that pulls from GitHub, Linear, and your calendar.", "tags": ["Go", "API"], "link": "#"},
-      {"title": "Typecheck Action", "description": "GitHub Action that runs tsc, mypy, and go vet in parallel and posts a unified report.", "tags": ["Go", "GitHub Actions"], "link": "#"}
-    ],
-    "art": [
-      {"title": "Grid Studies", "description": "A series of 100 generative pieces exploring grid distortion. Each one is unique.", "tags": ["p5.js", "Generative"], "link": "#"},
-      {"title": "Ink & Code", "description": "Physical prints produced by a pen plotter driven by Go programs.", "tags": ["Go", "SVG", "Plotter"], "link": "#"}
-    ],
-    "apps": [
-      {"title": "Moodboard", "description": "Offline-first image board for designers. Drag, drop, done. No account needed.", "tags": ["Tauri", "Rust"], "link": "#"},
-      {"title": "Flashpack", "description": "Spaced-repetition flashcards that live in your terminal.", "tags": ["Go", "Bubble Tea"], "link": "#"},
-      {"title": "Daylog", "description": "A one-line-a-day journal that emails you your entry from exactly one year ago.", "tags": ["Go", "SQLite"], "link": "#"}
-    ]
-  }
+  "bioText": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.\n\nDuis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\n\nSed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo."
 }
