@@ -5,6 +5,8 @@
 
   const list = document.getElementById("job-list");
 
+  let datastarReady = false;
+
   // Build job cells
   jobs.forEach(function (job, i) {
     const exp   = job.specifics.job;
@@ -63,6 +65,16 @@
       .replace(/>/g, "&gt;").replace(/"/g, "&quot;");
   }
 
-  // Init first job selected
-  setTimeout(function () { selectJob(0); }, 60);
+  function init() {
+    selectJob(0);
+  }
+
+  document.addEventListener("datastar-loaded", function () {
+    datastarReady = true;
+    init();
+  });
+
+  if (datastarReady) {
+    init();
+  }
 })();

@@ -12,6 +12,7 @@
   </script>
 </head>
 <body>
+  <div data-on-load="document.dispatchEvent(new CustomEvent('datastar-loaded', {bubbles: true}))"></div>
   <div class="bg-layer" id="bg-a"></div>
   <div class="bg-layer" id="bg-b"></div>
   <div class="bg-overlay"></div>
@@ -29,7 +30,7 @@
 
   <div
     id="app"
-    data-signals='{"mode": "do", "focus": "", "jobFocus": 0}'
+    data-signals='{"mode": "do", "focus": "", "jobFocus": 0, "selectedProject": -1, "selectedSubproject": -1}'
   >
     <!-- ── Three-column layout ──────────────────────────────────── -->
     <div class="layout">
@@ -65,12 +66,20 @@
       <main class="col-content">
 
         <!-- I do: subproject cards filtered by tag -->
-        <section data-show="$mode === 'do'">
+        <section data-show="$mode === 'do' && $selectedSubproject === -1">
           <div
             id="card-grid"
             class="card-grid"
             data-effect="$focus && renderCards($focus)"
           ></div>
+        </section>
+
+        <!-- I do: subproject detail -->
+        <section
+          data-show="$mode === 'do' && $selectedSubproject !== -1"
+          data-effect="$mode === 'do' && $selectedSubproject !== -1 && renderSubprojectDetail($selectedSubproject)"
+        >
+          <div id="subproject-detail"></div>
         </section>
 
         <!-- I worked at: job detail -->
@@ -79,8 +88,16 @@
         </section>
 
         <!-- I worked on: projects by category -->
-        <section data-show="$mode === 'worked-on'">
+        <section data-show="$mode === 'worked-on' && $selectedProject === -1">
           <div id="worked-on-grid"></div>
+        </section>
+
+        <!-- I worked on: project detail -->
+        <section
+          data-show="$mode === 'worked-on' && $selectedProject !== -1"
+          data-effect="$mode === 'worked-on' && $selectedProject !== -1 && renderProjectDetail($selectedProject)"
+        >
+          <div id="project-detail"></div>
         </section>
 
         <!-- I: bio -->

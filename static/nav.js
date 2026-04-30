@@ -9,6 +9,7 @@
 
   const container = document.getElementById("nav-ticker");
   let currentMode = "do";
+  let datastarReady = false;
 
   function patchSignal(id, value) {
     const el = document.getElementById(id);
@@ -64,11 +65,19 @@
     snapToMode(mode);
   }
 
-  // Init
-  updateClasses(currentMode);
-  // Set initial mode signal after Datastar has initialised
-  setTimeout(function () {
+  function init() {
     setMode(currentMode);
     snapToMode(currentMode);
-  }, 50);
+  }
+
+  // Init
+  updateClasses(currentMode);
+  document.addEventListener("datastar-loaded", function () {
+    datastarReady = true;
+    init();
+  });
+
+  if (datastarReady) {
+    init();
+  }
 })();

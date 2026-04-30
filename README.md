@@ -36,6 +36,13 @@ No dependencies to install. `go.mod` uses only the standard library.
     └── ticker.js           # Animation loop; writes $currentWord signal
 ```
 
+
+- Go's template engine is used, hence the `{{...}}` in the html file. Go actually
+subs in data.
+- The main script has two non-overlapping cases. Either generates the files, or
+  runs the server. A flag distinguishes the two. The reason for combining these
+  two behaviours into one file is to get around problems with Windows device guard.
+
 ## How it works
 
 1. `ticker.js` runs a `requestAnimationFrame` loop scrolling the word list.

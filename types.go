@@ -1,4 +1,4 @@
-package sitedata
+package main
 
 // Tag is a skill/technology tag.
 type Tag string
@@ -7,8 +7,83 @@ const (
 	TagGameEngineDev    Tag = "game engine development"
 	TagGameDev          Tag = "game development"
 	TagFullStack        Tag = "full-stack development"
+	TagWebDev           Tag = "web development"
+	TagMobileAppDev     Tag = "Mobile App Development"
 	TagSystems          Tag = "systems programming"
 	TagProgrammingLangs Tag = "programming languages"
+	TagSystemSecurity   Tag = "systems security"
+	TagDevOps           Tag = "development operations"
+	TagHardwareTech     Tag = "hardware tech"
+)
+
+type TechTag string
+
+const (
+	TechTagPython TechTag = "Python"
+	TechTagNumPy TechTag = "NumPy"
+	TechTagMatplotlib TechTag = "Matplotlib"
+	TechTagDatadog TechTag = "Datadog"
+	TechTagFlask TechTag = "Flask"
+	TechTagSphinx TechTag = "Sphinx"
+	TechTagTox TechTag = "Tox"
+	TechTagCoveragePy TechTag = "Coverage.py"
+	TechTagPip TechTag = "Pip"
+
+	TechTagHTML TechTag = "HTML"
+	TechTagXML TechTag = "XML"
+	TechTagJavaScript TechTag = "JavaScript"
+	TechTagTypeScript TechTag = "TypeScript"
+	TechTagGraphQueryLanguage TechTag = "Graph Query Language (GQL)"
+	TechTagReact TechTag = "React"
+
+	TechTagStorybook TechTag = "Storybook"
+	TechTagWebpack TechTag = "Webpack"
+	TechTagVite TechTag = "Vite"
+
+	TechTagLinux TechTag = "Linux"
+	TechTagTrafficControl TechTag = "Traffic Control (tc)"
+	
+	TechTagBash TechTag = "Bash"
+	
+	TechTagAsync TechTag = "Async"
+	TechTagSocketIO TechTag = "SocketIO"
+	TechTagComponentsLibrary TechTag = "Components Library"
+	TechTagServersideRendering TechTag = "Server-side Rendering"
+	TechTagProfiling TechTag = "Profiling"
+	TechTagFFI TechTag = "FFI"
+	TechTagETL TechTag = "ETL Architecture"
+
+	TechTagOpenGraph TechTag = "Open Graph"
+	TechTagSiteMap TechTag = "Sitemap"
+	TechTagWebP TechTag = "WebP"
+
+	TechTagFlutter TechTag = "Flutter"
+	TechTagDart TechTag = "Dart"
+
+	TechTagKotlin TechTag = "Kotlin"
+	TechTagAndroidDevelopment TechTag = "Android Development"
+	TechTagJetpackCompose TechTag = "Jetpack Compose"
+	TechTagTimber TechTag = "Timber"
+
+	TechTagSwift TechTag = "Swift"
+
+	TechTagC TechTag = "C"
+	TechTagCPP TechTag = "C++"
+	TechTagAssembly TechTag = "Assembly"
+
+	TechTagPuppeteer TechTag = "Puppeteer"
+
+
+	TechTagFirestore TechTag = "Firestore"
+	TechTagSlackAPI TechTag = "Slack API"
+
+	TechTagGoogleCloudRunFunctions TechTag = "Google Cloud Run Functions"
+	TechTagGoogleCloudScheduler TechTag = "Google Cloud Scheduler"
+
+	
+
+
+	TechTagSTRIDE TechTag = "STRIDE Thread Modelling"
 )
 
 // ProjectCategory groups projects on the "I worked on" page.
@@ -60,9 +135,9 @@ type JobExperience struct {
 // NonJobExperience holds reflection data for university and personal projects.
 type NonJobExperience struct {
 	Video            *Video  `json:"video,omitempty"`
-	WhatWentWell     string  `json:"whatWentWell"`
-	WhatCouldBeBetter string `json:"whatCouldBeBetter"`
-	WhatILearned     string  `json:"whatILearned"`
+	WhatWentWell     []string  `json:"whatWentWell"`
+	WhatCouldBeBetter []string `json:"whatCouldBeBetter"`
+	WhatILearned     []string  `json:"whatILearned"`
 	SourceCodeLink   *string `json:"sourceCodeLink,omitempty"`
 }
 
@@ -83,6 +158,7 @@ type Subproject struct {
 	Title       string         `json:"title"`
 	Description string         `json:"description"`
 	Tags        []Tag          `json:"tags"`
+	TechTags    []TechTag      `json:"techTags"`
 	Info        SubprojectInfo `json:"info"`
 }
 

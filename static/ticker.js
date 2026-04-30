@@ -1,5 +1,7 @@
 // ticker.js — tag ticker for "I do" mode
 (function () {
+  let datastarReady = false;
+  
   const config  = window.SITE_CONFIG;
   const data    = window.SITE_DATA;
   const SPEED   = config.tickerSpeed;
@@ -158,7 +160,20 @@
   document.getElementById("bg-a").style.backgroundImage =
     "url(/static/images/tags/" + firstTag.replace(/\s+/g, "-") + "." + EXT + ")";
   document.getElementById("bg-a").style.opacity = "1";
-  setTimeout(function () { patchSignal("focus-input", firstTag); lastTag = firstTag; }, 50);
+
+  function init() {
+    patchSignal("focus-input", firstTag);
+    lastTag = firstTag;
+  }
+
+  document.addEventListener("datastar-loaded", function () {
+    datastarReady = true;
+    init();
+  });
+
+  if (datastarReady) {
+    init();
+  }
 
   requestAnimationFrame(step);
 })();
