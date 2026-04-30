@@ -229,6 +229,15 @@
         "</div>";
     }
 
+    let subprojectsHtml = "";
+    if (job.subprojects && job.subprojects.length > 0) {
+      subprojectsHtml = "<div class='detail-subprojects'>" +
+        "<h3 class='detail-subprojects-heading'>Work done</h3>" +
+        "<div class='subproject-list'>" +
+        job.subprojects.map(subprojectCardHtml).join("") +
+        "</div></div>";
+    }
+
     container.innerHTML =
       "<div class='job-detail-hero' style='background-image:url(" + escHtml(exp.backgroundImage) + ")'>" +
       "<div class='job-detail-hero-overlay'></div>" +
@@ -242,6 +251,7 @@
       "<div class='job-detail-body'>" +
       "<p class='job-detail-desc'>"     + escHtml(job.description) + "</p>" +
       reviewsHtml +
+      subprojectsHtml +
       "</div>";
   };
 
