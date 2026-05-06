@@ -593,9 +593,17 @@ li::before {
 }
 
 .subproject-list {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
   gap: 0.75rem;
+}
+
+@media (max-width: 900px) {
+  .subproject-list { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 580px) {
+  .subproject-list { grid-template-columns: 1fr; }
 }
 
 /* Small subproject card */
@@ -607,6 +615,7 @@ li::before {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  height: 100%;
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   transition: background 0.15s;

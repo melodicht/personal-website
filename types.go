@@ -42,9 +42,18 @@ const (
 
 	TechTagLinux TechTag = "Linux"
 	TechTagTrafficControl TechTag = "Traffic Control (tc)"
+	TechTagUnixSocketLibrary TechTag = "Unix Socket Library"
 	
 	TechTagBash TechTag = "Bash"
-	
+
+	TechTag2D TechTag = "2D"
+	TechTag3D TechTag = "3D"
+
+	TechTagAlgorithms TechTag = "Algorithms"
+	TechTagDataStructures TechTag = "Data Structures"
+	TechTagLogic TechTag = "Logic"
+	TechTagDesignPatterns TechTag = "Design Patterns"
+	TechTagArchitecture TechTag = "Architecture"
 	TechTagAsync TechTag = "Async"
 	TechTagSocketIO TechTag = "SocketIO"
 	TechTagComponentsLibrary TechTag = "Components Library"
@@ -52,6 +61,11 @@ const (
 	TechTagProfiling TechTag = "Profiling"
 	TechTagFFI TechTag = "FFI"
 	TechTagETL TechTag = "ETL Architecture"
+	TechTagTCP TechTag = "TCP"
+	TechTagRPC TechTag = "RPC"
+	TechTagMacros TechTag = "Macros"
+	TechTagTesting TechTag = "Testing"
+	TechTagPhysics TechTag = "Physics"
 
 	TechTagOpenGraph TechTag = "Open Graph"
 	TechTagSiteMap TechTag = "Sitemap"
@@ -71,7 +85,11 @@ const (
 	TechTagCPP TechTag = "C++"
 	TechTagAssembly TechTag = "Assembly"
 
+	TechTagOCaml TechTag = "OCaml"
+
 	TechTagPuppeteer TechTag = "Puppeteer"
+	TechTagIMGUI TechTag = "IMGUI"
+	TechTagUIUX TechTag = "UI/UX"
 
 
 	TechTagFirestore TechTag = "Firestore"
@@ -80,10 +98,16 @@ const (
 	TechTagGoogleCloudRunFunctions TechTag = "Google Cloud Run Functions"
 	TechTagGoogleCloudScheduler TechTag = "Google Cloud Scheduler"
 
-	
+	TechTagTypedRacket TechTag = "Typed Racket"
+	TechTagRacket TechTag = "Racket"
+
+	TechTagCSharp TechTag = "C#"
+	TechTagUnity TechTag = "Unity"
 
 
 	TechTagSTRIDE TechTag = "STRIDE Thread Modelling"
+
+	TechTagSoundMusic TechTag = "SFX/Music"
 )
 
 // ProjectCategory groups projects on the "I worked on" page.

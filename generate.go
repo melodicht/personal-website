@@ -190,14 +190,7 @@ var projects = []Project{
 				Reviews:         []Review{},
 			},
 		},
-		Subprojects: []Subproject{
-			{
-				Title:       "Typecheck Action",
-				Description: "GitHub Action that runs tsc, mypy, and go vet in parallel and posts a unified type-error report as a PR comment.",
-				Tags:        []Tag{TagFullStack},
-				Info:        SubprojectInfo{},
-			},
-		},
+		Subprojects: []Subproject{},
 	},
 
 	// ── UNIVERSITY: Ocaml Compiler  ───────────────────────────────
@@ -220,7 +213,30 @@ var projects = []Project{
 				Tags: []Tag{TagSystems, TagProgrammingLangs},
 				TechTags: []TechTag{TechTagC},
 			},
-			// Other things to include: ANF, graph colouring register allocation, built-in testing, error control flow
+			{
+				Title: "A-normal Form (ANF)",
+				Description: "There is a compiler phase that turns the abstract syntax tree to ANF, an intermediary representation that makes every intermediate computation named. This makes it easier to compile down to Assembly.",
+				Tags: []Tag{TagSystems, TagProgrammingLangs},
+				TechTags: []TechTag{TechTagOCaml, TechTagDataStructures},
+			},
+			{
+				Title: "Graph Colouring Register Allocation",
+				Description: "Accessing a value in a register is faster than accessing it on the stack, so we want to keep values in registers for as long as possible. To do this, we track the liveness of each value — the range of the program over which it is needed — and use Chaitin's graph colouring algorithm to assign values to registers optimally",
+				Tags: []Tag{TagSystems, TagProgrammingLangs},
+				TechTags: []TechTag{TechTagOCaml, TechTagAlgorithms, TechTagDataStructures},
+			},
+			{
+				Title: "Exceptions",
+				Description: "This programming language allows users to throw and catch exceptions.",
+				Tags: []Tag{TagSystems, TagProgrammingLangs},
+				TechTags: []TechTag{TechTagOCaml},
+			},
+			{
+				Title: "Built-in Testing Functionality",
+				Description: "Normally, to run tests in a programming language, one has to use a library. This makes test organization awkward, and the library would have to use reflection magic to test for errors. In this programming language, tests are first-class citizens and can be woven into the code, and the code can be executed without the tests. The C run-time accumulates the test information and prints them out at the end.",
+				Tags: []Tag{TagSystems, TagProgrammingLangs},
+				TechTags: []TechTag{TechTagOCaml, TechTagC},
+			},
 		},
 	},
 
@@ -238,8 +254,44 @@ var projects = []Project{
 			},
 		},
 
-		// Subprojects: CESK machine, Classes, Modules, Statements, Tail Calls, Type Stripping, Run-time Checks
-		Subprojects: []Subproject{},
+		Subprojects: []Subproject{
+			{
+				Title: "CESK Machine",
+				Description: "Implemented a programming language via a CESK abstract machine — a formal model of computation where program execution is expressed as a sequence of discrete state transitions. Each state is a tuple of four components: the Control (the expression currently being evaluated), the Environment (bindings of variables to values), the Store (mutable memory), and the Kontinuation (the rest of the computation). Execution begins at a well-defined initial state and steps through intermediate states until it reaches a final one, giving the language a rigorous, mathematically grounded operational semantics.",
+				Tags: []Tag{TagProgrammingLangs},
+				TechTags: []TechTag{TechTagTypedRacket, TechTagLogic},
+			},
+			{
+				Title: "Classes & Modules",
+				Description: "This language features classes, methods, and objects. On top of that, the language also features typed and untyped modules, and both can import each other. A module can only contain one class.",
+				Tags: []Tag{TagProgrammingLangs},
+				TechTags: []TechTag{TechTagTypedRacket},
+			},
+			{
+				Title: "Tail Calls",
+				Description: "This language has tail calls. That is, when a function call is the last thing that is being computed, a new stack will not be allocated.",
+				Tags: []Tag{TagProgrammingLangs},
+				TechTags: []TechTag{TechTagTypedRacket},
+			},
+			{
+				Title: "Typed-untyped Interactions (JavaScript Style)",
+				Description: "The JavaScript way of handling typed-untyped interactions is by running all type checks statically, and then strip away all the types prior to execution.",
+				Tags: []Tag{TagProgrammingLangs},
+				TechTags: []TechTag{TechTagTypedRacket},
+			},
+			{
+				Title: "Typed-untyped Interactions (Racket Style)",
+				Description: "The Racket way of handling typed-untyped interactions is by running all type checks statically, and wrapping values that would be passed from typed modules to untyped modules in run-time checks for actual execution.",
+				Tags: []Tag{TagProgrammingLangs},
+				TechTags: []TechTag{TechTagTypedRacket},
+			},
+			{
+				Title: "Unit and Integration Testing, Featuring Macros",
+				Description: "There are some unit tests that test specific functions, but there are also integration tests that exist at various levels. There is an overarching test harness that takes in entire programs written in the programming language, as well as a file tat just contains the expected output, and checks if the actual output equals to the expected output. That script is written in Typed Racket as well. There are also integration tests that targets the core logic of the CESK machine specifically, and through the use of macros, allows me to write the intermediate states of the abstract machine in a sequence.",
+				Tags: []Tag{TagProgrammingLangs},
+				TechTags: []TechTag{TechTagTypedRacket},
+			},
+		},
 	},
 
 	// ── UNIVERSITY: A Networked Card Game  ───────────────────
@@ -256,8 +308,27 @@ var projects = []Project{
 			},
 		},
 
-		// Subprojects: Greedy algorithm, fault-tolerant networking layer,
-		Subprojects: []Subproject{},
+		Subprojects: []Subproject{
+			{
+				Title: "Client-server Interactions with Fault-tolerant Networking",
+				Description: "Upon starting the server, it waits until the maximum number of clients connects or until the timer runs out, before starting the server. If the minimum number of players needed to play the game is not reached, the server terminates. Players can connect to the server. Once the game starts, the server is responsible for running all the game logic, listening to player actions, and informing the players of the game state and results through the network. Players crashing does not bring down the server.",
+				Tags: []Tag{TagFullStack, TagGameDev},
+				TechTags: []TechTag{TechTagRacket, TechTagTCP},
+			},
+			{
+				Title: "AI Players",
+				Description: "For testing purposes, we have AI players that behave deterministically given some game state. The Ai player uses a greedy algorithm to maximize some value in the short-term. The strategy pattern is used. This AI player is one such strategy, and in theory any other algorithms could subbed in. Having the actual player to make a decision is the main strategy used in the game.",
+				Tags: []Tag{TagFullStack, TagGameDev},
+				TechTags: []TechTag{TechTagRacket, TechTagAlgorithms, TechTagDesignPatterns},
+			},
+			{
+				Title: "Unit Testing & Integration Testing, With and Without Networks",
+				Description: "There are lot of unit tests for the game's actual logic. There are also integration tests that could simulate the game and (AI) players without involving the network, by using the remote proxy design pattern. More specifically, the RPCs mirror the logical interface, and thus an implementation of the logical interface makes the RPCs. The receiving end would use the logical implementation of the interface, passing over the arguments forward. The would-be duplicated code is eliminated by the use of macros. There are also bash scripts that can launch servers and clients, and the clients use the AI players, to test the game with networking without having to manually provide input.",
+				Tags: []Tag{TagFullStack, TagGameDev, TagDevOps},
+				TechTags: []TechTag{TechTagRacket, TechTagBash, TechTagRPC, TechTagTesting, TechTagMacros},
+				
+			},
+		},
 	},
 
 	// ── UNIVERSITY: RAFT  ───────────────────
@@ -274,8 +345,26 @@ var projects = []Project{
 			},
 		},
 
-		// Subprojects: Leader Election, Log Replication, Fault Tolerance
-		Subprojects: []Subproject{},
+		Subprojects: []Subproject{
+			{
+				Title: "Client-server Interactions with Fault-tolerance",
+				Description: "The servers are nodes of the RAFT algorithm. Clients are those who wish to submit commands for the RAFT algorithm to persist. The networking interactions are done through the Unix socket library. Any of the servers can crash (and that is assumed to be the only mode of failure), without crashing the other servers. As long as majority of the nodes are alive, the system can continue to make progress. If majority of the nodes are no longer alive, the data will persist as one node is alive, but the system can no longer agree on new values.",
+				Tags: []Tag{TagFullStack, TagSystems},
+				TechTags: []TechTag{TechTagLinux, TechTagCPP, TechTagTCP, TechTagUnixSocketLibrary},
+			},
+			{
+				Title: "Leader Election",
+				Description: "A key element of the algorithm is leader election. A server by itself is just a hunk of metal capable of computation, but RAFT consensus algorithm associates each server node with a role. The two essentials roles are leader and follower. There can only at most be one leader. Followers are able to be promoted to leader, which happens in the case where the system just started and there are no leaders to begin with, or the leader crashes. How this happens is defined in the RAFT specifications, specifically the \"Vote Request\" RPC, which I implemented. A follower that wants to be a leader sends the request to all the other nodes, and if it receives yes from the majority, it becomes the leader.",
+				Tags: []Tag{TagSystems},
+				TechTags: []TechTag{TechTagCPP, TechTagAlgorithms, TechTagRPC},
+			},
+			{
+				Title: "Log Replication With Custom Memory Slab Allocator",
+				Description: "Another key element is that each node keeps track of the full history of commands, in a log data structure. What it means for nodes to be in sync is for their logs to be the same. The leader's log is replicated to the followers. My implementation of the log data structure uses my own memory allocator that allocates in memory-aligned chunks, that are a multiple of page sizes. The allocator holds a linked list of the chunks, and a chunk holds tightly-packed log entries.",
+				Tags: []Tag{TagSystems},
+				TechTags: []TechTag{TechTagCPP, TechTagDataStructures, TechTagRPC},
+			},
+		},
 	},
 
 	// ── PERSONAL: Skyline Engine  ─────────────────────────────────
@@ -293,7 +382,32 @@ var projects = []Project{
 		},
 
 		// Subprojects: Hot-reloading, Looped-live Playback, Scene Editor, Engine Architecture
-		Subprojects: []Subproject{},
+		Subprojects: []Subproject{
+			{
+				Title: "Hot Reloading",
+				Description: "The user is able to keep the game running, make a change to the game source code, recompile the game, and immediately see the new changes take place in the running game.",
+				Tags: []Tag{TagGameEngineDev, TagSystems},
+				TechTags: []TechTag{TechTagCPP},
+			},
+			{
+				Title: "Looped Live Playback & Input Streaming",
+				Description: "The user is able record a segment of gameplay and loop it for as long as they want. Any inputs recorded in the loop will be played back. This goes well with hot reloading. The user can make a change in the game source, and immediately see the changes when the loop restarts.",
+				Tags: []Tag{TagGameEngineDev, TagSystems},
+				TechTags: []TechTag{TechTagCPP},
+			},
+			{
+				Title: "Scene Editor",
+				Description: "I worked on using the Dear IMGUI library to display the ECS menu, and the UI to change the fields of an entity, and various buttons to do things like add/destroy entities.",
+				Tags: []Tag{TagGameEngineDev, TagSystems},
+				TechTags: []TechTag{TechTagCPP, TechTagIMGUI},
+			},
+			{
+				Title: "Engine Architecture",
+				Description: "I was inspired by Handmade Hero when establishing much of the engine's architecture. There are three major software components: renderer, platform, engine and game. The renderer encapsulates all the messiness of displaying things on the screen and interactions with the GPU. The platform encapsulates the messiness of operating system. There is a strong relationship between the platform and the renderer. The engine is the entry point to the game-side of things, and calls into the game code. It holds code that all the game uses. The game-side of things is for code that is specific to one game. Note that the engine and game modules do not interact with the renderer directly.",
+				Tags: []Tag{TagGameEngineDev, TagSystems},
+				TechTags: []TechTag{TechTagCPP, TechTagArchitecture},
+			},
+		},
 	},
 
 	// ── PERSONAL: My Personal Portfolio  ──────────────────────────
@@ -329,14 +443,12 @@ var projects = []Project{
 		},
 		Subprojects: []Subproject{
 			{
-				Title:       "Moodboard",
-				Description: "Offline-first image board for designers. Drag, drop, done. No account needed.",
-				Tags:        []Tag{TagFullStack, TagSystems},
-				Info:        SubprojectInfo{Video: vidPtr("static/videos/moodboard.mp4")},
+				Title:       "FPS Movement & RK4",
+				Description: "This game features an interesting marriage between two contrasting notions of physics simulation. FPS movement includes on-ground movement and jumping. On-ground movement has acceleration with max velocity. As the game is a platformer, the player can cut a jump short by letting go of jump fast rather than holding down the button. There is also air control, where acceleration in the air is lower. The other notion of physics simulation is RK4, or fourth-order Runge-kutta method. Given a position and velocity of an object, and a function that computes the object's acceleration, the method can produce the next object's position and velocity. The method uses calculus effectively in order to get good approximations with minimal additional computations. This is not the standard approach to movement physics. I used it in my game anyway because the movements physics is tremendously better and the game still runs smoothly. These two notions of movement physics don't naturally work together. The FPS-specific physics has a lot of edge cases and handles player input, whereas RK4 is a general purpose function and does not consider player input. Still, I made it work.",
+				Tags:        []Tag{TagGameEngineDev, TagGameDev},
+				TechTags:    []TechTag{TechTagCPP, TechTagPhysics, TechTagAlgorithms, TechTag3D},
 			},
 		},
-
-		// Subprojects: FPS movement and RK4, game and level design (Jon Blow inspired)
 	},
 
 	// ── UNIVERSITY: Boids with Goals  ──────────────────────
@@ -353,8 +465,20 @@ var projects = []Project{
 			},
 		},
 
-		// Subprojects: Collision, Path-finding behaviour
-		Subprojects: []Subproject{},
+		Subprojects: []Subproject{
+			{
+				Title:       "Boids Movement with Multi-layered Dijkstra Path-finding",
+				Description: "A boid’s movement is based on local conditions close to its proximity, like distance and alignment to neighbouring boids, as well as obstacles to not fly into. However, goal-oriented behaviour requires the boid to navigate to a point which may exist beyond said proximity. With obstacles, there needs to exist some intelligence to not fly blindly into a dead end. While the twin goals of navigation by local and global conditions conflict, my approach uses multi-layered Dijkstra’s algorithm to create a field of forces, generating local conditions from global ones. Where a boid moves is the sum of its regular boid's movement and the vector at the position of the map as produced by Dikstra's algorithm.",
+				Tags:        []Tag{TagGameEngineDev, TagGameDev},
+				TechTags:    []TechTag{TechTagJavaScript, TechTagPhysics, TechTagAlgorithms, TechTag2D},
+			},
+			{
+				Title:       "Collision Detection",
+				Description: "Each boid determines whether it's about to fly into an obstacle by shooting a ray in front of it and seeing if it intersects with an obstacle. All obstacles are a rectangle.",
+				Tags:        []Tag{TagGameEngineDev, TagGameDev},
+				TechTags:    []TechTag{TechTagJavaScript, TechTagPhysics, TechTagAlgorithms, TechTag2D},
+			},
+		},
 	},
 
 	// ── PERSONAL: Toxic Texting  ──────────────────────
@@ -371,8 +495,26 @@ var projects = []Project{
 			},
 		},
 
-		// Subprojects: Dialogue system, the dialogue themselves, sound and music, gameplay system.
-		Subprojects: []Subproject{},
+		Subprojects: []Subproject{
+			{
+				Title:       "Dialogue & Game Systems",
+				Description: "The writer writes all the dialogue in the spreadsheet, which is then imported into the game in CSV format. The game parses the CSV file and constructs the dialogue tree. A level can be understood as the navigation of the tree, where the user's yes/no moves the player from one dialogue to the next. A writer can also write game events into the dialogue, like music change or screen shake, and the dialogue system will invoke the corresponding methods in the corresponding systems.",
+				Tags:        []Tag{TagGameDev},
+				TechTags:    []TechTag{TechTagCSharp, TechTagUnity, TechTagDataStructures},
+			},
+			{
+				Title:       "UI/UX",
+				Description: "Using Unity's UI system and with the help of the artist on our team, I implemented and partially designed the phone UI and animations.",
+				Tags:        []Tag{TagGameDev},
+				TechTags:    []TechTag{TechTagCSharp, TechTagUnity, TechTagUIUX, TechTag2D},
+			},
+			{
+				Title:       "Sound & Music",
+				Description: "On top of making all the sound effects and music in Logic Pro X (except for one song that is creditted in the game), I also hooked them into the game. A lot of it is through Unity's event system. The writer can also make sound cueues in the dialogue. Upon seeing a sound queue, the dialogue system tells the sound system to play sounds. When the music switches, there is a crossfade.",
+				Tags:        []Tag{TagGameDev},
+				TechTags:    []TechTag{TechTagCSharp, TechTagUnity, TechTagSoundMusic},
+			},
+		},
 	},
 
 	// ── PERSONAL: Tower Takeover  ──────────────────────
