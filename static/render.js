@@ -96,14 +96,17 @@
     const tmpl = document.getElementById("card-template");
     if (!grid || !tmpl) return;
 
-    // Collect subprojects whose tags include the focused tag,
-    // storing a global index so we can navigate to the right one.
-    const matches = [];
+    // Collect matching subprojects grouped by project, preserving project order.
+    const groups = [];
+    const groupIndex = {};
     data.projects.forEach(function (p) {
-      p.subprojects.forEach(function (sp, spIdx) {
-        if (sp.tags.indexOf(tag) !== -1) {
-          matches.push({ sp: sp, projectTitle: p.title, projectTechTags: p.techTags || [] });
+      p.subprojects.forEach(function (sp) {
+        if (sp.tags.indexOf(tag) === -1) return;
+        if (groupIndex[p.title] === undefined) {
+          groupIndex[p.title] = groups.length;
+          groups.push({ project: p, items: [] });
         }
+        groups[groupIndex[p.title]].items.push({ sp: sp, projectTitle: p.title, projectTechTags: p.techTags || [] });
       });
     });
 
@@ -117,53 +120,66 @@
     }
 
     grid.innerHTML = "";
-    matches.forEach(function (item) {
-      // Find the flat index for this subproject
-      var flatIdx = window._allSubprojects.findIndex(function (a) {
-        return a.sp === item.sp;
-      });
 
-      const node   = tmpl.content.cloneNode(true);
-      const card   = node.querySelector(".card");
-      node.querySelector(".card-title").textContent = item.sp.title;
-      node.querySelector(".card-desc").textContent  = item.sp.description;
+    groups.forEach(function (group) {
+      // ── Group header ──
+      const header = document.createElement("div");
+      header.className = "card-group-header";
+      header.innerHTML =
+        "<span class='card-group-title'>" + escHtml(group.project.title) + "</span>" +
+        "<span class='card-group-type detail-type-badge detail-type-badge--" + group.project.type.toLowerCase() + "'>" + escHtml(group.project.type) + "</span>";
+      grid.appendChild(header);
 
-      // Insert tech tags between title and description (own tags only, not inherited from project)
-      var ownTechTags = (item.sp.techTags || []).filter(function (t) {
-        return (item.projectTechTags || []).indexOf(t) === -1;
-      });
-      if (ownTechTags.length) {
-        const tagsRow     = document.createElement("div");
-        tagsRow.className = "card-tech-tags";
-        ownTechTags.forEach(function (t) {
-          const span       = document.createElement("span");
-          span.className   = "tag tag--tech";
-          span.textContent = t;
-          tagsRow.appendChild(span);
+      // ── Cards row ──
+      const row = document.createElement("div");
+      row.className = "card-grid card-group-grid";
+      grid.appendChild(row);
+
+      group.items.forEach(function (item) {
+        var flatIdx = window._allSubprojects.findIndex(function (a) {
+          return a.sp === item.sp;
         });
-        const body = node.querySelector(".card-body");
-        const desc = node.querySelector(".card-desc");
-        body.insertBefore(tagsRow, desc);
-      }
 
-      const footer = node.querySelector(".card-footer");
-      if (item.sp.info && item.sp.info.video) {
-        const link       = document.createElement("a");
-        link.className   = "card-link";
-        link.href        = item.sp.info.video;
-        link.textContent = "Watch →";
-        footer.appendChild(link);
-      }
+        const node = tmpl.content.cloneNode(true);
+        const card = node.querySelector(".card");
+        node.querySelector(".card-title").textContent = item.sp.title;
+        node.querySelector(".card-desc").textContent  = item.sp.description;
 
-      // Click to open subproject detail
-      card.style.cursor = "pointer";
-      card.addEventListener("click", function (e) {
-        // Don't intercept link clicks
-        if (e.target.tagName === "A") return;
-        setSelectedSubproject(flatIdx);
+        // Insert tech tags between title and description (own only, not inherited)
+        var ownTechTags = (item.sp.techTags || []).filter(function (t) {
+          return (item.projectTechTags || []).indexOf(t) === -1;
+        });
+        if (ownTechTags.length) {
+          const tagsRow     = document.createElement("div");
+          tagsRow.className = "card-tech-tags";
+          ownTechTags.forEach(function (t) {
+            const span       = document.createElement("span");
+            span.className   = "tag tag--tech";
+            span.textContent = t;
+            tagsRow.appendChild(span);
+          });
+          const body = node.querySelector(".card-body");
+          const desc = node.querySelector(".card-desc");
+          body.insertBefore(tagsRow, desc);
+        }
+
+        const footer = node.querySelector(".card-footer");
+        if (item.sp.info && item.sp.info.video) {
+          const link       = document.createElement("a");
+          link.className   = "card-link";
+          link.href        = item.sp.info.video;
+          link.textContent = "Watch →";
+          footer.appendChild(link);
+        }
+
+        card.style.cursor = "pointer";
+        card.addEventListener("click", function (e) {
+          if (e.target.tagName === "A") return;
+          setSelectedSubproject(flatIdx);
+        });
+
+        row.appendChild(node);
       });
-
-      grid.appendChild(node);
     });
 
     grid.classList.remove("cards-enter");

@@ -468,6 +468,30 @@ li::before {
   margin-top: 0.25rem;
 }
 
+.card-group-container {
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── Card group header ("I do" grouping) ─────────────────────────── */
+.card-group-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 2rem 0 0.75rem;
+}
+.card-group-header:first-child { margin-top: 0; }
+
+.card-group-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.card-group-grid {
+  margin-bottom: 0.5rem;
+}
+
 .card-tech-tags {
   display: flex;
   flex-wrap: wrap;
