@@ -71,12 +71,17 @@
   }
 
   // ── Subproject card HTML (used in both detail views) ──────────────
-  function subprojectCardHtml(sp) {
+  // inheritedTags: array of TechTag strings from the parent project (to exclude from display)
+  function subprojectCardHtml(sp, inheritedTags) {
     var videoHtml = "";
     if (sp.info && sp.info.video) {
       videoHtml = "<video class='subproject-video' src='" + escHtml(sp.info.video) + "' controls></video>";
     }
-    var techTags = techTagsHtml(sp.techTags);
+    var inherited = inheritedTags || [];
+    var ownTechTags = (sp.techTags || []).filter(function (t) {
+      return inherited.indexOf(t) === -1;
+    });
+    var techTags = techTagsHtml(ownTechTags);
     return "<div class='subproject-card" + (sp.info && sp.info.video ? " subproject-card--big" : "") + "'>" +
       (sp.title ? "<h4 class='subproject-card-title'>" + escHtml(sp.title) + "</h4>" : "") +
       (techTags ? "<div class='subproject-card-tags'>" + techTags + "</div>" : "") +
@@ -97,18 +102,16 @@
     data.projects.forEach(function (p) {
       p.subprojects.forEach(function (sp, spIdx) {
         if (sp.tags.indexOf(tag) !== -1) {
-          matches.push({ sp: sp, projectTitle: p.title });
+          matches.push({ sp: sp, projectTitle: p.title, projectTechTags: p.techTags || [] });
         }
       });
     });
 
-    // Build a flat subproject list index so clicking resolves correctly.
-    // We store the flat index into window._allSubprojects.
     if (!window._allSubprojects) {
       window._allSubprojects = [];
       data.projects.forEach(function (p) {
         p.subprojects.forEach(function (sp) {
-          window._allSubprojects.push({ sp: sp, projectTitle: p.title });
+          window._allSubprojects.push({ sp: sp, projectTitle: p.title, projectTechTags: p.techTags || [] });
         });
       });
     }
@@ -125,11 +128,14 @@
       node.querySelector(".card-title").textContent = item.sp.title;
       node.querySelector(".card-desc").textContent  = item.sp.description;
 
-      // Insert tech tags between title and description
-      if (item.sp.techTags && item.sp.techTags.length) {
+      // Insert tech tags between title and description (own tags only, not inherited from project)
+      var ownTechTags = (item.sp.techTags || []).filter(function (t) {
+        return (item.projectTechTags || []).indexOf(t) === -1;
+      });
+      if (ownTechTags.length) {
         const tagsRow     = document.createElement("div");
         tagsRow.className = "card-tech-tags";
-        item.sp.techTags.forEach(function (t) {
+        ownTechTags.forEach(function (t) {
           const span       = document.createElement("span");
           span.className   = "tag tag--tech";
           span.textContent = t;
@@ -188,7 +194,12 @@
       videoHtml = "<video class='detail-video' src='" + escHtml(sp.info.video) + "' controls></video>";
     }
 
-    var techTags = techTagsHtml(sp.techTags);
+    // Merge own tech tags with inherited project tech tags, deduped
+    var inherited = item.projectTechTags || [];
+    var merged = inherited.concat((sp.techTags || []).filter(function (t) {
+      return inherited.indexOf(t) === -1;
+    }));
+    var techTags = techTagsHtml(merged);
 
     container.innerHTML =
       backButtonHtml("Back") +
@@ -241,10 +252,11 @@
 
     let subprojectsHtml = "";
     if (job.subprojects && job.subprojects.length > 0) {
+      var jobTechTags = job.techTags || [];
       subprojectsHtml = "<div class='detail-subprojects'>" +
         "<h3 class='detail-subprojects-heading'>Work done</h3>" +
         "<div class='subproject-list'>" +
-        job.subprojects.map(subprojectCardHtml).join("") +
+        job.subprojects.map(function (sp) { return subprojectCardHtml(sp, jobTechTags); }).join("") +
         "</div></div>";
     }
 
@@ -356,10 +368,11 @@
     // Subprojects section
     var subprojectsHtml = "";
     if (p.subprojects && p.subprojects.length > 0) {
+      var projTechTags = p.techTags || [];
       subprojectsHtml = "<div class='detail-subprojects'>" +
         "<h3 class='detail-subprojects-heading'>Subprojects</h3>" +
         "<div class='subproject-list'>" +
-        p.subprojects.map(subprojectCardHtml).join("") +
+        p.subprojects.map(function (sp) { return subprojectCardHtml(sp, projTechTags); }).join("") +
         "</div></div>";
     }
 
@@ -373,6 +386,7 @@
       typeBadgeHtml +
       "<h2 class='detail-title'>" + escHtml(p.title) + "</h2>" +
       (p.tags && p.tags.length ? "<div class='detail-tags'>" + tagsHtml(p.tags) + "</div>" : "") +
+      (p.techTags && p.techTags.length ? "<div class='detail-tags'>" + techTagsHtml(p.techTags) + "</div>" : "") +
       "</div>" +
       "<p class='detail-desc'>" + escHtml(p.description) + "</p>" +
       reflectionHtml +

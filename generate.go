@@ -246,6 +246,7 @@ var projects = []Project{
 		Description: "There are many way to implement a programming languages. One of the is through an abstract machine. On top of have all the basic features of a programming lanaguage (arithmetic, conditionals...), this programming language features the co-existence of typed and untyped modules. There are two distinct versions. One where the types are checked to the extent at possible, and then thrown away when the program actually runs. Another one where the types are checked, and become run-time checks during the program run.",
 		Type: ProjectTypeUniversity,
 		Category: catPtr(CategoryProgrammingLanguages),
+		TechTags: []TechTag{TechTagTypedRacket},
 		Specifics: ProjectTypeSpecifics{
 			NonJob: &NonJobExperience{
 				WhatWentWell: []string{"Macros for tests, nice organization"},
@@ -259,31 +260,31 @@ var projects = []Project{
 				Title: "CESK Machine",
 				Description: "Implemented a programming language via a CESK abstract machine — a formal model of computation where program execution is expressed as a sequence of discrete state transitions. Each state is a tuple of four components: the Control (the expression currently being evaluated), the Environment (bindings of variables to values), the Store (mutable memory), and the Kontinuation (the rest of the computation). Execution begins at a well-defined initial state and steps through intermediate states until it reaches a final one, giving the language a rigorous, mathematically grounded operational semantics.",
 				Tags: []Tag{TagProgrammingLangs},
-				TechTags: []TechTag{TechTagTypedRacket, TechTagLogic},
+				TechTags: []TechTag{TechTagLogic},
 			},
 			{
 				Title: "Classes & Modules",
 				Description: "This language features classes, methods, and objects. On top of that, the language also features typed and untyped modules, and both can import each other. A module can only contain one class.",
 				Tags: []Tag{TagProgrammingLangs},
-				TechTags: []TechTag{TechTagTypedRacket},
+				TechTags: []TechTag{},
 			},
 			{
 				Title: "Tail Calls",
 				Description: "This language has tail calls. That is, when a function call is the last thing that is being computed, a new stack will not be allocated.",
 				Tags: []Tag{TagProgrammingLangs},
-				TechTags: []TechTag{TechTagTypedRacket},
+				TechTags: []TechTag{},
 			},
 			{
 				Title: "Typed-untyped Interactions (JavaScript Style)",
 				Description: "The JavaScript way of handling typed-untyped interactions is by running all type checks statically, and then strip away all the types prior to execution.",
 				Tags: []Tag{TagProgrammingLangs},
-				TechTags: []TechTag{TechTagTypedRacket},
+				TechTags: []TechTag{},
 			},
 			{
 				Title: "Typed-untyped Interactions (Racket Style)",
 				Description: "The Racket way of handling typed-untyped interactions is by running all type checks statically, and wrapping values that would be passed from typed modules to untyped modules in run-time checks for actual execution.",
 				Tags: []Tag{TagProgrammingLangs},
-				TechTags: []TechTag{TechTagTypedRacket},
+				TechTags: []TechTag{},
 			},
 			{
 				Title: "Unit and Integration Testing, Featuring Macros",

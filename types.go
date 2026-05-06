@@ -19,94 +19,90 @@ const (
 type TechTag string
 
 const (
-	TechTagPython TechTag = "Python"
-	TechTagNumPy TechTag = "NumPy"
+	TechTagPython     TechTag = "Python"
+	TechTagNumPy      TechTag = "NumPy"
 	TechTagMatplotlib TechTag = "Matplotlib"
-	TechTagDatadog TechTag = "Datadog"
-	TechTagFlask TechTag = "Flask"
-	TechTagSphinx TechTag = "Sphinx"
-	TechTagTox TechTag = "Tox"
+	TechTagDatadog    TechTag = "Datadog"
+	TechTagFlask      TechTag = "Flask"
+	TechTagSphinx     TechTag = "Sphinx"
+	TechTagTox        TechTag = "Tox"
 	TechTagCoveragePy TechTag = "Coverage.py"
-	TechTagPip TechTag = "Pip"
+	TechTagPip        TechTag = "Pip"
 
-	TechTagHTML TechTag = "HTML"
-	TechTagXML TechTag = "XML"
-	TechTagJavaScript TechTag = "JavaScript"
-	TechTagTypeScript TechTag = "TypeScript"
+	TechTagHTML               TechTag = "HTML"
+	TechTagXML                TechTag = "XML"
+	TechTagJavaScript         TechTag = "JavaScript"
+	TechTagTypeScript         TechTag = "TypeScript"
 	TechTagGraphQueryLanguage TechTag = "Graph Query Language (GQL)"
-	TechTagReact TechTag = "React"
+	TechTagReact              TechTag = "React"
 
 	TechTagStorybook TechTag = "Storybook"
-	TechTagWebpack TechTag = "Webpack"
-	TechTagVite TechTag = "Vite"
+	TechTagWebpack   TechTag = "Webpack"
+	TechTagVite      TechTag = "Vite"
 
-	TechTagLinux TechTag = "Linux"
-	TechTagTrafficControl TechTag = "Traffic Control (tc)"
-	TechTagUnixSocketLibrary TechTag = "Unix Socket Library"
-	
+	TechTagLinux              TechTag = "Linux"
+	TechTagTrafficControl     TechTag = "Traffic Control (tc)"
+	TechTagUnixSocketLibrary  TechTag = "Unix Socket Library"
+
 	TechTagBash TechTag = "Bash"
 
 	TechTag2D TechTag = "2D"
 	TechTag3D TechTag = "3D"
 
-	TechTagAlgorithms TechTag = "Algorithms"
+	TechTagAlgorithms     TechTag = "Algorithms"
 	TechTagDataStructures TechTag = "Data Structures"
-	TechTagLogic TechTag = "Logic"
+	TechTagLogic          TechTag = "Logic"
 	TechTagDesignPatterns TechTag = "Design Patterns"
-	TechTagArchitecture TechTag = "Architecture"
-	TechTagAsync TechTag = "Async"
-	TechTagSocketIO TechTag = "SocketIO"
-	TechTagComponentsLibrary TechTag = "Components Library"
+	TechTagArchitecture   TechTag = "Architecture"
+	TechTagAsync          TechTag = "Async"
+	TechTagSocketIO       TechTag = "SocketIO"
+	TechTagComponentsLibrary   TechTag = "Components Library"
 	TechTagServersideRendering TechTag = "Server-side Rendering"
-	TechTagProfiling TechTag = "Profiling"
-	TechTagFFI TechTag = "FFI"
-	TechTagETL TechTag = "ETL Architecture"
-	TechTagTCP TechTag = "TCP"
-	TechTagRPC TechTag = "RPC"
-	TechTagMacros TechTag = "Macros"
-	TechTagTesting TechTag = "Testing"
-	TechTagPhysics TechTag = "Physics"
+	TechTagProfiling      TechTag = "Profiling"
+	TechTagFFI            TechTag = "FFI"
+	TechTagETL            TechTag = "ETL Architecture"
+	TechTagTCP            TechTag = "TCP"
+	TechTagRPC            TechTag = "RPC"
+	TechTagMacros         TechTag = "Macros"
+	TechTagTesting        TechTag = "Testing"
+	TechTagPhysics        TechTag = "Physics"
 
 	TechTagOpenGraph TechTag = "Open Graph"
-	TechTagSiteMap TechTag = "Sitemap"
-	TechTagWebP TechTag = "WebP"
+	TechTagSiteMap   TechTag = "Sitemap"
+	TechTagWebP      TechTag = "WebP"
 
 	TechTagFlutter TechTag = "Flutter"
-	TechTagDart TechTag = "Dart"
+	TechTagDart    TechTag = "Dart"
 
-	TechTagKotlin TechTag = "Kotlin"
+	TechTagKotlin            TechTag = "Kotlin"
 	TechTagAndroidDevelopment TechTag = "Android Development"
-	TechTagJetpackCompose TechTag = "Jetpack Compose"
-	TechTagTimber TechTag = "Timber"
+	TechTagJetpackCompose    TechTag = "Jetpack Compose"
+	TechTagTimber            TechTag = "Timber"
 
 	TechTagSwift TechTag = "Swift"
 
-	TechTagC TechTag = "C"
-	TechTagCPP TechTag = "C++"
+	TechTagC        TechTag = "C"
+	TechTagCPP      TechTag = "C++"
 	TechTagAssembly TechTag = "Assembly"
 
 	TechTagOCaml TechTag = "OCaml"
 
 	TechTagPuppeteer TechTag = "Puppeteer"
-	TechTagIMGUI TechTag = "IMGUI"
-	TechTagUIUX TechTag = "UI/UX"
+	TechTagIMGUI     TechTag = "IMGUI"
+	TechTagUIUX      TechTag = "UI/UX"
 
-
-	TechTagFirestore TechTag = "Firestore"
-	TechTagSlackAPI TechTag = "Slack API"
-
+	TechTagFirestore            TechTag = "Firestore"
+	TechTagSlackAPI             TechTag = "Slack API"
 	TechTagGoogleCloudRunFunctions TechTag = "Google Cloud Run Functions"
 	TechTagGoogleCloudScheduler TechTag = "Google Cloud Scheduler"
 
 	TechTagTypedRacket TechTag = "Typed Racket"
-	TechTagRacket TechTag = "Racket"
+	TechTagRacket      TechTag = "Racket"
 
 	TechTagCSharp TechTag = "C#"
-	TechTagUnity TechTag = "Unity"
+	TechTagUnity  TechTag = "Unity"
 
-
-	TechTagSTRIDE TechTag = "STRIDE Threat Modelling"
-
+	TechTagSTRIDE     TechTag = "STRIDE Thread Modelling"
 	TechTagSoundMusic TechTag = "SFX/Music"
 )
 
@@ -158,11 +154,11 @@ type JobExperience struct {
 
 // NonJobExperience holds reflection data for university and personal projects.
 type NonJobExperience struct {
-	Video            *Video  `json:"video,omitempty"`
-	WhatWentWell     []string  `json:"whatWentWell"`
+	Video             *Video   `json:"video,omitempty"`
+	WhatWentWell      []string `json:"whatWentWell"`
 	WhatCouldBeBetter []string `json:"whatCouldBeBetter"`
-	WhatILearned     []string  `json:"whatILearned"`
-	SourceCodeLink   *string `json:"sourceCodeLink,omitempty"`
+	WhatILearned      []string `json:"whatILearned"`
+	SourceCodeLink    *string  `json:"sourceCodeLink,omitempty"`
 }
 
 // ProjectTypeSpecifics is a union — exactly one field is non-nil.
@@ -187,14 +183,16 @@ type Subproject struct {
 }
 
 // Project is the top-level portfolio entry.
-// Tags is omitted from the Go definition and computed by the generator.
+// Tags is computed by the generator as the union of subproject tags.
+// TechTags are project-level tech tags inherited by all subprojects.
 type Project struct {
 	Title       string               `json:"title"`
 	Description string               `json:"description"`
 	Type        ProjectType          `json:"type"`
 	Specifics   ProjectTypeSpecifics `json:"specifics"`
 	Category    *ProjectCategory     `json:"category,omitempty"`
-	Tags        []Tag                `json:"tags"` // computed by generator
+	Tags        []Tag                `json:"tags"`     // computed by generator
+	TechTags    []TechTag            `json:"techTags"` // project-level; inherited by subprojects
 	Subprojects []Subproject         `json:"subprojects"`
 }
 
