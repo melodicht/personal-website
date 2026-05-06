@@ -125,6 +125,12 @@
       node.querySelector(".card-title").textContent = item.sp.title;
       node.querySelector(".card-desc").textContent  = item.sp.description;
       const footer = node.querySelector(".card-footer");
+      item.sp.techTags && item.sp.techTags.forEach(function (t) {
+        const span       = document.createElement("span");
+        span.className   = "tag tag--tech";
+        span.textContent = t;
+        footer.appendChild(span);
+      });
       if (item.sp.info && item.sp.info.video) {
         const link       = document.createElement("a");
         link.className   = "card-link";
