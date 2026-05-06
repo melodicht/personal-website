@@ -79,9 +79,9 @@
     var techTags = techTagsHtml(sp.techTags);
     return "<div class='subproject-card" + (sp.info && sp.info.video ? " subproject-card--big" : "") + "'>" +
       (sp.title ? "<h4 class='subproject-card-title'>" + escHtml(sp.title) + "</h4>" : "") +
+      (techTags ? "<div class='subproject-card-tags'>" + techTags + "</div>" : "") +
       "<p class='subproject-card-desc'>" + escHtml(sp.description) + "</p>" +
       videoHtml +
-      (techTags ? "<div class='subproject-card-tags'>" + techTags + "</div>" : "") +
       "</div>";
   }
 
@@ -124,13 +124,23 @@
       const card   = node.querySelector(".card");
       node.querySelector(".card-title").textContent = item.sp.title;
       node.querySelector(".card-desc").textContent  = item.sp.description;
+
+      // Insert tech tags between title and description
+      if (item.sp.techTags && item.sp.techTags.length) {
+        const tagsRow     = document.createElement("div");
+        tagsRow.className = "card-tech-tags";
+        item.sp.techTags.forEach(function (t) {
+          const span       = document.createElement("span");
+          span.className   = "tag tag--tech";
+          span.textContent = t;
+          tagsRow.appendChild(span);
+        });
+        const body = node.querySelector(".card-body");
+        const desc = node.querySelector(".card-desc");
+        body.insertBefore(tagsRow, desc);
+      }
+
       const footer = node.querySelector(".card-footer");
-      item.sp.techTags && item.sp.techTags.forEach(function (t) {
-        const span       = document.createElement("span");
-        span.className   = "tag tag--tech";
-        span.textContent = t;
-        footer.appendChild(span);
-      });
       if (item.sp.info && item.sp.info.video) {
         const link       = document.createElement("a");
         link.className   = "card-link";

@@ -468,6 +468,12 @@ li::before {
   margin-top: 0.25rem;
 }
 
+.card-tech-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
 .tag--tech {
   background: rgba(169,159,240,0.12);
   color: rgba(169,159,240,0.85);
