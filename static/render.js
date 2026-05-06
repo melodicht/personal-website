@@ -76,12 +76,12 @@
     if (sp.info && sp.info.video) {
       videoHtml = "<video class='subproject-video' src='" + escHtml(sp.info.video) + "' controls></video>";
     }
-    var allTags = tagsHtml(sp.tags) + techTagsHtml(sp.techTags);
+    var techTags = techTagsHtml(sp.techTags);
     return "<div class='subproject-card" + (sp.info && sp.info.video ? " subproject-card--big" : "") + "'>" +
       (sp.title ? "<h4 class='subproject-card-title'>" + escHtml(sp.title) + "</h4>" : "") +
       "<p class='subproject-card-desc'>" + escHtml(sp.description) + "</p>" +
       videoHtml +
-      (allTags ? "<div class='subproject-card-tags'>" + allTags + "</div>" : "") +
+      (techTags ? "<div class='subproject-card-tags'>" + techTags + "</div>" : "") +
       "</div>";
   }
 
@@ -178,7 +178,7 @@
       videoHtml = "<video class='detail-video' src='" + escHtml(sp.info.video) + "' controls></video>";
     }
 
-    var allTags = tagsHtml(sp.tags) + techTagsHtml(sp.techTags);
+    var techTags = techTagsHtml(sp.techTags);
 
     container.innerHTML =
       backButtonHtml("Back") +
@@ -186,7 +186,7 @@
       "<div class='detail-header'>" +
       "<p class='detail-parent-label'>" + escHtml(item.projectTitle) + "</p>" +
       "<h2 class='detail-title'>" + escHtml(sp.title || "Untitled") + "</h2>" +
-      (allTags ? "<div class='detail-tags'>" + allTags + "</div>" : "") +
+      (techTags ? "<div class='detail-tags'>" + techTags + "</div>" : "") +
       "</div>" +
       videoHtml +
       "<p class='detail-desc'>" + escHtml(sp.description) + "</p>" +
