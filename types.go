@@ -105,7 +105,7 @@ const (
 	TechTagUnity TechTag = "Unity"
 
 
-	TechTagSTRIDE TechTag = "STRIDE Thread Modelling"
+	TechTagSTRIDE TechTag = "STRIDE Threat Modelling"
 
 	TechTagSoundMusic TechTag = "SFX/Music"
 )

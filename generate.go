@@ -221,7 +221,7 @@ var projects = []Project{
 			},
 			{
 				Title: "Graph Colouring Register Allocation",
-				Description: "Accessing a value in a register is faster than accessing it on the stack, so we want to keep values in registers for as long as possible. To do this, we track the liveness of each value — the range of the program over which it is needed — and use Chaitin's graph colouring algorithm to assign values to registers optimally",
+				Description: "Accessing a value in a register is faster than accessing it on the stack, so we want to keep values in registers for as long as possible. To do this, we track the liveness of each value — the range of the program over which it is needed — and use Chaitin's graph colouring algorithm to assign values to registers optimally.",
 				Tags: []Tag{TagSystems, TagProgrammingLangs},
 				TechTags: []TechTag{TechTagOCaml, TechTagAlgorithms, TechTagDataStructures},
 			},
