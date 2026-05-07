@@ -90,20 +90,24 @@
   }
 
   // Renders a description string as HTML, with {tag} tokens becoming inline chips.
-  function renderDescription(str) {
+  // Canonical casing is resolved against the full tech tag list if possible.
+  function renderDescription(str, allTechTags) {
+    var known = allTechTags || [];
     return parseDescription(str).map(function (seg) {
       if (seg.type === "tag") {
-        return "<span class='tag tag--tech tag--inline'>" + escHtml(seg.value) + "</span>";
+        var lower = seg.value.toLowerCase();
+        var canonical = known.find(function (t) { return t.toLowerCase() === lower; }) || seg.value;
+        return "<span class='tag tag--tech tag--inline'>" + escHtml(canonical) + "</span>";
       }
       return escHtml(seg.value);
     }).join("");
   }
 
-  // Returns the set of tech tag strings inlined in a description via {tag} syntax.
+  // Returns the lowercased set of tech tag strings inlined in a description via {tag} syntax.
   function inlinedTags(str) {
     return parseDescription(str)
       .filter(function (seg) { return seg.type === "tag"; })
-      .map(function (seg) { return seg.value; });
+      .map(function (seg) { return seg.value.toLowerCase(); });
   }
 
   // ── Subproject card HTML (used in both detail views) ──────────────
@@ -116,13 +120,13 @@
     var inherited = inheritedTags || [];
     var inlined   = inlinedTags(sp.description);
     var ownTechTags = (sp.techTags || []).filter(function (t) {
-      return inherited.indexOf(t) === -1 && inlined.indexOf(t) === -1;
+      return inherited.indexOf(t) === -1 && inlined.indexOf(t.toLowerCase()) === -1;
     });
     var techTags = techTagsHtml(ownTechTags);
     return "<div class='subproject-card" + (sp.info && sp.info.video ? " subproject-card--big" : "") + "'>" +
       (sp.title ? "<h4 class='subproject-card-title'>" + escHtml(sp.title) + "</h4>" : "") +
       (techTags ? "<div class='subproject-card-tags'>" + techTags + "</div>" : "") +
-      "<p class='subproject-card-desc'>" + renderDescription(sp.description) + "</p>" +
+      "<p class='subproject-card-desc'>" + renderDescription(sp.description, sp.techTags) + "</p>" +
       videoHtml +
       "</div>";
   }
@@ -215,7 +219,7 @@
         // Insert tech tags between title and description (own only, not inherited, not inlined)
         var inlined     = inlinedTags(item.sp.description);
         var ownTechTags = (item.sp.techTags || []).filter(function (t) {
-          return (item.projectTechTags || []).indexOf(t) === -1 && inlined.indexOf(t) === -1;
+          return (item.projectTechTags || []).indexOf(t) === -1 && inlined.indexOf(t.toLowerCase()) === -1;
         });
         if (ownTechTags.length) {
           const tagsRow     = document.createElement("div");
@@ -285,7 +289,7 @@
     var merged = inherited.concat((sp.techTags || []).filter(function (t) {
       return inherited.indexOf(t) === -1;
     })).filter(function (t) {
-      return inlined.indexOf(t) === -1;
+      return inlined.indexOf(t.toLowerCase()) === -1;
     });
     var techTags = techTagsHtml(merged);
 
@@ -298,7 +302,7 @@
       (techTags ? "<div class='detail-tags'>" + techTags + "</div>" : "") +
       "</div>" +
       videoHtml +
-      "<p class='detail-desc'>" + renderDescription(sp.description) + "</p>" +
+      "<p class='detail-desc'>" + renderDescription(sp.description, merged) + "</p>" +
       "</div>";
 
     container.querySelector("#detail-back-btn").addEventListener("click", function () {
