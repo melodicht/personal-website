@@ -531,7 +531,6 @@ li::before {
   font-size: 0.95rem;
   color: var(--text-muted);
   line-height: 1.75;
-  max-width: 68ch;
 }
 
 .detail-video {
