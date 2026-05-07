@@ -182,7 +182,6 @@
       header.innerHTML =
         "<span class='card-group-title'>" + escHtml(p.title) + "</span>" +
         "<span class='card-group-type detail-type-badge detail-type-badge--" + p.type.toLowerCase() + "'>" + escHtml(p.type) + "</span>" +
-        (p.tags && p.tags.length ? tagsHtml(p.tags) : "") +
         (p.techTags && p.techTags.length ? techTagsHtml(p.techTags) : "") +
         "<span class='card-group-link'>View project →</span>";
 
