@@ -14,7 +14,7 @@ var projects = []Project{
 		Description: "A startup making vision healthcare more accessible through an automated kiosk that performs on-site eye tests and routes results to a certified doctor for a same-day prescription.",
 		Type:        ProjectTypeJob,
 		Category:    catPtr(CategorySystems),
-		Tags:        []Tag{TagFullStack, TagHardwareTech},
+		Tags:        []Tag{},
 		Specifics: ProjectTypeSpecifics{
 			Job: &JobExperience{
 				Company:         "Eyebot",
@@ -47,20 +47,20 @@ var projects = []Project{
 		Subprojects: []Subproject{
 			{
 				Title:    "Bland-Altman Analysis with NumPy 2 and Matplotlib",
-				Description: "Analyzed kiosk performance data using {NumPy 2} and {Matplotlib}, implementing Bland-Altman statistical techniques to quantify compliance with operational standards.",
-				Tags:     []Tag{},
+				Description: "Analyzed kiosk performance data using {NumPy 2} and {Matplotlib}, implementing Bland-Altman statistical techniques to quantify compliance with operational standards, and generating graphs and PDF reports.",
+				Tags:     []Tag{TagFullStack},
 				TechTags: []TechTag{TechTagNumPy, TechTagMatplotlib, TechTagAlgorithms},
 			},
 			{
 				Title:    "Production and Lifetime-testing Telemetry",
 				Description: "Integrated {Datadog} for production and lifetime-testing telemetry, recording anomalous behaviour and incidents, with data visualization",
-				Tags:     []Tag{},
+				Tags:     []Tag{TagDevOps},
 				TechTags: []TechTag{TechTagDatadog},
 			},
 			{
 				Title:    "Lifetime-testing Framework",
 				Description: "Developed a Python framework for lifetime testing that enabled non-specialist engineers to create robust test scripts through a simplified {async} interface with built-in error handling, data collection and logging, reducing development time.",
-				Tags:     []Tag{},
+				Tags:     []Tag{TagFullStack},
 				TechTags: []TechTag{TechTagAsync},
 			},
 			{
@@ -71,32 +71,32 @@ var projects = []Project{
 			},
 			{
 				Title:    "Android App for Calibrating Kiosks",
-				Description: "Developed {Android} calibration app using {Jetpack Compose}, {Timber} logging, and {SocketIO} networking to enable non-technical staff to configure and maintain kiosks without engineering support.",
-				Tags:     []Tag{},
-				TechTags: []TechTag{TechTagKotlin, TechTagAndroidDevelopment, TechTagJetpackCompose, TechTagTimber, TechTagSocketIO},
+				Description: "Developed {Android} calibration app using {Jetpack Compose}, {Timber} logging, {Firestore}, and {SocketIO} networking to enable non-technical staff to configure and maintain kiosks without engineering support.",
+				Tags:     []Tag{TagMobileAppDev, TagFullStack},
+				TechTags: []TechTag{TechTagKotlin, TechTagAndroidDevelopment, TechTagJetpackCompose, TechTagTimber, TechTagFirestore, TechTagSocketIO},
 			},
 			{
 				Title:    "Improve Flask Web App with Server-side Rendering & Components Library",
 				Description: "Enhanced {Flask} web portal performance by implementing {server-side rendering} and a reusable {components library} based on atomic design principles, reducing page load times and ensuring UI consistency.",
-				Tags:     []Tag{},
+				Tags:     []Tag{TagWebDev, TagFullStack},
 				TechTags: []TechTag{TechTagFlask, TechTagServersideRendering, TechTagComponentsLibrary},
 			},
 			{
 				Title:    "Pupil Labeling Feature on Web App",
 				Description: "Developed full-stack pupil labeling feature for {Flask} app integrating {JavaScript}/{HTML} frontend with {Firestore} backend for persistent data management.",
-				Tags:     []Tag{},
+				Tags:     []Tag{TagWebDev, TagFullStack},
 				TechTags: []TechTag{TechTagFlask, TechTagJavaScript, TechTagHTML, TechTagFirestore},
 			},
 			{
 				Title:    "Kiosk Performance Report through Slack",
 				Description: "Automated kiosk performance monitoring by deploying a Slack bot using {Google Cloud Run Functions}, {Google Cloud Scheduler}, and {Slack API} to deliver real-time technical and commercial metrics to stakeholders.",
-				Tags:     []Tag{},
+				Tags:     []Tag{TagFullStack},
 				TechTags: []TechTag{TechTagSlackAPI, TechTagGoogleCloudRunFunctions, TechTagGoogleCloudScheduler},
 			},
 			{
 				Title:    "Internal Python Library",
 				Description: "Established internal Python library repository with automated documentation generation ({Sphinx}), testing pipeline ({tox}), code coverage reporting ({Coverage.py}), and SSH-authenticated {pip} installation, eliminating code duplication across projects and streamlining source access.",
-				Tags:     []Tag{},
+				Tags:     []Tag{TagFullStack, TagDevOps},
 				TechTags: []TechTag{TechTagSphinx, TechTagTox, TechTagCoveragePy, TechTagPip},
 			},
 			{
@@ -126,7 +126,7 @@ var projects = []Project{
 		Description: "Provides Muslim communities around the world access to faith-based practices, much of it through digital technology.",
 		Type:        ProjectTypeJob,
 		Category:    catPtr(CategorySystems),
-		Tags:        []Tag{TagFullStack, TagWebDev, TagMobileAppDev, TagSystems, TagDevOps},
+		Tags:        []Tag{},
 		Specifics: ProjectTypeSpecifics{
 			Job: &JobExperience{
 				Company:         "AirAsia",
@@ -147,19 +147,19 @@ var projects = []Project{
 			{
 				Title:    "Reducing Flutter App Startup Time",
 				Description: "Improved {Flutter} app user experience by developing and open-sourcing dartprofiler, an instrumental profiler for {Dart} programming language that can tailor to specific device chipsets by using Dart {FFI} into {C++} and inlined {assembly}, identifying and eliminating 40-80% of startup time.",
-				Tags:     []Tag{TagSystems},
+				Tags:     []Tag{TagSystems, TagMobileAppDev},
 				TechTags: []TechTag{TechTagFlutter, TechTagDart, TechTagProfiling, TechTagFFI, TechTagCPP, TechTagAssembly},
 			},
 			{
 				Title:    "Automated Scraper & Ingestion Pipeline",
 				Description: "Developed and deployed a scalable prayer time scraper and ingester using {ETL architecture}, {Graph query language}, {Node.js}, {TypeScript}, {Google Cloud Run Functions}, and {Puppeteer}, providing 4800 daily active users with accurate, government-approved prayer times 24/7.",
-				Tags:     []Tag{},
+				Tags:     []Tag{TagFullStack, TagDevOps},
 				TechTags: []TechTag{TechTagTypeScript, TechTagNodeJS, TechTagETL, TechTagGraphQueryLanguage, TechTagGoogleCloudRunFunctions, TechTagFirestore, TechTagPuppeteer},
 			},
 			{
 				Title:    "Flutter Native Widget Integration",
 				Description: "Implemented a new prayer times widget for our {Flutter} app natively in {Swift} (iOS) and {Kotlin} (Android), with appropriate interfacing {Dart} code, ensuring seamless communication between native and Flutter sides, resulting in a 100% increase in daily active users.",
-				Tags:     []Tag{TagMobileAppDev},
+				Tags:     []Tag{TagMobileAppDev, TagFullStack},
 				TechTags: []TechTag{TechTagDart, TechTagSwift, TechTagKotlin, TechTagFlutter},
 			},
 			{

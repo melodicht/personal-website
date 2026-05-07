@@ -8,7 +8,7 @@ const (
 	TagGameDev          Tag = "game development"
 	TagFullStack        Tag = "full-stack development"
 	TagWebDev           Tag = "web development"
-	TagMobileAppDev     Tag = "Mobile App Development"
+	TagMobileAppDev     Tag = "mobile app development"
 	TagSystems          Tag = "systems programming"
 	TagProgrammingLangs Tag = "programming languages"
 	TagSystemSecurity   Tag = "systems security"
