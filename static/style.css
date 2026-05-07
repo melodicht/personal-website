@@ -479,8 +479,21 @@ li::before {
   align-items: center;
   gap: 0.75rem;
   margin: 2rem 0 0.75rem;
+  width: fit-content;
+  border-radius: 8px;
+  transition: opacity 0.15s;
 }
 .card-group-header:first-child { margin-top: 0; }
+.card-group-header:hover { opacity: 0.75; }
+
+.card-group-link {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--accent);
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+.card-group-header:hover .card-group-link { opacity: 1; }
 
 .card-group-title {
   font-size: 0.95rem;

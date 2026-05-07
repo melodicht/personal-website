@@ -122,12 +122,37 @@
     grid.innerHTML = "";
 
     groups.forEach(function (group) {
+      var p = group.project;
+
+      // Resolve navigation target
+      var isJob = p.type === "Job";
+      var navIdx = isJob
+        ? jobs.indexOf(p)
+        : nonJobProjects.indexOf(p);
+
       // ── Group header ──
       const header = document.createElement("div");
       header.className = "card-group-header";
       header.innerHTML =
-        "<span class='card-group-title'>" + escHtml(group.project.title) + "</span>" +
-        "<span class='card-group-type detail-type-badge detail-type-badge--" + group.project.type.toLowerCase() + "'>" + escHtml(group.project.type) + "</span>";
+        "<span class='card-group-title'>" + escHtml(p.title) + "</span>" +
+        "<span class='card-group-type detail-type-badge detail-type-badge--" + p.type.toLowerCase() + "'>" + escHtml(p.type) + "</span>" +
+        "<span class='card-group-link'>View project →</span>";
+
+      header.style.cursor = "pointer";
+      header.addEventListener("click", function () {
+        if (isJob) {
+          patchSignal("mode-input", "worked-at");
+          patchSignal("job-focus-input", navIdx);
+        } else {
+          patchSignal("mode-input", "worked-on");
+          patchSignal("selected-project-input", navIdx);
+        }
+        // Sync the nav bar active state
+        document.querySelectorAll(".nav-item").forEach(function (el) {
+          el.classList.toggle("nav-item--active", el.dataset.mode === (isJob ? "worked-at" : "worked-on"));
+        });
+      });
+
       grid.appendChild(header);
 
       // ── Cards row ──
