@@ -1,10 +1,10 @@
 // nav.js — the leftmost column nav ticker (no auto-scroll, click to snap)
 (function () {
   const MODES = [
+    { id: "about",      label: "Hi, I'm Marvin" },
     { id: "do",         label: "I do" },
-    { id: "worked-at",  label: "I worked at ____" },
+    { id: "worked-at",  label: "I worked at" },
     { id: "worked-on",  label: "I worked on" },
-    { id: "about",      label: "I" },
   ];
 
   const container = document.getElementById("nav-ticker");
