@@ -182,6 +182,8 @@
       header.innerHTML =
         "<span class='card-group-title'>" + escHtml(p.title) + "</span>" +
         "<span class='card-group-type detail-type-badge detail-type-badge--" + p.type.toLowerCase() + "'>" + escHtml(p.type) + "</span>" +
+        (p.tags && p.tags.length ? tagsHtml(p.tags) : "") +
+        (p.techTags && p.techTags.length ? techTagsHtml(p.techTags) : "") +
         "<span class='card-group-link'>View project →</span>";
 
       header.style.cursor = "pointer";
@@ -364,8 +366,10 @@
       "</div></div></div>" +
       "<div class='job-detail-body'>" +
       "<p class='job-detail-desc'>"     + escHtml(job.description) + "</p>" +
-      reviewsHtml +
+      ((job.tags && job.tags.length) || (job.techTags && job.techTags.length) ?
+        "<div class='detail-tags'>" + tagsHtml(job.tags) + techTagsHtml(job.techTags) + "</div>" : "") +
       subprojectsHtml +
+      reviewsHtml +
       "</div>";
   };
 
@@ -481,8 +485,8 @@
       (p.techTags && p.techTags.length ? "<div class='detail-tags'>" + techTagsHtml(p.techTags) + "</div>" : "") +
       "</div>" +
       "<p class='detail-desc'>" + escHtml(p.description) + "</p>" +
-      reflectionHtml +
       subprojectsHtml +
+      reflectionHtml +
       "</div>";
 
     container.querySelector("#detail-back-btn").addEventListener("click", function () {
