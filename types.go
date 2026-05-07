@@ -33,8 +33,9 @@ const (
 	TechTagXML                TechTag = "XML"
 	TechTagJavaScript         TechTag = "JavaScript"
 	TechTagTypeScript         TechTag = "TypeScript"
-	TechTagGraphQueryLanguage TechTag = "Graph Query Language (GQL)"
+	TechTagGraphQueryLanguage TechTag = "Graph Query Language"
 	TechTagReact              TechTag = "React"
+	TechTagNodeJS             TechTag = "Node.js"
 
 	TechTagStorybook TechTag = "Storybook"
 	TechTagWebpack   TechTag = "Webpack"

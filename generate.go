@@ -47,61 +47,61 @@ var projects = []Project{
 		Subprojects: []Subproject{
 			{
 				Title:    "Bland-Altman Analysis with NumPy 2 and Matplotlib",
-				Description: "Analyzed kiosk performance data using NumPy 2 and Matplotlib, implementing Bland-Altman statistical techniques to quantify compliance with operational standards.",
+				Description: "Analyzed kiosk performance data using {NumPy 2} and {Matplotlib}, implementing Bland-Altman statistical techniques to quantify compliance with operational standards.",
 				Tags:     []Tag{},
-				TechTags: []TechTag{TechTagNumPy, TechTagMatplotlib},
+				TechTags: []TechTag{TechTagNumPy, TechTagMatplotlib, TechTagAlgorithms},
 			},
 			{
 				Title:    "Production and Lifetime-testing Telemetry",
-				Description: "Integrated Datadog for production and lifetime-testing telemetry, recording anomalous behaviour and incidents, with data visualization",
+				Description: "Integrated {Datadog} for production and lifetime-testing telemetry, recording anomalous behaviour and incidents, with data visualization",
 				Tags:     []Tag{},
 				TechTags: []TechTag{TechTagDatadog},
 			},
 			{
 				Title:    "Lifetime-testing Framework",
-				Description: "Developed a Python framework for lifetime testing that enabled non-specialist engineers to create robust test scripts through a simplified async interface with built-in error handling, data collection and logging, reducing development time.",
+				Description: "Developed a Python framework for lifetime testing that enabled non-specialist engineers to create robust test scripts through a simplified {async} interface with built-in error handling, data collection and logging, reducing development time.",
 				Tags:     []Tag{},
 				TechTags: []TechTag{TechTagAsync},
 			},
 			{
 				Title:    "Bash-scripted Deployment Automation",
-				Description: "Managed deployment lifecycle for kiosk software across development environments through Bash-scripted automation, reducing development time, allowing quick iteration and consistent releases.",
+				Description: "Managed deployment lifecycle for kiosk software across {Linux} development environments through {Bash}-scripted automation, reducing development time, allowing quick iteration and consistent releases.",
 				Tags:     []Tag{TagDevOps},
 				TechTags: []TechTag{TechTagBash, TechTagLinux},
 			},
 			{
 				Title:    "Android App for Calibrating Kiosks",
-				Description: "Developed Android calibration app using Jetpack Compose, Timber logging, and SocketIO networking to enable non-technical staff to configure and maintain kiosks without engineering support.",
+				Description: "Developed {Android} calibration app using {Jetpack Compose}, {Timber} logging, and {SocketIO} networking to enable non-technical staff to configure and maintain kiosks without engineering support.",
 				Tags:     []Tag{},
-				TechTags: []TechTag{TechTagKotlin, TechTagAndroidDevelopment, TechTagJetpackCompose, TechTagTimber},
+				TechTags: []TechTag{TechTagKotlin, TechTagAndroidDevelopment, TechTagJetpackCompose, TechTagTimber, TechTagSocketIO},
 			},
 			{
 				Title:    "Improve Flask Web App with Server-side Rendering & Components Library",
-				Description: "Enhanced Flask web portal performance by implementing server-side rendering and a reusable component library based on atomic design principles, reducing page load times and ensuring UI consistency.",
+				Description: "Enhanced {Flask} web portal performance by implementing {server-side rendering} and a reusable {components library} based on atomic design principles, reducing page load times and ensuring UI consistency.",
 				Tags:     []Tag{},
 				TechTags: []TechTag{TechTagFlask, TechTagServersideRendering, TechTagComponentsLibrary},
 			},
 			{
 				Title:    "Pupil Labeling Feature on Web App",
-				Description: "Developed full-stack pupil labeling feature integrating JavaScript/HTML frontend with Firestore backend for persistent data management.",
+				Description: "Developed full-stack pupil labeling feature for {Flask} app integrating {JavaScript}/{HTML} frontend with {Firestore} backend for persistent data management.",
 				Tags:     []Tag{},
 				TechTags: []TechTag{TechTagFlask, TechTagJavaScript, TechTagHTML, TechTagFirestore},
 			},
 			{
 				Title:    "Kiosk Performance Report through Slack",
-				Description: "Automated kiosk performance monitoring by deploying a Slack bot using Google Cloud Services, Cloud Scheduler, and Slack Python API to deliver real-time technical and commercial metrics to stakeholders.",
+				Description: "Automated kiosk performance monitoring by deploying a Slack bot using {Google Cloud Run Functions}, {Cloud Scheduler}, and {Slack API} to deliver real-time technical and commercial metrics to stakeholders.",
 				Tags:     []Tag{},
 				TechTags: []TechTag{TechTagSlackAPI, TechTagGoogleCloudRunFunctions, TechTagGoogleCloudScheduler},
 			},
 			{
 				Title:    "Internal Python Library",
-				Description: "Established internal Python library repository with automated documentation generation (Sphinx), testing pipeline (tox), code coverage reporting (Coverage.py), and SSH-authenticated pip installation, eliminating code duplication across projects and streamlining source access.",
+				Description: "Established internal Python library repository with automated documentation generation ({Sphinx}), testing pipeline ({tox}), code coverage reporting ({Coverage.py}), and SSH-authenticated {pip} installation, eliminating code duplication across projects and streamlining source access.",
 				Tags:     []Tag{},
 				TechTags: []TechTag{TechTagSphinx, TechTagTox, TechTagCoveragePy, TechTagPip},
 			},
 			{
 				Title:    "Penetration Testing the Kiosk",
-				Description: "Conducted penetration testing on kiosk infrastructure using STRIDE threat modeling, identifying 4 critical vulnerabilities and delivering remediation strategies that eliminated or mitigated security risks.",
+				Description: "Conducted penetration testing on kiosk infrastructure using {STRIDE threat modeling}, identifying 4 critical vulnerabilities and delivering remediation strategies that eliminated or mitigated security risks.",
 				Tags:     []Tag{TagSystemSecurity},
 				TechTags: []TechTag{TechTagSTRIDE},
 			},
@@ -112,8 +112,8 @@ var projects = []Project{
 				TechTags: []TechTag{},
 			},
 			{
-				Title:    "",
-				Description: "Developed SOP for simulating degraded network conditions using Linux traffic control to validate kiosk performance across varying connectivity scenarios prior to deployment.",
+				Title:    "Simulating Degraded Network Conditions",
+				Description: "Developed SOP for simulating degraded network conditions using {Linux} {traffic control (tc)} to validate kiosk performance across varying connectivity scenarios prior to deployment.",
 				Tags:     []Tag{TagDevOps},
 				TechTags: []TechTag{TechTagLinux, TechTagTrafficControl},
 			},
@@ -146,31 +146,31 @@ var projects = []Project{
 		Subprojects: []Subproject{
 			{
 				Title:    "Reducing Flutter App Startup Time",
-				Description: "Improved Flutter app user experience by developing and open-sourcing dartprofiler, an instrumental profiler for Dart programming language that can tailor to specific device chipsets by using Dart FFI into C++ and inlined assembly, identifying and eliminating 40-80% of startup time.",
+				Description: "Improved {Flutter} app user experience by developing and open-sourcing dartprofiler, an instrumental profiler for {Dart} programming language that can tailor to specific device chipsets by using Dart {FFI} into {C++} and inlined {assembly}, identifying and eliminating 40-80% of startup time.",
 				Tags:     []Tag{TagSystems},
 				TechTags: []TechTag{TechTagFlutter, TechTagDart, TechTagProfiling, TechTagFFI, TechTagCPP, TechTagAssembly},
 			},
 			{
 				Title:    "Automated Scraper & Ingestion Pipeline",
-				Description: "Developed and deployed a scalable prayer time scraper and ingester using ETL architecture, Graph query language, TypeScript, Cloud Functions for Firebase, and Puppeteer, providing 4800 daily active users with accurate, government-approved prayer times 24/7.",
+				Description: "Developed and deployed a scalable prayer time scraper and ingester using {ETL architecture}, {Graph query language}, {Node.js}, {TypeScript}, {Google Cloud Run Functions}, and {Puppeteer}, providing 4800 daily active users with accurate, government-approved prayer times 24/7.",
 				Tags:     []Tag{},
-				TechTags: []TechTag{TechTagETL, TechTagGraphQueryLanguage, TechTagGoogleCloudRunFunctions, TechTagFirestore, TechTagPuppeteer},
+				TechTags: []TechTag{TechTagTypeScript, TechTagNodeJS, TechTagETL, TechTagGraphQueryLanguage, TechTagGoogleCloudRunFunctions, TechTagFirestore, TechTagPuppeteer},
 			},
 			{
 				Title:    "Flutter Native Widget Integration",
-				Description: "Implemented a new prayer times widget for our Flutter app natively in Swift (iOS) and Kotlin (Android), ensuring seamless communication between native and Flutter sides, resulting in a 100% increase in daily active users.",
+				Description: "Implemented a new prayer times widget for our {Flutter} app natively in {Swift} (iOS) and {Kotlin} (Android), with appropriate interfacing {Dart} code, ensuring seamless communication between native and Flutter sides, resulting in a 100% increase in daily active users.",
 				Tags:     []Tag{TagMobileAppDev},
 				TechTags: []TechTag{TechTagDart, TechTagSwift, TechTagKotlin, TechTagFlutter},
 			},
 			{
 				Title:    "Optimized Web Blog's SEO",
-				Description: "By implementing {Open Graph} meta tags, generating a sitemap.xml for 400+ blogs, and using {WebP} images for faster load times, resulting in an 11% increase in active users.",
+				Description: "Implemented {Open Graph} meta tags, generated a sitemap.xml for 400+ blogs, and used {WebP} images for faster load times, resulting in an 11% increase in active users.",
 				Tags:     []Tag{TagWebDev},
 				TechTags: []TechTag{TechTagHTML, TechTagXML, TechTagOpenGraph, TechTagSiteMap, TechTagWebP},
 			},
 			{
 				Title:    "Internal React Components Library",
-				Description: "Spearheaded the development of an internal React components library; utilized Storybook and webpack for deploying the components workshop for documentation and visual testing, and Vite for library deployment; formalized the development pipeline from UI/UX design to implementation, improving documentation and enforcing a unifying design system.",
+				Description: "Spearheaded the development of an internal {React} components library; utilized {Storybook} and {webpack} for deploying the components workshop for documentation and visual testing, and {Vite} for library deployment; formalized the development pipeline from UI/UX design to implementation, improving documentation and enforcing a unifying design system.",
 				Tags:     []Tag{TagWebDev, TagDevOps},
 				TechTags: []TechTag{TechTagReact, TechTagStorybook, TechTagWebpack, TechTagVite},
 			},
@@ -214,7 +214,7 @@ var projects = []Project{
 		Subprojects: []Subproject{
 			{
 				Title:    "Garbage Collection",
-				Description: "A stop-the-world garbage collector, by applying graph theory to implement Cheney's semispace collector.",
+				Description: "A stop-the-world garbage collector, by applying graph theory to implement Cheney's semispace collector, implemented with {C}.",
 				Tags:     []Tag{TagSystems},
 				TechTags: []TechTag{TechTagC},
 			},
@@ -238,7 +238,7 @@ var projects = []Project{
 			},
 			{
 				Title:    "Built-in Testing Functionality",
-				Description: "Normally, to run tests in a programming language, one has to use a library. This makes test organization awkward, and the library would have to use reflection magic to test for errors. In this programming language, tests are first-class citizens and can be woven into the code, and the code can be executed without the tests. The C run-time accumulates the test information and prints them out at the end.",
+				Description: "Normally, to run tests in a programming language, one has to use a library. This makes test organization awkward, and the library would have to use reflection magic to test for errors. In this programming language, tests are first-class citizens and can be woven into the code, and the code can be executed without the tests. The {C} run-time accumulates the test information and prints them out at the end.",
 				Tags:     []Tag{},
 				TechTags: []TechTag{TechTagC},
 			},
@@ -293,7 +293,7 @@ var projects = []Project{
 			},
 			{
 				Title:    "Unit and Integration Testing, Featuring Macros",
-				Description: "There are some unit tests that test specific functions, but there are also integration tests that exist at various levels. There is an overarching test harness that takes in entire programs written in the programming language, as well as a file tat just contains the expected output, and checks if the actual output equals to the expected output. That script is written in Typed Racket as well. There are also integration tests that targets the core logic of the CESK machine specifically, and through the use of macros, allows me to write the intermediate states of the abstract machine in a sequence.",
+				Description: "There are some unit tests that test specific functions, but there are also integration tests that exist at various levels. There is an overarching test harness that takes in entire programs written in the programming language, as well as a file tat just contains the expected output, and checks if the actual output equals to the expected output. That script is written in Typed Racket as well. There are also integration tests that targets the core logic of the CESK machine specifically, and through the use of {macros}, allows me to write the intermediate states of the abstract machine in a sequence.",
 				Tags:     []Tag{},
 				TechTags: []TechTag{TechTagMacros, TechTagTesting},
 			},
@@ -330,7 +330,7 @@ var projects = []Project{
 			},
 			{
 				Title:    "Unit Testing & Integration Testing, With and Without Networks",
-				Description: "There are lot of unit tests for the game's actual logic. There are also integration tests that could simulate the game and (AI) players without involving the network, by using the remote proxy design pattern. More specifically, the RPCs mirror the logical interface, and thus an implementation of the logical interface makes the RPCs. The receiving end would use the logical implementation of the interface, passing over the arguments forward. The would-be duplicated code is eliminated by the use of macros. There are also bash scripts that can launch servers and clients, and the clients use the AI players, to test the game with networking without having to manually provide input.",
+				Description: "There are lot of unit tests for the game's actual logic. There are also integration tests that could simulate the game and (AI) players without involving the network, by using the remote proxy design pattern. More specifically, the {RPC}s mirror the logical interface, and thus an implementation of the logical interface makes the RPCs. The receiving end would use the logical implementation of the interface, passing over the arguments forward. The would-be duplicated code is eliminated by the use of {macros}. There are also {Bash} scripts that can launch servers and clients, and the clients use the AI players, to test the game with networking without having to manually provide input.",
 				Tags:     []Tag{TagDevOps},
 				TechTags: []TechTag{TechTagBash, TechTagRPC, TechTagTesting, TechTagMacros},
 			},
@@ -355,13 +355,13 @@ var projects = []Project{
 		Subprojects: []Subproject{
 			{
 				Title:    "Client-server Interactions with Fault-tolerance",
-				Description: "The servers are nodes of the RAFT algorithm. Clients are those who wish to submit commands for the RAFT algorithm to persist. The networking interactions are done through the Unix socket library. Any of the servers can crash (and that is assumed to be the only mode of failure), without crashing the other servers. As long as majority of the nodes are alive, the system can continue to make progress. If majority of the nodes are no longer alive, the data will persist as one node is alive, but the system can no longer agree on new values.",
+				Description: "The servers are nodes of the RAFT algorithm. Clients are those who wish to submit commands for the RAFT algorithm to persist. The networking interactions are done through the {Unix socket library}. Any of the servers can crash (and that is assumed to be the only mode of failure), without crashing the other servers. As long as majority of the nodes are alive, the system can continue to make progress. If majority of the nodes are no longer alive, the data will persist as one node is alive, but the system can no longer agree on new values.",
 				Tags:     []Tag{},
 				TechTags: []TechTag{TechTagLinux, TechTagTCP, TechTagUnixSocketLibrary},
 			},
 			{
 				Title:    "Leader Election",
-				Description: "A key element of the algorithm is leader election. A server by itself is just a hunk of metal capable of computation, but RAFT consensus algorithm associates each server node with a role. The two essentials roles are leader and follower. There can only at most be one leader. Followers are able to be promoted to leader, which happens in the case where the system just started and there are no leaders to begin with, or the leader crashes. How this happens is defined in the RAFT specifications, specifically the \"Vote Request\" RPC, which I implemented. A follower that wants to be a leader sends the request to all the other nodes, and if it receives yes from the majority, it becomes the leader.",
+				Description: "A key element of the algorithm is leader election. A server by itself is just a hunk of metal capable of computation, but RAFT consensus algorithm associates each server node with a role. The two essentials roles are leader and follower. There can only at most be one leader. Followers are able to be promoted to leader, which happens in the case where the system just started and there are no leaders to begin with, or the leader crashes. How this happens is defined in the RAFT specifications, specifically the \"Vote Request\" {RPC}, which I implemented. A follower that wants to be a leader sends the request to all the other nodes, and if it receives yes from the majority, it becomes the leader.",
 				Tags:     []Tag{},
 				TechTags: []TechTag{TechTagAlgorithms, TechTagRPC},
 			},
@@ -369,7 +369,7 @@ var projects = []Project{
 				Title:    "Log Replication With Custom Memory Slab Allocator",
 				Description: "Another key element is that each node keeps track of the full history of commands, in a log data structure. What it means for nodes to be in sync is for their logs to be the same. The leader's log is replicated to the followers. My implementation of the log data structure uses my own memory allocator that allocates in memory-aligned chunks, that are a multiple of page sizes. The allocator holds a linked list of the chunks, and a chunk holds tightly-packed log entries.",
 				Tags:     []Tag{},
-				TechTags: []TechTag{TechTagDataStructures, TechTagRPC},
+				TechTags: []TechTag{TechTagDataStructures},
 			},
 		},
 	},
@@ -404,13 +404,13 @@ var projects = []Project{
 			},
 			{
 				Title:    "Scene Editor",
-				Description: "I worked on using the Dear IMGUI library to display the ECS menu, and the UI to change the fields of an entity, and various buttons to do things like add/destroy entities.",
+				Description: "I worked on using the Dear {IMGUI} library to display the ECS menu, and the UI to change the fields of an entity, and various buttons to do things like add/destroy entities.",
 				Tags:     []Tag{},
 				TechTags: []TechTag{TechTagIMGUI},
 			},
 			{
 				Title:    "Engine Architecture",
-				Description: "I was inspired by Handmade Hero when establishing much of the engine's architecture. There are three major software components: renderer, platform, engine and game. The renderer encapsulates all the messiness of displaying things on the screen and interactions with the GPU. The platform encapsulates the messiness of operating system. There is a strong relationship between the platform and the renderer. The engine is the entry point to the game-side of things, and calls into the game code. It holds code that all the game uses. The game-side of things is for code that is specific to one game. Note that the engine and game modules do not interact with the renderer directly.",
+				Description: "I was inspired by Hfffandmade Hero when establishing much of the engine's {architecture}. There are three major software components: renderer, platform, engine and game. The renderer encapsulates all the messiness of displaying things on the screen and interactions with the GPU. The platform encapsulates the messiness of operating system. There is a strong relationship between the platform and the renderer. The engine is the entry point to the game-side of things, and calls into the game code. It holds code that all the game uses. The game-side of things is for code that is specific to one game. Note that the engine and game modules do not interact with the renderer directly.",
 				Tags:     []Tag{},
 				TechTags: []TechTag{TechTagArchitecture},
 			},
@@ -452,7 +452,7 @@ var projects = []Project{
 		Subprojects: []Subproject{
 			{
 				Title:    "FPS Movement & RK4",
-				Description: "This game features an interesting marriage between two contrasting notions of physics simulation. FPS movement includes on-ground movement and jumping. On-ground movement has acceleration with max velocity. As the game is a platformer, the player can cut a jump short by letting go of jump fast rather than holding down the button. There is also air control, where acceleration in the air is lower. The other notion of physics simulation is RK4, or fourth-order Runge-kutta method. Given a position and velocity of an object, and a function that computes the object's acceleration, the method can produce the next object's position and velocity. The method uses calculus effectively in order to get good approximations with minimal additional computations. This is not the standard approach to movement physics. I used it in my game anyway because the movements physics is tremendously better and the game still runs smoothly. These two notions of movement physics don't naturally work together. The FPS-specific physics has a lot of edge cases and handles player input, whereas RK4 is a general purpose function and does not consider player input. Still, I made it work.",
+				Description: "This game features an interesting marriage between two contrasting notions of {physics} simulation. FPS movement includes on-ground movement and jumping. On-ground movement has acceleration with max velocity. As the game is a platformer, the player can cut a jump short by letting go of jump fast rather than holding down the button. There is also air control, where acceleration in the air is lower. The other notion of physics simulation is RK4, or fourth-order Runge-kutta method. Given a position and velocity of an object, and a function that computes the object's acceleration, the method can produce the next object's position and velocity. The method uses calculus effectively in order to get good approximations with minimal additional computations. This is not the standard approach to movement physics. I used it in my game anyway because the movements physics is tremendously better and the game still runs smoothly. These two notions of movement physics don't naturally work together. The FPS-specific physics has a lot of edge cases and handles player input, whereas RK4 is a general purpose function and does not consider player input. Still, I made it work.",
 				Tags:     []Tag{},
 				TechTags: []TechTag{TechTagPhysics, TechTagAlgorithms, TechTag3D},
 			},
