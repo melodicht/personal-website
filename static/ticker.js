@@ -7,11 +7,13 @@
   const SPEED   = config.tickerSpeed;
   const EXT     = config.imageExt || "jpg";
 
-  // Derive unique tags from all subprojects
+  // Derive unique tags from both project-level and subproject-level tags,
+  // since subprojects now inherit their project's tags.
   const tagSet = new Set();
   data.projects.forEach(function (p) {
+    (p.tags || []).forEach(function (t) { tagSet.add(t); });
     p.subprojects.forEach(function (sp) {
-      sp.tags.forEach(function (t) { tagSet.add(t); });
+      (sp.tags || []).forEach(function (t) { tagSet.add(t); });
     });
   });
   const TAGS = Array.from(tagSet);

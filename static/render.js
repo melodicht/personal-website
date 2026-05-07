@@ -97,11 +97,16 @@
     if (!grid || !tmpl) return;
 
     // Collect matching subprojects grouped by project, preserving project order.
+    // A subproject matches if it has the tag itself OR inherits it from the project.
     const groups = [];
     const groupIndex = {};
     data.projects.forEach(function (p) {
+      var projectTags = p.tags || [];
       p.subprojects.forEach(function (sp) {
-        if (sp.tags.indexOf(tag) === -1) return;
+        var effectiveTags = projectTags.concat((sp.tags || []).filter(function (t) {
+          return projectTags.indexOf(t) === -1;
+        }));
+        if (effectiveTags.indexOf(tag) === -1) return;
         if (groupIndex[p.title] === undefined) {
           groupIndex[p.title] = groups.length;
           groups.push({ project: p, items: [] });
