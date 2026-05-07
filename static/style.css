@@ -569,8 +569,8 @@ li::before {
 
 /* ── Reflection (what went well / learned / etc.) ────────────────── */
 .detail-reflection {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
   gap: 1.25rem;
   padding: 1.5rem;
   background: var(--card-bg);
@@ -578,6 +578,10 @@ li::before {
   border-radius: 12px;
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
+}
+
+@media (max-width: 700px) {
+  .detail-reflection { grid-template-columns: 1fr; }
 }
 
 .detail-reflection-block {
