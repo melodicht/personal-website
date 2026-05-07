@@ -517,6 +517,16 @@ li::before {
   border: 0.5px solid rgba(169,159,240,0.25);
 }
 
+/* Inline chip inside a prose description */
+.tag--inline {
+  display: inline;
+  vertical-align: baseline;
+  font-size: 0.8em;
+  padding: 1px 6px;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
 .detail-desc {
   font-size: 0.95rem;
   color: var(--text-muted);

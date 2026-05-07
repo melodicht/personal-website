@@ -164,7 +164,7 @@ var projects = []Project{
 			},
 			{
 				Title:    "Optimized Web Blog's SEO",
-				Description: "By implementing Open Graph meta tags, generating a sitemap.xml for 400+ blogs, and using WebP images for faster load times, resulting in an 11% increase in active users.",
+				Description: "By implementing {Open Graph} meta tags, generating a sitemap.xml for 400+ blogs, and using {WebP} images for faster load times, resulting in an 11% increase in active users.",
 				Tags:     []Tag{TagWebDev},
 				TechTags: []TechTag{TechTagHTML, TechTagXML, TechTagOpenGraph, TechTagSiteMap, TechTagWebP},
 			},
