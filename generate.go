@@ -101,7 +101,7 @@ var projects = []Project{
 			},
 			{
 				Title:    "Penetration Testing the Kiosk",
-				Description: "Conducted penetration testing on kiosk infrastructure using {STRIDE threat modeling}, identifying 4 critical vulnerabilities and delivering remediation strategies that eliminated or mitigated security risks.",
+				Description: "Conducted penetration testing on kiosk infrastructure using {STRIDE threat modelling}, identifying 4 critical vulnerabilities and delivering remediation strategies that eliminated or mitigated security risks.",
 				Tags:     []Tag{TagSystemSecurity},
 				TechTags: []TechTag{TechTagSTRIDE},
 			},
@@ -410,7 +410,7 @@ var projects = []Project{
 			},
 			{
 				Title:    "Engine Architecture",
-				Description: "I was inspired by Hfffandmade Hero when establishing much of the engine's {architecture}. There are three major software components: renderer, platform, engine and game. The renderer encapsulates all the messiness of displaying things on the screen and interactions with the GPU. The platform encapsulates the messiness of operating system. There is a strong relationship between the platform and the renderer. The engine is the entry point to the game-side of things, and calls into the game code. It holds code that all the game uses. The game-side of things is for code that is specific to one game. Note that the engine and game modules do not interact with the renderer directly.",
+				Description: "I was inspired by Handmade Hero when establishing much of the engine's {architecture}. There are four major software components: renderer, platform, engine and game. The renderer encapsulates all the messiness of displaying things on the screen and interactions with the GPU. The platform encapsulates the messiness of operating system. There is a strong relationship between the platform and the renderer. The engine is the entry point to the game-side of things, and calls into the game code. It holds code that all the game uses. The game-side of things is for code that is specific to one game. Note that the engine and game modules do not interact with the renderer directly.",
 				Tags:     []Tag{},
 				TechTags: []TechTag{TechTagArchitecture},
 			},
