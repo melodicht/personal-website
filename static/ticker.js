@@ -1,14 +1,13 @@
 // ticker.js — tag ticker for "I do" mode
 (function () {
   let datastarReady = false;
-  
-  const config  = window.SITE_CONFIG;
-  const data    = window.SITE_DATA;
-  const SPEED   = config.tickerSpeed;
-  const EXT     = config.imageExt || "jpg";
 
-  // Derive unique tags from both project-level and subproject-level tags,
-  // since subprojects now inherit their project's tags.
+  const config = window.SITE_CONFIG;
+  const data   = window.SITE_DATA;
+  const SPEED  = config.tickerSpeed;
+  const EXT    = config.imageExt || "jpg";
+
+  // Derive unique tags from both project-level and subproject-level tags.
   const tagSet = new Set();
   data.projects.forEach(function (p) {
     (p.tags || []).forEach(function (t) { tagSet.add(t); });
@@ -38,14 +37,21 @@
     activeBg = activeBg === "a" ? "b" : "a";
   }
 
-  const ticker = document.getElementById("tag-ticker");
-  const LINE_HEIGHT_REM = 1.35;
+  let ticker;
 
+  // Use the first item's actual rendered height; fall back to 40px.
   function itemH() {
-    const ref = document.querySelector(".i-do-label");
-    if (!ref) return 60;
-    return parseFloat(getComputedStyle(ref).fontSize) * LINE_HEIGHT_REM;
+    const el = ticker.querySelector(".tick-item");
+    return el ? el.offsetHeight : 40;
   }
+
+  function wrapH() {
+    const w = document.querySelector(".ticker-wrap");
+    return w ? w.clientHeight : 400;
+  }
+
+  function totalH()   { return TAGS.length * itemH(); }
+  function getItems() { return [...ticker.querySelectorAll(".tick-item")]; }
 
   function buildItems() {
     ticker.innerHTML = "";
@@ -60,10 +66,6 @@
   }
 
   let offset = 0, locked = false, lockedTag = null, lastTag = null, lastT = null;
-
-  function totalH()  { return TAGS.length * itemH(); }
-  function wrapH()   { return document.querySelector(".ticker-wrap") ? document.querySelector(".ticker-wrap").clientHeight : 400; }
-  function getItems(){ return [...ticker.querySelectorAll(".tick-item")]; }
 
   function tagAtCentre() {
     const IH = itemH(), centre = wrapH() / 2;
@@ -100,12 +102,6 @@
     ticker.style.transform = "translateY(" + (-offset) + "px)";
   }
 
-  function normalise() {
-    const TH = totalH();
-    if (offset >= TH) offset -= TH;
-    if (offset < 0)   offset += TH;
-  }
-
   function onTagChange(tag) {
     setBackground(tag);
     patchSignal("focus-input", tag);
@@ -127,6 +123,12 @@
     updateClasses();
   }
 
+  function normalise() {
+    const TH = TAGS.length * itemH();
+    if (offset >= TH) offset -= TH;
+    if (offset < 0)   offset += TH;
+  }
+
   function step(ts) {
     if (!lastT) lastT = ts;
     const dt = Math.min(ts - lastT, 50);
@@ -142,40 +144,45 @@
     requestAnimationFrame(step);
   }
 
-  // locked hidden input
-  const lockedInput = document.createElement("input");
-  lockedInput.id = "locked-input";
-  lockedInput.type = "checkbox";
-  lockedInput.style.display = "none";
-  lockedInput.setAttribute("data-bind:locked", "");
-  document.getElementById("app").appendChild(lockedInput);
+  // Hidden input for $locked signal — created early, before DOM ready check
+  document.addEventListener("DOMContentLoaded", function () {
+    ticker = document.getElementById("tag-ticker");
+    if (!ticker) { console.error("ticker.js: #tag-ticker not found"); return; }
 
-  buildItems();
-  const IH = itemH();
-  offset = TAGS.length * IH - (wrapH() / 2 - IH / 2);
-  normalise();
-  ticker.style.transform = "translateY(" + (-offset) + "px)";
-  updateClasses();
+    const lockedInput = document.createElement("input");
+    lockedInput.id = "locked-input";
+    lockedInput.type = "checkbox";
+    lockedInput.style.display = "none";
+    lockedInput.setAttribute("data-bind:locked", "");
+    document.getElementById("app").appendChild(lockedInput);
 
-  // Init first tag
-  const firstTag = TAGS[0];
-  document.getElementById("bg-a").style.backgroundImage =
-    "url(/static/images/tags/" + firstTag.replace(/\s+/g, "-") + "." + EXT + ")";
-  document.getElementById("bg-a").style.opacity = "1";
+    buildItems();
+    offset = totalH(); // start of middle third
+    normalise();
+    ticker.style.transform = "translateY(" + (-offset) + "px)";
+    updateClasses();
 
-  function init() {
-    patchSignal("focus-input", firstTag);
-    lastTag = firstTag;
-  }
+    const firstTag = TAGS[0];
+    if (firstTag) {
+      document.getElementById("bg-a").style.backgroundImage =
+        "url(/static/images/tags/" + firstTag.replace(/\s+/g, "-") + "." + EXT + ")";
+      document.getElementById("bg-a").style.opacity = "1";
+    }
 
-  document.addEventListener("datastar-loaded", function () {
-    datastarReady = true;
-    init();
+    function init() {
+      if (firstTag) {
+        lastTag = firstTag;
+        patchSignal("focus-input", firstTag);
+      }
+    }
+
+    document.addEventListener("datastar-loaded", function () {
+      datastarReady = true;
+      init();
+    });
+
+    if (datastarReady) init();
+
+    requestAnimationFrame(step);
   });
-
-  if (datastarReady) {
-    init();
-  }
-
-  requestAnimationFrame(step);
 })();

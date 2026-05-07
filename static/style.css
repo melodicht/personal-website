@@ -124,14 +124,6 @@ li::before {
 }
 
 /* Tag ticker inside picker */
-.ticker-wrap {
-  width: 100%;
-  height: 100%;
-  mask-image: linear-gradient(to bottom, transparent 0%, black 20%, black 80%, transparent 100%);
-  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 20%, black 80%, transparent 100%);
-  overflow: hidden;
-  position: relative;
-}
 
 .ticker {
   display: flex;
@@ -402,6 +394,12 @@ li::before {
     padding: 2rem 1.25rem;
     overflow-y: visible;
   }
+}
+/* ── Ticker wrap: fixed height showing ~N items, centre one fully visible ── */
+.ticker-wrap {
+  height: 30rem;
+  mask-image: linear-gradient(to bottom, transparent 0%, black 35%, black 65%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 35%, black 65%, transparent 100%);
 }
 
 /* ── Detail view (shared) ────────────────────────────────────────── */
