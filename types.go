@@ -20,7 +20,7 @@ type TechTag string
 
 const (
 	TechTagPython     TechTag = "Python"
-	TechTagNumPy      TechTag = "NumPy"
+	TechTagNumPy      TechTag = "NumPy 2"
 	TechTagMatplotlib TechTag = "Matplotlib"
 	TechTagDatadog    TechTag = "Datadog"
 	TechTagFlask      TechTag = "Flask"

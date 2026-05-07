@@ -89,7 +89,7 @@ var projects = []Project{
 			},
 			{
 				Title:    "Kiosk Performance Report through Slack",
-				Description: "Automated kiosk performance monitoring by deploying a Slack bot using {Google Cloud Run Functions}, {Cloud Scheduler}, and {Slack API} to deliver real-time technical and commercial metrics to stakeholders.",
+				Description: "Automated kiosk performance monitoring by deploying a Slack bot using {Google Cloud Run Functions}, {Google Cloud Scheduler}, and {Slack API} to deliver real-time technical and commercial metrics to stakeholders.",
 				Tags:     []Tag{},
 				TechTags: []TechTag{TechTagSlackAPI, TechTagGoogleCloudRunFunctions, TechTagGoogleCloudScheduler},
 			},
