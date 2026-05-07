@@ -216,7 +216,7 @@
         const node = tmpl.content.cloneNode(true);
         const card = node.querySelector(".card");
         node.querySelector(".card-title").textContent = item.sp.title;
-        node.querySelector(".card-desc").textContent  = item.sp.description;
+        node.querySelector(".card-desc").innerHTML = renderDescription(item.sp.description, item.sp.techTags);
 
         // Insert tech tags between title and description (own only, not inherited, not inlined)
         var inlined     = inlinedTags(item.sp.description);
