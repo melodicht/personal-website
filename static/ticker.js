@@ -68,7 +68,7 @@
   let offset = 0, locked = false, lockedTag = null, lastTag = null, lastT = null;
 
   function tagAtCentre() {
-    const IH = itemH(), centre = wrapH() / 2;
+    const IH = itemH(), centre = wrapH() / 2 + IH / 2;
     let best = null, bestDist = Infinity;
     getItems().forEach(function (el) {
       const dist = Math.abs(el.offsetTop - offset + IH / 2 - centre);
@@ -78,7 +78,7 @@
   }
 
   function updateClasses() {
-    const IH = itemH(), centre = wrapH() / 2;
+    const IH = itemH(), centre = wrapH() / 2 + IH / 2;
     getItems().forEach(function (el) {
       const dist = Math.abs(el.offsetTop - offset + IH / 2 - centre);
       el.classList.toggle("tick-item--centre", dist < IH * 0.55 && !locked);
