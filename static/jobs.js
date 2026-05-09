@@ -6,6 +6,7 @@
   const list = document.getElementById("job-list");
 
   let datastarReady = false;
+  let currentIdx = 0;
 
   // Build job cells
   jobs.forEach(function (job, i) {
@@ -53,7 +54,11 @@
     list.scrollTo({ top: target, behavior: "smooth" });
   }
 
+  // Expose so renderJobDetail can snap correctly on first mode switch
+  window._snapToJob = function (idx) { snapToJob(idx); };
+
   function selectJob(idx) {
+    currentIdx = idx;
     updateCells(idx);
     snapToJob(idx);
     patchJobFocus(idx);

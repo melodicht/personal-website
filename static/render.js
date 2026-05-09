@@ -318,10 +318,12 @@
     const job = jobs[Number(idx)];
     if (!job) return;
 
-    // Keep the picker cell highlight in sync
+    // Keep the picker cell highlight in sync, and snap to centre now that
+    // the list is visible (it may have been hidden on the initial selectJob call).
     document.querySelectorAll(".job-cell").forEach(function (el) {
       el.classList.toggle("job-cell--active", Number(el.dataset.idx) === Number(idx));
     });
+    if (window._snapToJob) window._snapToJob(Number(idx));
     const exp   = job.specifics.job;
     const end   = exp.dateRange.end || "Present";
     const range = exp.dateRange.start + " – " + end;
