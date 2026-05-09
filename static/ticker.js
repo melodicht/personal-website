@@ -47,7 +47,10 @@
 
   function wrapH() {
     const w = document.querySelector(".ticker-wrap");
-    return w ? w.clientHeight : 400;
+    if (w && w.clientHeight > 0) return w.clientHeight;
+    // Fall back to col-picker height if ticker-wrap isn't rendered yet
+    const p = document.querySelector(".col-picker");
+    return p ? p.clientHeight : 480;
   }
 
   function totalH()   { return TAGS.length * itemH(); }
@@ -124,7 +127,7 @@
   }
 
   function normalise() {
-    const TH = TAGS.length * itemH();
+    const TH = totalH(); // one copy height
     if (offset >= TH) offset -= TH;
     if (offset < 0)   offset += TH;
   }
