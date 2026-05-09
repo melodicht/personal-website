@@ -52,10 +52,9 @@
   function snapToMode(mode) {
     const el = container.querySelector("[data-mode='" + mode + "']");
     if (!el) return;
-    const containerH = container.clientHeight;
-    const itemH = el.offsetHeight;
-    const targetScroll = el.offsetTop - containerH / 2 + itemH / 2;
-    container.scrollTo({ top: targetScroll, behavior: "smooth" });
+    // offsetTop is relative to the nav-ticker flex container
+    const targetScroll = el.offsetTop - (container.clientHeight / 2) + (el.offsetHeight / 2);
+    container.scrollTo({ top: Math.max(0, targetScroll), behavior: "smooth" });
   }
 
   function selectMode(mode) {
