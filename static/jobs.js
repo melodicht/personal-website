@@ -48,9 +48,12 @@
   function snapToJob(idx) {
     const el = list.querySelector("[data-idx='" + idx + "']");
     if (!el) return;
-    const listH  = list.clientHeight;
-    const itemH  = el.offsetHeight;
-    const target = el.offsetTop - listH / 2 + itemH / 2;
+    const listRect  = list.getBoundingClientRect();
+    const elRect    = el.getBoundingClientRect();
+    // Target the top of the cell (where the company name starts) plus half a line height
+    const lineHeight = 24; // ~1rem at 16px base, matching .job-cell-company font-size
+    const targetMid  = elRect.top - listRect.top + list.scrollTop - lineHeight / 2;
+    const target     = targetMid - list.clientHeight / 2;
     list.scrollTo({ top: target, behavior: "smooth" });
   }
 
