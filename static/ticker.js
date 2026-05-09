@@ -45,13 +45,10 @@
     return el ? el.offsetHeight : 40;
   }
 
-  function wrapH() {
-    const w = document.querySelector(".ticker-wrap");
-    if (w && w.clientHeight > 0) return w.clientHeight;
-    // Fall back to col-picker height if ticker-wrap isn't rendered yet
-    const p = document.querySelector(".col-picker");
-    return p ? p.clientHeight : 480;
-  }
+  // Logical height used for scroll centring math.
+  // Kept fixed so totalH() > wrapH() regardless of column height,
+  // ensuring the infinite loop always has room to scroll.
+  function wrapH() { return 480; }
 
   function totalH()   { return TAGS.length * itemH(); }
   function getItems() { return [...ticker.querySelectorAll(".tick-item")]; }

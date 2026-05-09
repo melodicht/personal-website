@@ -127,7 +127,7 @@ li::before {
 /* ── Tag ticker inside picker ────────────────────────────────────── */
 .ticker-wrap {
   width: 100%;
-  height: 30rem;
+  height: 100%;
   mask-image: linear-gradient(to bottom, transparent 0%, black 35%, black 65%, transparent 100%);
   -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 35%, black 65%, transparent 100%);
   overflow: hidden;
