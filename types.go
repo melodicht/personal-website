@@ -155,7 +155,6 @@ type JobExperience struct {
 
 // NonJobExperience holds reflection data for university and personal projects.
 type NonJobExperience struct {
-	Video             *Video   `json:"video,omitempty"`
 	WhatWentWell      []string `json:"whatWentWell"`
 	WhatCouldBeBetter []string `json:"whatCouldBeBetter"`
 	WhatILearned      []string `json:"whatILearned"`
@@ -168,33 +167,55 @@ type ProjectTypeSpecifics struct {
 	NonJob *NonJobExperience `json:"nonJob,omitempty"`
 }
 
-// SubprojectInfo merges SubprojectType and SubprojectSpecific.
-// If Video is nil, the subproject is Small; otherwise it is Big.
-type SubprojectInfo struct {
-	Video *Video `json:"video,omitempty"`
+// Subproject is the shared content unit used by BulletPoint, Card, and MajorSubproject.
+// Tags and TechTags here are the subproject's own; inherited tags come from the
+// containing Subsection and Project.
+type Subproject struct {
+	Title       string    `json:"title"`
+	Description string    `json:"description"`
+	Tags        []Tag     `json:"tags"`
+	TechTags    []TechTag `json:"techTags"`
 }
 
-// Subproject is a unit of work within a Project.
-type Subproject struct {
-	Title       string         `json:"title"`
-	Description string         `json:"description"`
-	Tags        []Tag          `json:"tags"`
-	TechTags    []TechTag      `json:"techTags"`
-	Info        SubprojectInfo `json:"info"`
+// BulletPoint renders its subproject as a prose bullet line.
+type BulletPoint struct {
+	Subproject Subproject `json:"subproject"`
+}
+
+// Card renders its subproject as a card.
+type Card struct {
+	Subproject Subproject `json:"subproject"`
+}
+
+// MajorSubproject renders its subproject full-width with optional video.
+type MajorSubproject struct {
+	Subproject Subproject `json:"subproject"`
+	Video      *Video     `json:"video,omitempty"`
+}
+
+// Subsection groups related items under a heading within a project.
+// Exactly one of Bullets, Cards, or Major should be populated.
+// Tags and TechTags are inherited by all subprojects within.
+type Subsection struct {
+	Title    string           `json:"title"`
+	Tags     []Tag            `json:"tags"`
+	TechTags []TechTag        `json:"techTags"`
+	Bullets  []BulletPoint    `json:"bullets,omitempty"`
+	Cards    []Card           `json:"cards,omitempty"`
+	Major    *MajorSubproject `json:"major,omitempty"`
 }
 
 // Project is the top-level portfolio entry.
-// Tags is computed by the generator as the union of subproject tags.
-// TechTags are project-level tech tags inherited by all subprojects.
+// Tags and TechTags are inherited by all subsections and their subprojects.
 type Project struct {
 	Title       string               `json:"title"`
 	Description string               `json:"description"`
 	Type        ProjectType          `json:"type"`
 	Specifics   ProjectTypeSpecifics `json:"specifics"`
 	Category    *ProjectCategory     `json:"category,omitempty"`
-	Tags        []Tag                `json:"tags"`     // computed by generator
-	TechTags    []TechTag            `json:"techTags"` // project-level; inherited by subprojects
-	Subprojects []Subproject         `json:"subprojects"`
+	Tags        []Tag                `json:"tags"`
+	TechTags    []TechTag            `json:"techTags"`
+	Subsections []Subsection         `json:"subsections"`
 }
 
 // SiteData is the root JSON structure embedded into the page.

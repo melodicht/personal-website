@@ -7,12 +7,18 @@
   const SPEED  = config.tickerSpeed;
   const EXT    = config.imageExt || "jpg";
 
-  // Derive unique tags from both project-level and subproject-level tags.
+  // Derive unique tags from project-level, subsection-level, and subproject-level tags.
   const tagSet = new Set();
   data.projects.forEach(function (p) {
     (p.tags || []).forEach(function (t) { tagSet.add(t); });
-    p.subprojects.forEach(function (sp) {
-      (sp.tags || []).forEach(function (t) { tagSet.add(t); });
+    (p.subsections || []).forEach(function (sec) {
+      (sec.tags || []).forEach(function (t) { tagSet.add(t); });
+      var items = (sec.bullets || []).map(function (b) { return b.subproject; })
+        .concat((sec.cards || []).map(function (c) { return c.subproject; }))
+        .concat(sec.major ? [sec.major.subproject] : []);
+      items.forEach(function (sp) {
+        (sp.tags || []).forEach(function (t) { tagSet.add(t); });
+      });
     });
   });
   const TAGS = Array.from(tagSet);

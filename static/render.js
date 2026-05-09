@@ -14,10 +14,6 @@
       .replace(/>/g, "&gt;").replace(/"/g, "&quot;");
   }
 
-  function isExternal(url) {
-    return typeof url === "string" && url.startsWith("http");
-  }
-
   function patchSignal(id, value) {
     const el = document.getElementById(id);
     if (!el) return;
@@ -25,9 +21,7 @@
     el.dispatchEvent(new Event("input", { bubbles: true }));
   }
 
-  // ── Signal inputs for selectedProject / selectedSubproject ────────
-  // We create hidden inputs here so Datastar can bind them.
-  // They're created once and appended to #app.
+  // ── Signal inputs ─────────────────────────────────────────────────
   function ensureSignalInput(id, bindAttr, initialValue) {
     if (document.getElementById(id)) return;
     const input = document.createElement("input");
@@ -42,15 +36,10 @@
   ensureSignalInput("selected-project-input",    "selected-project",    -1);
   ensureSignalInput("selected-subproject-input", "selected-subproject", -1);
 
-  function setSelectedProject(idx) {
-    patchSignal("selected-project-input", idx);
-  }
+  function setSelectedProject(idx)    { patchSignal("selected-project-input",    idx); }
+  function setSelectedSubproject(idx) { patchSignal("selected-subproject-input", idx); }
 
-  function setSelectedSubproject(idx) {
-    patchSignal("selected-subproject-input", idx);
-  }
-
-  // ── Back button HTML ──────────────────────────────────────────────
+  // ── Back button ───────────────────────────────────────────────────
   function backButtonHtml(label) {
     return "<button class='detail-back' id='detail-back-btn'>← " + escHtml(label) + "</button>";
   }
@@ -71,7 +60,6 @@
   }
 
   // ── Inline description parsing ────────────────────────────────────
-  // Splits a description string into text and {tag} segments.
   function parseDescription(str) {
     var segments = [];
     var re = /\{([^}]+)\}/g;
@@ -89,8 +77,6 @@
     return segments;
   }
 
-  // Renders a description string as HTML, with {tag} tokens becoming inline chips.
-  // Canonical casing is resolved against the full tech tag list if possible.
   function renderDescription(str, allTechTags) {
     var known = allTechTags || [];
     return parseDescription(str).map(function (seg) {
@@ -103,32 +89,136 @@
     }).join("");
   }
 
-  // Returns the lowercased set of tech tag strings inlined in a description via {tag} syntax.
   function inlinedTags(str) {
     return parseDescription(str)
       .filter(function (seg) { return seg.type === "tag"; })
       .map(function (seg) { return seg.value.toLowerCase(); });
   }
 
-  // ── Subproject card HTML (used in both detail views) ──────────────
-  // inheritedTags: array of TechTag strings from the parent project (to exclude from display)
-  function subprojectCardHtml(sp, inheritedTags) {
-    var videoHtml = "";
-    if (sp.info && sp.info.video) {
-      videoHtml = "<video class='subproject-video' src='" + escHtml(sp.info.video) + "' controls></video>";
-    }
-    var inherited = inheritedTags || [];
+  // ── Tag inheritance helpers ───────────────────────────────────────
+  // Merges arrays deduped, with earlier arrays taking priority.
+  function mergeTags(a, b) {
+    return a.concat((b || []).filter(function (t) { return a.indexOf(t) === -1; }));
+  }
+
+  // Returns the effective tech tags for a subproject given its inheritance chain.
+  // Filters out inlined tags from the description.
+  function effectiveTechTags(sp, inheritedTechTags) {
+    var inherited = inheritedTechTags || [];
     var inlined   = inlinedTags(sp.description);
-    var ownTechTags = (sp.techTags || []).filter(function (t) {
+    return mergeTags(inherited, sp.techTags || []).filter(function (t) {
+      return inlined.indexOf(t.toLowerCase()) === -1;
+    });
+  }
+
+  // Returns only the subproject's own non-inherited, non-inlined tech tags
+  // (for display on cards where inherited ones are already implied by context).
+  function ownTechTags(sp, inheritedTechTags) {
+    var inherited = inheritedTechTags || [];
+    var inlined   = inlinedTags(sp.description);
+    return (sp.techTags || []).filter(function (t) {
       return inherited.indexOf(t) === -1 && inlined.indexOf(t.toLowerCase()) === -1;
     });
-    var techTags = techTagsHtml(ownTechTags);
-    return "<div class='subproject-card" + (sp.info && sp.info.video ? " subproject-card--big" : "") + "'>" +
+  }
+
+  // ── Flatten subprojects from subsections ─────────────────────────
+  // Returns a flat array of { sp, subsection, project } for all subprojects
+  // in a project, regardless of whether they are bullets, cards, or major.
+  function flattenSubprojects(project) {
+    var result = [];
+    (project.subsections || []).forEach(function (sec) {
+      (sec.bullets || []).forEach(function (b) {
+        result.push({ sp: b.subproject, subsection: sec, project: project });
+      });
+      (sec.cards || []).forEach(function (c) {
+        result.push({ sp: c.subproject, subsection: sec, project: project });
+      });
+      if (sec.major) {
+        result.push({ sp: sec.major.subproject, video: sec.major.video, subsection: sec, project: project });
+      }
+    });
+    return result;
+  }
+
+  // ── Card renderer (for subproject cards) ─────────────────────────
+  function subprojectCardHtml(sp, inheritedTechTags) {
+    var own      = ownTechTags(sp, inheritedTechTags);
+    var techTags = techTagsHtml(own);
+    return "<div class='subproject-card'>" +
       (sp.title ? "<h4 class='subproject-card-title'>" + escHtml(sp.title) + "</h4>" : "") +
       (techTags ? "<div class='subproject-card-tags'>" + techTags + "</div>" : "") +
-      "<p class='subproject-card-desc'>" + renderDescription(sp.description, sp.techTags) + "</p>" +
+      "<p class='subproject-card-desc'>" + renderDescription(sp.description, mergeTags(inheritedTechTags || [], sp.techTags || [])) + "</p>" +
+      "</div>";
+  }
+
+  // ── Bullet point renderer ─────────────────────────────────────────
+  function bulletPointHtml(sp, inheritedTechTags) {
+    var own        = ownTechTags(sp, inheritedTechTags);
+    var allKnown   = mergeTags(inheritedTechTags || [], sp.techTags || []);
+    var techChips  = own.length ? " " + own.map(function (t) {
+      return "<span class='tag tag--tech tag--inline'>" + escHtml(t) + "</span>";
+    }).join(" ") : "";
+    return "<li class='subsection-bullet'>" +
+      "<p class='subsection-bullet-text'>" +
+      renderDescription(sp.description, allKnown) +
+      techChips +
+      "</p>" +
+      "</li>";
+  }
+
+  // ── Major subproject renderer ─────────────────────────────────────
+  function majorSubprojectHtml(sp, video, inheritedTechTags) {
+    var eff      = effectiveTechTags(sp, inheritedTechTags);
+    var techTags = techTagsHtml(eff);
+    var allKnown = mergeTags(inheritedTechTags || [], sp.techTags || []);
+    var videoHtml = video
+      ? "<video class='major-subproject-video' src='" + escHtml(video) + "' controls></video>"
+      : "";
+    return "<div class='major-subproject'>" +
+      (sp.title ? "<h4 class='major-subproject-title'>" + escHtml(sp.title) + "</h4>" : "") +
+      (techTags ? "<div class='major-subproject-tags'>" + techTags + "</div>" : "") +
+      "<p class='major-subproject-desc'>" + renderDescription(sp.description, allKnown) + "</p>" +
       videoHtml +
       "</div>";
+  }
+
+  // ── Subsection renderer ───────────────────────────────────────────
+  function subsectionHtml(sec, projectTechTags) {
+    var inheritedTechTags = mergeTags(projectTechTags || [], sec.techTags || []);
+
+    var contentHtml = "";
+    if (sec.bullets && sec.bullets.length) {
+      contentHtml = "<ul class='subsection-bullet-list'>" +
+        sec.bullets.map(function (b) {
+          return bulletPointHtml(b.subproject, inheritedTechTags);
+        }).join("") +
+        "</ul>";
+    } else if (sec.cards && sec.cards.length) {
+      contentHtml = "<div class='subproject-list'>" +
+        sec.cards.map(function (c) {
+          return subprojectCardHtml(c.subproject, inheritedTechTags);
+        }).join("") +
+        "</div>";
+    } else if (sec.major) {
+      contentHtml = majorSubprojectHtml(sec.major.subproject, sec.major.video, inheritedTechTags);
+    }
+
+    var secTechTagsHtml = techTagsHtml(sec.techTags);
+    return "<div class='detail-subsection'>" +
+      "<div class='detail-subprojects-heading'>" +
+      escHtml(sec.title) +
+      (secTechTagsHtml ? " <span class='subsection-heading-tags'>" + secTechTagsHtml + "</span>" : "") +
+      "</div>" +
+      contentHtml +
+      "</div>";
+  }
+
+  // ── Build subsections HTML for a project ─────────────────────────
+  function projectSubsectionsHtml(p) {
+    if (!p.subsections || !p.subsections.length) return "";
+    return p.subsections.map(function (sec) {
+      return subsectionHtml(sec, p.techTags || []);
+    }).join("");
   }
 
   // ── "I do" cards ──────────────────────────────────────────────────
@@ -137,44 +227,41 @@
     const tmpl = document.getElementById("card-template");
     if (!grid || !tmpl) return;
 
-    // Collect matching subprojects grouped by project, preserving project order.
-    // A subproject matches if it has the tag itself OR inherits it from the project.
+    // Build _allSubprojects flat list if not yet done
+    if (!window._allSubprojects) {
+      window._allSubprojects = [];
+      data.projects.forEach(function (p) {
+        flattenSubprojects(p).forEach(function (item) {
+          window._allSubprojects.push(item);
+        });
+      });
+    }
+
+    // Group matching subprojects by project
     const groups = [];
     const groupIndex = {};
     data.projects.forEach(function (p) {
-      var projectTags = p.tags || [];
-      p.subprojects.forEach(function (sp) {
-        var effectiveTags = projectTags.concat((sp.tags || []).filter(function (t) {
-          return projectTags.indexOf(t) === -1;
-        }));
+      var projTags     = p.tags || [];
+      var projTechTags = p.techTags || [];
+      flattenSubprojects(p).forEach(function (item) {
+        var secTags = item.subsection.tags || [];
+        var spTags  = item.sp.tags || [];
+        var effectiveTags = mergeTags(projTags, mergeTags(secTags, spTags));
         if (effectiveTags.indexOf(tag) === -1) return;
         if (groupIndex[p.title] === undefined) {
           groupIndex[p.title] = groups.length;
           groups.push({ project: p, items: [] });
         }
-        groups[groupIndex[p.title]].items.push({ sp: sp, projectTitle: p.title, projectTechTags: p.techTags || [] });
+        groups[groupIndex[p.title]].items.push(item);
       });
     });
-
-    if (!window._allSubprojects) {
-      window._allSubprojects = [];
-      data.projects.forEach(function (p) {
-        p.subprojects.forEach(function (sp) {
-          window._allSubprojects.push({ sp: sp, projectTitle: p.title, projectTechTags: p.techTags || [] });
-        });
-      });
-    }
 
     grid.innerHTML = "";
 
     groups.forEach(function (group) {
       var p = group.project;
-
-      // Resolve navigation target
-      var isJob = p.type === "Job";
-      var navIdx = isJob
-        ? jobs.indexOf(p)
-        : nonJobProjects.indexOf(p);
+      var isJob  = p.type === "Job";
+      var navIdx = isJob ? jobs.indexOf(p) : nonJobProjects.indexOf(p);
 
       // ── Group header ──
       const header = document.createElement("div");
@@ -194,7 +281,6 @@
           patchSignal("mode-input", "worked-on");
           patchSignal("selected-project-input", navIdx);
         }
-        // Sync the nav bar active state
         document.querySelectorAll(".nav-item").forEach(function (el) {
           el.classList.toggle("nav-item--active", el.dataset.mode === (isJob ? "worked-at" : "worked-on"));
         });
@@ -212,20 +298,20 @@
           return a.sp === item.sp;
         });
 
+        var inheritedTechTags = mergeTags(p.techTags || [], item.subsection.techTags || []);
+        var own     = ownTechTags(item.sp, inheritedTechTags);
+        var inlined = inlinedTags(item.sp.description);
+        var allKnown = mergeTags(inheritedTechTags, item.sp.techTags || []);
+
         const node = tmpl.content.cloneNode(true);
         const card = node.querySelector(".card");
         node.querySelector(".card-title").textContent = item.sp.title;
-        node.querySelector(".card-desc").innerHTML = renderDescription(item.sp.description, item.sp.techTags);
+        node.querySelector(".card-desc").innerHTML = renderDescription(item.sp.description, allKnown);
 
-        // Insert tech tags between title and description (own only, not inherited, not inlined)
-        var inlined     = inlinedTags(item.sp.description);
-        var ownTechTags = (item.sp.techTags || []).filter(function (t) {
-          return (item.projectTechTags || []).indexOf(t) === -1 && inlined.indexOf(t.toLowerCase()) === -1;
-        });
-        if (ownTechTags.length) {
+        if (own.length) {
           const tagsRow     = document.createElement("div");
           tagsRow.className = "card-tech-tags";
-          ownTechTags.forEach(function (t) {
+          own.forEach(function (t) {
             const span       = document.createElement("span");
             span.className   = "tag tag--tech";
             span.textContent = t;
@@ -234,15 +320,6 @@
           const body = node.querySelector(".card-body");
           const desc = node.querySelector(".card-desc");
           body.insertBefore(tagsRow, desc);
-        }
-
-        const footer = node.querySelector(".card-footer");
-        if (item.sp.info && item.sp.info.video) {
-          const link       = document.createElement("a");
-          link.className   = "card-link";
-          link.href        = item.sp.info.video;
-          link.textContent = "Watch →";
-          footer.appendChild(link);
         }
 
         card.style.cursor = "pointer";
@@ -268,8 +345,8 @@
     if (!window._allSubprojects) {
       window._allSubprojects = [];
       data.projects.forEach(function (p) {
-        p.subprojects.forEach(function (sp) {
-          window._allSubprojects.push({ sp: sp, projectTitle: p.title });
+        flattenSubprojects(p).forEach(function (item) {
+          window._allSubprojects.push(item);
         });
       });
     }
@@ -278,32 +355,25 @@
     if (!item) return;
     const sp = item.sp;
 
-    var videoHtml = "";
-    if (sp.info && sp.info.video) {
-      videoHtml = "<video class='detail-video' src='" + escHtml(sp.info.video) + "' controls></video>";
-    }
+    var inheritedTechTags = mergeTags(item.project.techTags || [], item.subsection.techTags || []);
+    var eff      = effectiveTechTags(sp, inheritedTechTags);
+    var techTags = techTagsHtml(eff);
+    var allKnown = mergeTags(inheritedTechTags, sp.techTags || []);
 
-    // Merge own tech tags with inherited project tech tags, deduped,
-    // then exclude any that are inlined in the description.
-    var inherited = item.projectTechTags || [];
-    var inlined   = inlinedTags(sp.description);
-    var merged = inherited.concat((sp.techTags || []).filter(function (t) {
-      return inherited.indexOf(t) === -1;
-    })).filter(function (t) {
-      return inlined.indexOf(t.toLowerCase()) === -1;
-    });
-    var techTags = techTagsHtml(merged);
+    var videoHtml = item.video
+      ? "<video class='detail-video' src='" + escHtml(item.video) + "' controls></video>"
+      : "";
 
     container.innerHTML =
       backButtonHtml("Back") +
       "<div class='detail-view'>" +
       "<div class='detail-header'>" +
-      "<p class='detail-parent-label'>" + escHtml(item.projectTitle) + "</p>" +
+      "<p class='detail-parent-label'>" + escHtml(item.project.title) + "</p>" +
       "<h2 class='detail-title'>" + escHtml(sp.title || "Untitled") + "</h2>" +
       (techTags ? "<div class='detail-tags'>" + techTags + "</div>" : "") +
       "</div>" +
       videoHtml +
-      "<p class='detail-desc'>" + renderDescription(sp.description, merged) + "</p>" +
+      "<p class='detail-desc'>" + renderDescription(sp.description, allKnown) + "</p>" +
       "</div>";
 
     container.querySelector("#detail-back-btn").addEventListener("click", function () {
@@ -318,12 +388,11 @@
     const job = jobs[Number(idx)];
     if (!job) return;
 
-    // Keep the picker cell highlight in sync, and snap to centre now that
-    // the list is visible (it may have been hidden on the initial selectJob call).
     document.querySelectorAll(".job-cell").forEach(function (el) {
       el.classList.toggle("job-cell--active", Number(el.dataset.idx) === Number(idx));
     });
     if (window._snapToJob) window._snapToJob(Number(idx));
+
     const exp   = job.specifics.job;
     const end   = exp.dateRange.end || "Present";
     const range = exp.dateRange.start + " – " + end;
@@ -350,16 +419,6 @@
         "</div>";
     }
 
-    let subprojectsHtml = "";
-    if (job.subprojects && job.subprojects.length > 0) {
-      var jobTechTags = job.techTags || [];
-      subprojectsHtml = "<div class='detail-subprojects'>" +
-        "<h3 class='detail-subprojects-heading'>Work done</h3>" +
-        "<div class='subproject-list'>" +
-        job.subprojects.map(function (sp) { return subprojectCardHtml(sp, jobTechTags); }).join("") +
-        "</div></div>";
-    }
-
     container.innerHTML =
       "<div class='job-detail-hero' style='background-image:url(" + escHtml(exp.backgroundImage) + ")'>" +
       "<div class='job-detail-hero-overlay'></div>" +
@@ -374,7 +433,7 @@
       "<p class='job-detail-desc'>"     + escHtml(job.description) + "</p>" +
       ((job.tags && job.tags.length) || (job.techTags && job.techTags.length) ?
         "<div class='detail-tags'>" + tagsHtml(job.tags) + techTagsHtml(job.techTags) + "</div>" : "") +
-      subprojectsHtml +
+      projectSubsectionsHtml(job) +
       reviewsHtml +
       "</div>";
   };
@@ -385,7 +444,6 @@
     if (!container) return;
     const tmpl = document.getElementById("card-template");
 
-    // Group non-job projects by category, skip those without one
     const groups = {};
     const order  = [];
     data.projects.forEach(function (p) {
@@ -405,7 +463,6 @@
       container.appendChild(grid);
 
       groups[cat].forEach(function (p) {
-        // Find the index in nonJobProjects for navigation
         var projIdx = nonJobProjects.indexOf(p);
 
         const node   = tmpl.content.cloneNode(true);
@@ -420,7 +477,6 @@
           footer.appendChild(span);
         });
 
-        // Click to open project detail
         card.style.cursor = "pointer";
         card.addEventListener("click", function () {
           setSelectedProject(projIdx);
@@ -438,7 +494,6 @@
     const p = nonJobProjects[Number(idx)];
     if (!p) return;
 
-    // Reflection section (NonJobExperience)
     var nj = p.specifics.nonJob;
     var reflectionHtml = "";
     if (nj) {
@@ -467,18 +522,6 @@
       }
     }
 
-    // Subprojects section
-    var subprojectsHtml = "";
-    if (p.subprojects && p.subprojects.length > 0) {
-      var projTechTags = p.techTags || [];
-      subprojectsHtml = "<div class='detail-subprojects'>" +
-        "<h3 class='detail-subprojects-heading'>Subprojects</h3>" +
-        "<div class='subproject-list'>" +
-        p.subprojects.map(function (sp) { return subprojectCardHtml(sp, projTechTags); }).join("") +
-        "</div></div>";
-    }
-
-    // Type badge
     var typeBadgeHtml = "<span class='detail-type-badge detail-type-badge--" + p.type.toLowerCase() + "'>" + escHtml(p.type) + "</span>";
 
     container.innerHTML =
@@ -491,7 +534,7 @@
       (p.techTags && p.techTags.length ? "<div class='detail-tags'>" + techTagsHtml(p.techTags) + "</div>" : "") +
       "</div>" +
       "<p class='detail-desc'>" + escHtml(p.description) + "</p>" +
-      subprojectsHtml +
+      projectSubsectionsHtml(p) +
       reflectionHtml +
       "</div>";
 
@@ -499,7 +542,6 @@
       setSelectedProject(-1);
     });
 
-    // Scroll to top of content column when navigating into detail
     var col = container.closest(".col-content");
     if (col) col.scrollTop = 0;
   };
@@ -514,8 +556,7 @@
     }).join("");
   })();
 
-  // ── Reset detail state when mode changes ──────────────────────────
-  // Watch for nav clicks so going to a different mode clears the detail.
+  // ── Reset detail state on mode change ────────────────────────────
   document.getElementById("nav-ticker").addEventListener("click", function () {
     setSelectedProject(-1);
     setSelectedSubproject(-1);
