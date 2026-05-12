@@ -1,5 +1,6 @@
 {
   "tickerSpeed": 0.2,
   "imageExt": "jpg",
-    "bioText": "I am from Malaysia, and moved to the US for my college education. I graduated from Northeastern University with a Bachelor of Science in Computer Science and Game Development.\n\nI speak English natively, Mandarin fluently, and Malay conversationally.\n\nI enjoy developing tools, as evident in my ventures in game engine development and programming languages. However, it is equally as important to me that I actually ship things. Computer science is my wife, and game development is my mistress. Portal 2 and The Witness are my two all-time favourite video games.\n\nOutside of programming, I enjoy cycling."
+    "bioText": "I am from Malaysia, and moved to the US for my college education. I graduated from Northeastern University with a Bachelor of Science in Computer Science and Game Development.\n\nI speak English natively, Mandarin fluently, and Malay conversationally.\n\nI enjoy developing tools, as evident in my ventures in game engine development and programming languages. However, it is equally as important to me that I actually ship things. Computer science is my wife, and game development is my mistress. Portal 2 and The Witness are my two all-time favourite video games.\n\nOutside of programming, I enjoy cycling.",
+    "contactText": "My email: marvincht(at)gmail(dot)com"
 }

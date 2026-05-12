@@ -556,6 +556,16 @@
     }).join("");
   })();
 
+  // ── "Contact me at" ───────────────────────────────────────────────
+  (function initContact() {
+    const el = document.getElementById("contact-text");
+    if (!el) return;
+    const paragraphs = (config.contactText || "").split("\n\n");
+    el.innerHTML = paragraphs.map(function (p) {
+      return "<p>" + escHtml(p) + "</p>";
+    }).join("");
+  })();
+
   // ── Reset detail state on mode change ────────────────────────────
   document.getElementById("nav-ticker").addEventListener("click", function () {
     setSelectedProject(-1);

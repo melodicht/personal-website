@@ -5,6 +5,7 @@
     { id: "do",         label: "I do" },
     { id: "worked-at",  label: "I worked at" },
     { id: "worked-on",  label: "I worked on" },
+    { id: "contact",    label: "Contact me at" },
   ];
 
   const container = document.getElementById("nav-ticker");
@@ -36,8 +37,6 @@
   modeInput.setAttribute("data-bind:mode", "");
   document.getElementById("app").appendChild(modeInput);
 
-  // Wait for Datastar to pick up the dynamically added data-bind
-  // by dispatching after a microtask
   function setMode(mode) {
     modeInput.value = mode;
     modeInput.dispatchEvent(new Event("input", { bubbles: true }));
@@ -52,7 +51,6 @@
   function snapToMode(mode) {
     const el = container.querySelector("[data-mode='" + mode + "']");
     if (!el) return;
-    // offsetTop is relative to the nav-ticker flex container
     const targetScroll = el.offsetTop - (container.clientHeight / 2) + (el.offsetHeight / 2);
     container.scrollTo({ top: Math.max(0, targetScroll), behavior: "smooth" });
   }
