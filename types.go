@@ -36,6 +36,7 @@ const (
 	TechTagGraphQueryLanguage TechTag = "Graph Query Language"
 	TechTagReact              TechTag = "React"
 	TechTagNodeJS             TechTag = "Node.js"
+	TechTagJSON               TechTag = "JSON"
 
 	TechTagStorybook TechTag = "Storybook"
 	TechTagWebpack   TechTag = "Webpack"
@@ -96,6 +97,7 @@ const (
 	TechTagSlackAPI             TechTag = "Slack API"
 	TechTagGoogleCloudRunFunctions TechTag = "Google Cloud Run Functions"
 	TechTagGoogleCloudScheduler TechTag = "Google Cloud Scheduler"
+	TechTagGoogleCloudStorage TechTag = "Google Cloud Storage"
 
 	TechTagTypedRacket TechTag = "Typed Racket"
 	TechTagRacket      TechTag = "Racket"
