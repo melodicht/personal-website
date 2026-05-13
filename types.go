@@ -160,7 +160,15 @@ type NonJobExperience struct {
 	WhatWentWell      []string `json:"whatWentWell"`
 	WhatCouldBeBetter []string `json:"whatCouldBeBetter"`
 	WhatILearned      []string `json:"whatILearned"`
-	SourceCodeLink    *string  `json:"sourceCodeLink,omitempty"`
+}
+
+// SourceCode represents the availability of source code for a project, subsection, or subproject.
+// Exactly one of Link or OnRequest should be set.
+// Link: a URL to the source code.
+// OnRequest: source code is available but requires contacting the author.
+type SourceCode struct {
+	Link      *string `json:"link,omitempty"`
+	OnRequest bool    `json:"onRequest,omitempty"`
 }
 
 // ProjectTypeSpecifics is a union — exactly one field is non-nil.
@@ -173,10 +181,11 @@ type ProjectTypeSpecifics struct {
 // Tags and TechTags here are the subproject's own; inherited tags come from the
 // containing Subsection and Project.
 type Subproject struct {
-	Title       string    `json:"title"`
-	Description string    `json:"description"`
-	Tags        []Tag     `json:"tags"`
-	TechTags    []TechTag `json:"techTags"`
+	Title       string      `json:"title"`
+	Description string      `json:"description"`
+	Tags        []Tag       `json:"tags"`
+	TechTags    []TechTag   `json:"techTags"`
+	SourceCode  *SourceCode `json:"sourceCode,omitempty"`
 }
 
 // BulletPoint renders its subproject as a prose bullet line.
@@ -199,12 +208,13 @@ type MajorSubproject struct {
 // Exactly one of Bullets, Cards, or Major should be populated.
 // Tags and TechTags are inherited by all subprojects within.
 type Subsection struct {
-	Title    string           `json:"title"`
-	Tags     []Tag            `json:"tags"`
-	TechTags []TechTag        `json:"techTags"`
-	Bullets  []BulletPoint    `json:"bullets,omitempty"`
-	Cards    []Card           `json:"cards,omitempty"`
-	Major    *MajorSubproject `json:"major,omitempty"`
+	Title      string           `json:"title"`
+	Tags       []Tag            `json:"tags"`
+	TechTags   []TechTag        `json:"techTags"`
+	SourceCode *SourceCode      `json:"sourceCode,omitempty"`
+	Bullets    []BulletPoint    `json:"bullets,omitempty"`
+	Cards      []Card           `json:"cards,omitempty"`
+	Major      *MajorSubproject `json:"major,omitempty"`
 }
 
 // Project is the top-level portfolio entry.
@@ -217,6 +227,7 @@ type Project struct {
 	Category    *ProjectCategory     `json:"category,omitempty"`
 	Tags        []Tag                `json:"tags"`
 	TechTags    []TechTag            `json:"techTags"`
+	SourceCode  *SourceCode          `json:"sourceCode,omitempty"`
 	Subsections []Subsection         `json:"subsections"`
 }
 

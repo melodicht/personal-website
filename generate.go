@@ -473,6 +473,7 @@ var projects = []Project{
 		Category:    catPtr(CategorySystems),
 		Tags:        []Tag{TagSystems, TagFullStack},
 		TechTags:    []TechTag{TechTagCPP},
+		SourceCode: &SourceCode{OnRequest: true},
 		Specifics: ProjectTypeSpecifics{
 			NonJob: &NonJobExperience{
 				WhatWentWell:      []string{"The custom allocator built for the log structure makes it memory efficient. A lot of the memory are contiguous. There is no fragmentation.", "As long as one node lives, the log structure will continue to live."},
@@ -517,6 +518,7 @@ var projects = []Project{
 		Category:    catPtr(CategorySystems),
 		Tags:        []Tag{TagGameEngineDev},
 		TechTags:    []TechTag{TechTagCPP},
+		SourceCode: &SourceCode{Link: strPtr("https://github.com/melodicht/skyline-engine")},
 		Specifics: ProjectTypeSpecifics{
 			NonJob: &NonJobExperience{
 				WhatWentWell:      []string{""},
@@ -617,6 +619,7 @@ var projects = []Project{
 		Category:    catPtr(CategoryGames),
 		Tags:        []Tag{TagGameDev},
 		TechTags:    []TechTag{TechTagJavaScript, TechTagPhysics, TechTagAlgorithms, TechTag2D},
+		SourceCode: &SourceCode{Link: strPtr("https://github.com/melodicht/boids")},
 		Specifics: ProjectTypeSpecifics{
 			NonJob: &NonJobExperience{
 				WhatWentWell:      []string{},

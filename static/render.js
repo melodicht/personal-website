@@ -44,6 +44,28 @@
     return "<button class='detail-back' id='detail-back-btn'>← " + escHtml(label) + "</button>";
   }
 
+  // ── Source code link ──────────────────────────────────────────────
+  function sourceCodeHtml(sc) {
+    if (!sc) return "";
+    if (sc.onRequest) {
+      return "<a class='source-code-link source-code-link--request' href='#'>Source code available upon request</a>";
+    }
+    if (sc.link) {
+      return "<a class='source-code-link' href='" + escHtml(sc.link) + "' target='_blank' rel='noopener'>View source code →</a>";
+    }
+    return "";
+  }
+
+  // Attach click handlers for all "available upon request" links in a container.
+  function attachSourceCodeHandlers(container) {
+    container.querySelectorAll(".source-code-link--request").forEach(function (el) {
+      el.addEventListener("click", function (e) {
+        e.preventDefault();
+        if (window._selectMode) window._selectMode("contact");
+      });
+    });
+  }
+
   // ── Tag chip HTML ─────────────────────────────────────────────────
   function tagsHtml(tags) {
     if (!tags || !tags.length) return "";
@@ -148,6 +170,7 @@
       (sp.title ? "<h4 class='subproject-card-title'>" + escHtml(sp.title) + "</h4>" : "") +
       (techTags ? "<div class='subproject-card-tags'>" + techTags + "</div>" : "") +
       "<p class='subproject-card-desc'>" + renderDescription(sp.description, mergeTags(inheritedTechTags || [], sp.techTags || [])) + "</p>" +
+      sourceCodeHtml(sp.sourceCode) +
       "</div>";
   }
 
@@ -179,6 +202,7 @@
       (techTags ? "<div class='major-subproject-tags'>" + techTags + "</div>" : "") +
       "<p class='major-subproject-desc'>" + renderDescription(sp.description, allKnown) + "</p>" +
       videoHtml +
+      sourceCodeHtml(sp.sourceCode) +
       "</div>";
   }
 
@@ -210,6 +234,7 @@
       (secTechTagsHtml ? " <span class='subsection-heading-tags'>" + secTechTagsHtml + "</span>" : "") +
       "</div>" +
       contentHtml +
+      sourceCodeHtml(sec.sourceCode) +
       "</div>";
   }
 
@@ -371,6 +396,7 @@
       "<p class='detail-parent-label'>" + escHtml(item.project.title) + "</p>" +
       "<h2 class='detail-title'>" + escHtml(sp.title || "Untitled") + "</h2>" +
       (techTags ? "<div class='detail-tags'>" + techTags + "</div>" : "") +
+      sourceCodeHtml(sp.sourceCode) +
       "</div>" +
       videoHtml +
       "<p class='detail-desc'>" + renderDescription(sp.description, allKnown) + "</p>" +
@@ -379,6 +405,7 @@
     container.querySelector("#detail-back-btn").addEventListener("click", function () {
       setSelectedSubproject(-1);
     });
+    attachSourceCodeHandlers(container);
   };
 
   // ── "I worked at" job detail ──────────────────────────────────────
@@ -433,9 +460,12 @@
       "<p class='job-detail-desc'>"     + escHtml(job.description) + "</p>" +
       ((job.tags && job.tags.length) || (job.techTags && job.techTags.length) ?
         "<div class='detail-tags'>" + tagsHtml(job.tags) + techTagsHtml(job.techTags) + "</div>" : "") +
+      sourceCodeHtml(job.sourceCode) +
       projectSubsectionsHtml(job) +
       reviewsHtml +
       "</div>";
+
+    attachSourceCodeHandlers(container);
   };
 
   // ── "I worked on" grid by category ───────────────────────────────
@@ -532,6 +562,7 @@
       "<h2 class='detail-title'>" + escHtml(p.title) + "</h2>" +
       (p.tags && p.tags.length ? "<div class='detail-tags'>" + tagsHtml(p.tags) + "</div>" : "") +
       (p.techTags && p.techTags.length ? "<div class='detail-tags'>" + techTagsHtml(p.techTags) + "</div>" : "") +
+      sourceCodeHtml(p.sourceCode) +
       "</div>" +
       "<p class='detail-desc'>" + escHtml(p.description) + "</p>" +
       projectSubsectionsHtml(p) +
@@ -541,6 +572,7 @@
     container.querySelector("#detail-back-btn").addEventListener("click", function () {
       setSelectedProject(-1);
     });
+    attachSourceCodeHandlers(container);
 
     var col = container.closest(".col-content");
     if (col) col.scrollTop = 0;

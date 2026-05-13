@@ -62,6 +62,9 @@
     snapToMode(mode);
   }
 
+  // Expose for external navigation (e.g. "available upon request" links)
+  window._selectMode = selectMode;
+
   function init() {
     setMode(currentMode);
     snapToMode(currentMode);
