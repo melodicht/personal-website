@@ -4,7 +4,7 @@
   <h2 class="category-heading">{{$cat}}</h2>
   <div class="card-grid">
     {{range $projects}}
-    <article class="card" data-on:click='$selectedProject = {{printf "%d" .GlobalIndex}}' style="cursor:pointer">
+    <article class="card" data-on:click='{{htmlAttr (printf "$selectedProject = %d" .GlobalIndex)}}' style="cursor:pointer">
       <div class="card-body">
         <h3 class="card-title">{{.Title}}</h3>
         <p class="card-desc">{{.Description}}</p>

@@ -3,11 +3,11 @@ package main
 import (
 	"bytes"
 	"fmt"
+	"html/template"
 	"io/fs"
 	"os"
 	"path/filepath"
 	"strings"
-	"text/template"
 )
 
 // NavMode describes a navigation item.
@@ -162,8 +162,8 @@ func runGenerate() {
 			"ActiveMode": p.activeID,
 			"Modes":      navModes,
 		}
-		pageData["Signals"] = p.signals
-		pageData["Effect"] = p.effect
+		pageData["Signals"] = template.HTMLAttr(p.signals)
+		pageData["Effect"] = template.HTMLAttr(p.effect)
 
 		var buf bytes.Buffer
 		if err := tmpl.ExecuteTemplate(&buf, p.name, pageData); err != nil {
@@ -230,13 +230,16 @@ func groupByCategory(ps []RenderedProject) map[string][]IndexedProject {
 func templateFuncs(tmplPtr **template.Template) template.FuncMap {
 	// NOTE(marvin): First letter uppercase if significant, otherwise lowercase.
 	return template.FuncMap{
-		"execTemplate": func(name string, data interface{}) (string, error) {
+		"execTemplate": func(name string, data interface{}) (template.HTML, error) {
 			var buf bytes.Buffer
 			err := (*tmplPtr).ExecuteTemplate(&buf, name, data)
 			if err != nil {
 				return "", fmt.Errorf("execTemplate %q: %w", name, err)
 			}
-			return buf.String(), nil
+			return template.HTML(buf.String()), nil
+		},
+		"htmlAttr": func(s string) template.HTMLAttr {
+			return template.HTMLAttr(s)
 		},
 		"FocusSlug":          FocusSlug,
 		"MergeTechTags":      MergeTechTags,

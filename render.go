@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"html"
+	"html/template"
 	"regexp"
 	"strings"
 )
@@ -14,7 +14,7 @@ var inlineTagRe = regexp.MustCompile(`\{([^}]+)\}`)
 // DescriptionSegment is either a plain text run or an inline tech tag chip.
 type DescriptionSegment struct {
 	IsChip bool
-	Value  string // plain text or canonical tech tag value
+	Value  template.HTML // already HTML-escaped, safe to output directly
 }
 
 func parseDescription(desc string, knownTechTags []TechTag) []DescriptionSegment {
@@ -23,7 +23,9 @@ func parseDescription(desc string, knownTechTags []TechTag) []DescriptionSegment
 	matches := inlineTagRe.FindAllStringIndex(desc, -1)
 	for _, loc := range matches {
 		if loc[0] > last {
-			segments = append(segments, DescriptionSegment{Value: html.EscapeString(desc[last:loc[0]])})
+			segments = append(segments, DescriptionSegment{
+				Value: template.HTML(template.HTMLEscapeString(desc[last:loc[0]])),
+			})
 		}
 		raw := desc[loc[0]+1 : loc[1]-1] // strip braces
 		canonical := raw
@@ -33,11 +35,16 @@ func parseDescription(desc string, knownTechTags []TechTag) []DescriptionSegment
 				break
 			}
 		}
-		segments = append(segments, DescriptionSegment{IsChip: true, Value: html.EscapeString(canonical)})
+		segments = append(segments, DescriptionSegment{
+			IsChip: true,
+			Value:  template.HTML(template.HTMLEscapeString(canonical)),
+		})
 		last = loc[1]
 	}
 	if last < len(desc) {
-		segments = append(segments, DescriptionSegment{Value: html.EscapeString(desc[last:])})
+		segments = append(segments, DescriptionSegment{
+			Value: template.HTML(template.HTMLEscapeString(desc[last:])),
+		})
 	}
 	return segments
 }
@@ -74,7 +81,7 @@ func inlinedTechTagsFromSegments(segs []DescriptionSegment) map[string]bool {
 	out := map[string]bool{}
 	for _, seg := range segs {
 		if seg.IsChip {
-			out[strings.ToLower(seg.Value)] = true
+			out[strings.ToLower(string(seg.Value))] = true
 		}
 	}
 	return out
