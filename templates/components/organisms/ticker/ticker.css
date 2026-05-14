@@ -1,0 +1,61 @@
+.ticker-wrap {
+  width: 100%;
+  height: 100%;
+  mask-image: linear-gradient(to bottom, transparent 0%, black 35%, black 65%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 35%, black 65%, transparent 100%);
+  overflow: hidden;
+  position: relative;
+}
+
+.ticker {
+  display: flex;
+  flex-direction: column;
+  will-change: transform;
+}
+
+.tick-item {
+  font-size: clamp(1rem, 2vw, 1.25rem);
+  font-weight: 500;
+  line-height: 1.5;
+  padding: 0.4rem 1.5rem 0.4rem 0.5rem;
+  cursor: pointer;
+  color: var(--text-muted);
+  white-space: nowrap;
+  user-select: none;
+  transition: color 0.12s, background 0.12s;
+  border-radius: 0 8px 8px 0;
+}
+
+.tick-item:hover {
+  color: var(--text);
+  background: var(--accent-light);
+}
+
+.tick-item--centre {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.tick-item--locked {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+/* Mobile */
+@media (max-width: 680px) {
+  .ticker-wrap {
+    height: 3.5rem;
+    mask-image: linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%);
+    overflow: hidden;
+  }
+
+  .ticker {
+    flex-direction: row;
+    white-space: nowrap;
+  }
+
+  .tick-item {
+    padding: 1rem 1.25rem;
+  }
+}

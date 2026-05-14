@@ -1,19 +1,3 @@
-{{define "worked-at-picker"}}
-<div class="col-picker" id="col-picker">
-  <div class="job-list" id="job-list" data-effect="snapToJob($jobFocus)">
-    {{range $i, $job := .Jobs}}
-    {{- $exp := $job.Specifics.Job -}}
-    {{- $end := "Present" -}}{{if $exp.DateRange.End}}{{$end = deref $exp.DateRange.End}}{{end}}
-    <div class="job-cell" data-on:click="$jobFocus = {{printf "%d" $i}}" data-class='{"job-cell--active": $jobFocus === {{printf "%d" $i}}}'>
-      <span class="job-cell-company">{{$exp.Company}}</span>
-      <span class="job-cell-role">{{$exp.Role}}</span>
-      <span class="job-cell-range">{{$exp.DateRange.Start}} – {{$end}}</span>
-    </div>
-    {{end}}
-  </div>
-</div>
-{{end}}
-
 {{define "worked-at-content"}}
 {{range $i, $job := .Jobs}}
 {{template "job-detail" dict "Project" $job "Index" $i}}
@@ -24,4 +8,4 @@
 <script src="/static/worked-at.js"></script>
 {{end}}
 
-{{define "worked-at.html"}}{{template "base" dict "Nav" .Nav "Signals" .Signals "Picker" "worked-at-picker" "Content" "worked-at-content" "Scripts" "worked-at-scripts" "Jobs" .Jobs}}{{end}}
+{{define "worked-at.html"}}{{template "base" dict "Nav" .Nav "Signals" .Signals "Picker" "job-picker" "Content" "worked-at-content" "Scripts" "worked-at-scripts" "Jobs" .Jobs}}{{end}}

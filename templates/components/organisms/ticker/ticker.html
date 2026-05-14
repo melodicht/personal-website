@@ -1,0 +1,11 @@
+{{define "ticker"}}
+<div class="col-picker">
+  <div class="ticker-wrap">
+    <div class="ticker" id="tag-ticker">
+      {{range .AllFocuses}}
+      <div class="tick-item" data-focus="{{FocusSlug .}}">{{.}}</div>
+      {{end}}
+    </div>
+  </div>
+</div>
+{{end}}

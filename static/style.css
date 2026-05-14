@@ -208,6 +208,78 @@
 .review-role            { font-size: 0.75rem; color: var(--text-muted); }
 .review-text            { font-size: 0.85rem; color: var(--text-muted); line-height: 1.65; }
 
+/* templates\components\organisms\job-picker\job-picker.css */
+.job-list {
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+  scrollbar-width: none;
+  padding: 40vh 0;
+}
+
+.job-list::-webkit-scrollbar {
+  display: none;
+}
+
+.job-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  padding: 0.75rem 1.5rem 0.75rem 0.5rem;
+  cursor: pointer;
+  border-radius: 0 8px 8px 0;
+  transition: background 0.15s;
+  white-space: nowrap;
+}
+
+.job-cell:hover {
+  background: var(--accent-light);
+}
+
+.job-cell--active {
+  background: var(--accent-light);
+  border-left: 2px solid var(--accent);
+}
+
+.job-cell-company {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.job-cell-role {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.job-cell-range {
+  font-size: 0.75rem;
+  color: var(--text-dim);
+}
+
+/* Mobile */
+@media (max-width: 680px) {
+  .job-list {
+    display: flex;
+    flex-direction: row;
+    padding: 0;
+    overflow-x: auto;
+    height: auto;
+  }
+
+  .job-cell {
+    flex-direction: row;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1.25rem;
+  }
+
+  .job-cell--active {
+    border-left: none;
+    border-bottom: 2px solid var(--accent);
+  }
+}
+
 /* templates\components\organisms\nav\nav.css */
 .col-nav {
   width: var(--nav-width);
@@ -465,6 +537,69 @@
   to   { opacity: 1; transform: translateY(0); }
 }
 
+/* templates\components\organisms\ticker\ticker.css */
+.ticker-wrap {
+  width: 100%;
+  height: 100%;
+  mask-image: linear-gradient(to bottom, transparent 0%, black 35%, black 65%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 35%, black 65%, transparent 100%);
+  overflow: hidden;
+  position: relative;
+}
+
+.ticker {
+  display: flex;
+  flex-direction: column;
+  will-change: transform;
+}
+
+.tick-item {
+  font-size: clamp(1rem, 2vw, 1.25rem);
+  font-weight: 500;
+  line-height: 1.5;
+  padding: 0.4rem 1.5rem 0.4rem 0.5rem;
+  cursor: pointer;
+  color: var(--text-muted);
+  white-space: nowrap;
+  user-select: none;
+  transition: color 0.12s, background 0.12s;
+  border-radius: 0 8px 8px 0;
+}
+
+.tick-item:hover {
+  color: var(--text);
+  background: var(--accent-light);
+}
+
+.tick-item--centre {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.tick-item--locked {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+/* Mobile */
+@media (max-width: 680px) {
+  .ticker-wrap {
+    height: 3.5rem;
+    mask-image: linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%);
+    overflow: hidden;
+  }
+
+  .ticker {
+    flex-direction: row;
+    white-space: nowrap;
+  }
+
+  .tick-item {
+    padding: 1rem 1.25rem;
+  }
+}
+
 /* templates\layout\base.css */
 /* ── Reset & base ─────────────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -558,6 +693,30 @@ body {
   text-transform: uppercase;
 }
 .category-heading:first-child { margin-top: 0; }
+
+/* ── Cards ───────────────────────────────────────────────────────── */
+.card {
+  background: var(--card-bg);
+  border: 0.5px solid var(--border);
+  border-radius: 12px;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.card:hover {
+  background: var(--card-bg-hover);
+  border-color: rgba(255,255,255,0.25);
+}
+
+.card-body   { flex: 1; display: flex; flex-direction: column; gap: 0.4rem; }
+.card-title  { font-size: 0.95rem; font-weight: 600; color: var(--text); }
+.card-desc   { font-size: 0.8rem; color: var(--text-muted); line-height: 1.55; }
+.card-footer { display: flex; align-items: center; flex-wrap: wrap; gap: 0.4rem; margin-top: auto; }
 
 /* ── Bio / contact ───────────────────────────────────────────────── */
 .bio {
