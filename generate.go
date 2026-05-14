@@ -27,20 +27,10 @@ var navModes = []NavMode{
 
 func runGenerate() {
 	// ── Load and parse all templates ─────────────────────────────────
-	// execTemplate needs the tmpl set but must be in the FuncMap before parsing.
-	// We use a pointer-to-template trick to break the circular dependency.
-	var tmplPtr *template.Template
-	funcs := templateFuncs()
-	funcs["execTemplate"] = func(name string, data interface{}) (string, error) {
-		var buf bytes.Buffer
-		err := tmplPtr.ExecuteTemplate(&buf, name, data)
-		if err != nil {
-			return "", fmt.Errorf("execTemplate %q: %w", name, err)
-		}
-		return buf.String(), nil
-	}
-
-	tmpl := template.New("").Funcs(funcs)
+	// tmplPtr starts nil; templateFuncs captures &tmpl so execTemplate
+	// dereferences the correct set at call time, after parsing completes.
+	var tmpl *template.Template
+	tmpl = template.New("").Funcs(templateFuncs(&tmpl))
 
 	var allTemplateContent strings.Builder
 	err := filepath.WalkDir("templates", func(path string, d fs.DirEntry, err error) error {
@@ -51,7 +41,6 @@ func runGenerate() {
 		if readErr != nil {
 			return readErr
 		}
-		fmt.Printf("adding template file: %s (%d bytes)\n", path, len(data))
 		// Strip carriage returns for Windows CRLF compatibility
 		cleaned := strings.ReplaceAll(string(data), "\r\n", "\n")
 		allTemplateContent.WriteString(cleaned)
@@ -68,14 +57,6 @@ func runGenerate() {
 		fmt.Fprintf(os.Stderr, "template parse error: %v\n", err)
 		os.Exit(1)
 	}
-
-	fmt.Println("Registered templates:")
-	for _, t := range tmpl.Templates() {
-		fmt.Println(" -", t.Name())
-	}
-
-	// Point the pointer at the fully-parsed template set
-	tmplPtr = tmpl
 
 	// ── Concatenate all CSS files ─────────────────────────────────────
 	var cssBuilder strings.Builder
@@ -243,9 +224,20 @@ func groupByCategory(ps []RenderedProject) map[string][]IndexedProject {
 }
 
 // templateFuncs returns the Go template function map.
-func templateFuncs() template.FuncMap {
+// tmplPtr is a pointer to the template set, filled in after parsing.
+// execTemplate dereferences it at call time, so it is safe to pass
+// a pointer that is nil during parsing and assigned afterwards.
+func templateFuncs(tmplPtr **template.Template) template.FuncMap {
 	// NOTE(marvin): First letter uppercase if significant, otherwise lowercase.
 	return template.FuncMap{
+		"execTemplate": func(name string, data interface{}) (string, error) {
+			var buf bytes.Buffer
+			err := (*tmplPtr).ExecuteTemplate(&buf, name, data)
+			if err != nil {
+				return "", fmt.Errorf("execTemplate %q: %w", name, err)
+			}
+			return buf.String(), nil
+		},
 		"FocusSlug":          FocusSlug,
 		"MergeTechTags":      MergeTechTags,
 		"OwnTechTags":        OwnTechTags,
@@ -255,10 +247,10 @@ func templateFuncs() template.FuncMap {
 		"lower": func(v interface{}) string {
 			return strings.ToLower(fmt.Sprintf("%v", v))
 		},
-		"printf": fmt.Sprintf,
-		"deref":             func(s *string) string { if s == nil { return "" }; return *s },
-		"derefImg":          func(i *Image) string { if i == nil { return "" }; return string(*i) },
-		"add":               func(a, b int) int { return a + b },
+		"printf":   fmt.Sprintf,
+		"deref":    func(s *string) string { if s == nil { return "" }; return *s },
+		"derefImg": func(i *Image) string { if i == nil { return "" }; return string(*i) },
+		"add":      func(a, b int) int { return a + b },
 		// dict builds a map from alternating key/value pairs, used in template calls
 		"dict": func(values ...interface{}) map[string]interface{} {
 			m := map[string]interface{}{}
