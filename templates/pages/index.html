@@ -11,13 +11,14 @@
 {{end}}
 
 {{define "index-content"}}
-<div id="card-container">
+<div id="template-store" style="display:none">
   {{range .AllFocuses}}
   <template id="grid-{{FocusSlug .}}">
     {{template "tag-grid" dict "Focus" . "Projects" $.Projects}}
   </template>
   {{end}}
 </div>
+<div id="card-container"></div>
 {{end}}
 
 {{define "index-scripts"}}

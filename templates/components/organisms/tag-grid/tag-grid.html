@@ -11,12 +11,13 @@
     {{if .Major}}{{if HasFocus .Major.Subproject .Major.Subproject.Focuses $p.Focuses $focus}}{{$hasMatch = true}}{{end}}{{end}}
   {{end}}
   {{if $hasMatch}}
-  <div class="card-group-header">
+  {{- $url := "/worked-on.html" -}}{{if eq $p.Type "Job"}}{{$url = "/worked-at.html"}}{{end}}
+  <a class="card-group-header" href="{{$url}}">
     <span class="card-group-title">{{.Title}}</span>
-    <span class="chip chip--tech detail-type-badge--{{lower .Type}}">{{.Type}}</span>
+    <span class="chip detail-type-badge--{{lower .Type}}">{{.Type}}</span>
     {{range .TechTags}}<span class="chip chip--tech">{{.}}</span>{{end}}
     <span class="card-group-link">View project →</span>
-  </div>
+  </a>
   <div class="card-grid card-group-grid">
     {{$cardIdx := 0}}
     {{range .Subsections}}

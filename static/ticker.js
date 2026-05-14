@@ -5,8 +5,9 @@
 
   const ticker    = document.getElementById("tag-ticker");
   const container = document.getElementById("card-container");
+  const store     = document.getElementById("template-store");
 
-  if (!ticker || !container) return;
+  if (!ticker || !container || !store) return;
 
   // ── Background crossfade ──────────────────────────────────────────
   let activeBg = "a";
@@ -24,7 +25,7 @@
   let currentFocus = null;
 
   function swapGrid(slug) {
-    const tmpl = document.getElementById("grid-" + slug);
+    const tmpl = store.querySelector("#grid-" + slug);
     if (!tmpl || slug === currentFocus) return;
     currentFocus = slug;
     const doSwap = function () {
