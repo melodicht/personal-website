@@ -244,6 +244,7 @@ func groupByCategory(ps []Project) map[string][]IndexedProject {
 
 // templateFuncs returns the Go template function map.
 func templateFuncs() template.FuncMap {
+	// NOTE(marvin): First letter uppercase if significant, otherwise lowercase.
 	return template.FuncMap{
 		"FocusSlug":         FocusSlug,
 		"RenderDescription": RenderDescription,
