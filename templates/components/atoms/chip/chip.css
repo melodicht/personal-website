@@ -1,0 +1,23 @@
+.chip {
+  font-size: 0.7rem;
+  font-weight: 500;
+  background: var(--chip-bg);
+  color: var(--chip-text);
+  border-radius: 6px;
+  padding: 2px 8px;
+}
+
+.chip--tech {
+  background: rgba(169, 159, 240, 0.12);
+  color: rgba(169, 159, 240, 0.85);
+  border: 0.5px solid rgba(169, 159, 240, 0.25);
+}
+
+.chip--inline {
+  display: inline;
+  vertical-align: baseline;
+  font-size: 0.8em;
+  padding: 1px 6px;
+  border-radius: 4px;
+  white-space: nowrap;
+}

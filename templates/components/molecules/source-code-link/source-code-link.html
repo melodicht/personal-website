@@ -1,0 +1,8 @@
+{{define "source-code-link"}}
+{{if .OnRequest}}
+<a class="source-code-link source-code-link--request"
+   href="/contact.html">Source code available upon request</a>
+{{else if .Link}}
+<a class="source-code-link" href="{{.Link}}" target="_blank" rel="noopener">View source code →</a>
+{{end}}
+{{end}}

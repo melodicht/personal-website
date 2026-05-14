@@ -1,0 +1,15 @@
+.source-code-link {
+  display: inline-block;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.source-code-link:hover {
+  text-decoration: underline;
+}
+
+.source-code-link--request {
+  color: var(--text-muted);
+}

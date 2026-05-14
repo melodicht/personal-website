@@ -1,19 +1,19 @@
 package main
 
-// Tag is a skill/technology tag.
-type Tag string
+// Focus is a skill/domain focus tag used for filtering on the [I do] page.
+type Focus string
 
 const (
-	TagGameEngineDev    Tag = "game engine development"
-	TagGameDev          Tag = "game development"
-	TagFullStack        Tag = "full-stack development"
-	TagWebDev           Tag = "web development"
-	TagMobileAppDev     Tag = "mobile app development"
-	TagSystems          Tag = "systems programming"
-	TagProgrammingLangs Tag = "programming languages"
-	TagSystemSecurity   Tag = "systems security"
-	TagDevOps           Tag = "development operations"
-	TagHardwareTech     Tag = "hardware tech"
+	FocusGameEngineDev    Focus = "game engine development"
+	FocusGameDev          Focus = "game development"
+	FocusFullStack        Focus = "full-stack development"
+	FocusWebDev           Focus = "web development"
+	FocusMobileAppDev     Focus = "mobile app development"
+	FocusSystems          Focus = "systems programming"
+	FocusProgrammingLangs Focus = "programming languages"
+	FocusSystemSecurity   Focus = "systems security"
+	FocusDevOps           Focus = "development operations"
+	FocusHardwareTech     Focus = "hardware tech"
 )
 
 type TechTag string
@@ -42,32 +42,32 @@ const (
 	TechTagWebpack   TechTag = "Webpack"
 	TechTagVite      TechTag = "Vite"
 
-	TechTagLinux              TechTag = "Linux"
-	TechTagTrafficControl     TechTag = "Traffic Control (tc)"
-	TechTagUnixSocketLibrary  TechTag = "Unix Socket Library"
+	TechTagLinux             TechTag = "Linux"
+	TechTagTrafficControl    TechTag = "Traffic Control (tc)"
+	TechTagUnixSocketLibrary TechTag = "Unix Socket Library"
 
 	TechTagBash TechTag = "Bash"
 
 	TechTag2D TechTag = "2D"
 	TechTag3D TechTag = "3D"
 
-	TechTagAlgorithms     TechTag = "Algorithms"
-	TechTagDataStructures TechTag = "Data Structures"
-	TechTagLogic          TechTag = "Logic"
-	TechTagDesignPatterns TechTag = "Design Patterns"
-	TechTagArchitecture   TechTag = "Architecture"
-	TechTagAsync          TechTag = "Async"
-	TechTagSocketIO       TechTag = "SocketIO"
+	TechTagAlgorithms          TechTag = "Algorithms"
+	TechTagDataStructures      TechTag = "Data Structures"
+	TechTagLogic               TechTag = "Logic"
+	TechTagDesignPatterns      TechTag = "Design Patterns"
+	TechTagArchitecture        TechTag = "Architecture"
+	TechTagAsync               TechTag = "Async"
+	TechTagSocketIO            TechTag = "SocketIO"
 	TechTagComponentsLibrary   TechTag = "Components Library"
 	TechTagServersideRendering TechTag = "Server-side Rendering"
-	TechTagProfiling      TechTag = "Profiling"
-	TechTagFFI            TechTag = "FFI"
-	TechTagETL            TechTag = "ETL Architecture"
-	TechTagTCP            TechTag = "TCP"
-	TechTagRPC            TechTag = "RPC"
-	TechTagMacros         TechTag = "Macros"
-	TechTagTesting        TechTag = "Testing"
-	TechTagPhysics        TechTag = "Physics"
+	TechTagProfiling           TechTag = "Profiling"
+	TechTagFFI                 TechTag = "FFI"
+	TechTagETL                 TechTag = "ETL Architecture"
+	TechTagTCP                 TechTag = "TCP"
+	TechTagRPC                 TechTag = "RPC"
+	TechTagMacros              TechTag = "Macros"
+	TechTagTesting             TechTag = "Testing"
+	TechTagPhysics             TechTag = "Physics"
 
 	TechTagOpenGraph TechTag = "Open Graph"
 	TechTagSiteMap   TechTag = "Sitemap"
@@ -76,10 +76,10 @@ const (
 	TechTagFlutter TechTag = "Flutter"
 	TechTagDart    TechTag = "Dart"
 
-	TechTagKotlin            TechTag = "Kotlin"
+	TechTagKotlin             TechTag = "Kotlin"
 	TechTagAndroidDevelopment TechTag = "Android Development"
-	TechTagJetpackCompose    TechTag = "Jetpack Compose"
-	TechTagTimber            TechTag = "Timber"
+	TechTagJetpackCompose     TechTag = "Jetpack Compose"
+	TechTagTimber             TechTag = "Timber"
 
 	TechTagSwift TechTag = "Swift"
 
@@ -93,11 +93,11 @@ const (
 	TechTagIMGUI     TechTag = "IMGUI"
 	TechTagUIUX      TechTag = "UI/UX"
 
-	TechTagFirestore            TechTag = "Firestore"
-	TechTagSlackAPI             TechTag = "Slack API"
+	TechTagFirestore               TechTag = "Firestore"
+	TechTagSlackAPI                TechTag = "Slack API"
 	TechTagGoogleCloudRunFunctions TechTag = "Google Cloud Run Functions"
-	TechTagGoogleCloudScheduler TechTag = "Google Cloud Scheduler"
-	TechTagGoogleCloudStorage TechTag = "Google Cloud Storage"
+	TechTagGoogleCloudScheduler    TechTag = "Google Cloud Scheduler"
+	TechTagGoogleCloudStorage      TechTag = "Google Cloud Storage"
 
 	TechTagTypedRacket TechTag = "Typed Racket"
 	TechTagRacket      TechTag = "Racket"
@@ -109,7 +109,7 @@ const (
 	TechTagSoundMusic TechTag = "SFX/Music"
 )
 
-// ProjectCategory groups projects on the "I worked on" page.
+// ProjectCategory groups projects on the [I worked on] page.
 type ProjectCategory string
 
 const (
@@ -162,10 +162,8 @@ type NonJobExperience struct {
 	WhatILearned      []string `json:"whatILearned"`
 }
 
-// SourceCode represents the availability of source code for a project, subsection, or subproject.
+// SourceCode represents the availability of source code.
 // Exactly one of Link or OnRequest should be set.
-// Link: a URL to the source code.
-// OnRequest: source code is available but requires contacting the author.
 type SourceCode struct {
 	Link      *string `json:"link,omitempty"`
 	OnRequest bool    `json:"onRequest,omitempty"`
@@ -178,12 +176,10 @@ type ProjectTypeSpecifics struct {
 }
 
 // Subproject is the shared content unit used by BulletPoint, Card, and MajorSubproject.
-// Tags and TechTags here are the subproject's own; inherited tags come from the
-// containing Subsection and Project.
 type Subproject struct {
 	Title       string      `json:"title"`
 	Description string      `json:"description"`
-	Tags        []Tag       `json:"tags"`
+	Focuses     []Focus     `json:"focuses"`
 	TechTags    []TechTag   `json:"techTags"`
 	SourceCode  *SourceCode `json:"sourceCode,omitempty"`
 }
@@ -206,10 +202,9 @@ type MajorSubproject struct {
 
 // Subsection groups related items under a heading within a project.
 // Exactly one of Bullets, Cards, or Major should be populated.
-// Tags and TechTags are inherited by all subprojects within.
 type Subsection struct {
 	Title      string           `json:"title"`
-	Tags       []Tag            `json:"tags"`
+	Focuses    []Focus          `json:"focuses"`
 	TechTags   []TechTag        `json:"techTags"`
 	SourceCode *SourceCode      `json:"sourceCode,omitempty"`
 	Bullets    []BulletPoint    `json:"bullets,omitempty"`
@@ -218,20 +213,20 @@ type Subsection struct {
 }
 
 // Project is the top-level portfolio entry.
-// Tags and TechTags are inherited by all subsections and their subprojects.
+// Focuses and TechTags are inherited by all subsections and their subprojects.
 type Project struct {
 	Title       string               `json:"title"`
 	Description string               `json:"description"`
 	Type        ProjectType          `json:"type"`
 	Specifics   ProjectTypeSpecifics `json:"specifics"`
 	Category    *ProjectCategory     `json:"category,omitempty"`
-	Tags        []Tag                `json:"tags"`
+	Focuses     []Focus              `json:"focuses"`
 	TechTags    []TechTag            `json:"techTags"`
 	SourceCode  *SourceCode          `json:"sourceCode,omitempty"`
 	Subsections []Subsection         `json:"subsections"`
 }
 
-// SiteData is the root JSON structure embedded into the page.
+// SiteData is the root structure passed to all templates.
 type SiteData struct {
 	Projects []Project `json:"projects"`
 }

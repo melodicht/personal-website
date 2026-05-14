@@ -1,0 +1,16 @@
+{{define "subproject-card"}}
+{{- $own := OwnTechTags .Subproject .InheritedTechTags -}}
+{{- $allKnown := MergeTechTags .InheritedTechTags .Subproject.TechTags -}}
+<div class="subproject-card" style="animation-delay: {{CardAnimationDelay .Index}}">
+  {{if .Subproject.Title}}<h4 class="subproject-card-title">{{.Subproject.Title}}</h4>{{end}}
+  {{if $own}}
+  <div class="subproject-card-chips">
+    {{range $own}}<span class="chip chip--tech">{{.}}</span>{{end}}
+  </div>
+  {{end}}
+  <p class="subproject-card-desc">{{RenderDescription .Subproject.Description $allKnown}}</p>
+  {{if .Subproject.SourceCode}}
+    {{template "source-code-link" .Subproject.SourceCode}}
+  {{end}}
+</div>
+{{end}}

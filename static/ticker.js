@@ -1,84 +1,63 @@
-// ticker.js — tag ticker for "I do" mode
+// ticker.js — tag ticker animation and grid swap for the [I do] page
 (function () {
-  let datastarReady = false;
+  const SPEED = window.TICKER_SPEED || 0.2;
+  const EXT   = window.IMAGE_EXT   || "jpg";
 
-  const config = window.SITE_CONFIG;
-  const data   = window.SITE_DATA;
-  const SPEED  = config.tickerSpeed;
-  const EXT    = config.imageExt || "jpg";
+  const ticker    = document.getElementById("tag-ticker");
+  const container = document.getElementById("card-container");
 
-  // Derive unique tags from project-level, subsection-level, and subproject-level tags.
-  const tagSet = new Set();
-  data.projects.forEach(function (p) {
-    (p.tags || []).forEach(function (t) { tagSet.add(t); });
-    (p.subsections || []).forEach(function (sec) {
-      (sec.tags || []).forEach(function (t) { tagSet.add(t); });
-      var items = (sec.bullets || []).map(function (b) { return b.subproject; })
-        .concat((sec.cards || []).map(function (c) { return c.subproject; }))
-        .concat(sec.major ? [sec.major.subproject] : []);
-      items.forEach(function (sp) {
-        (sp.tags || []).forEach(function (t) { tagSet.add(t); });
-      });
-    });
-  });
-  const TAGS = Array.from(tagSet);
+  if (!ticker || !container) return;
 
-  function patchSignal(id, value) {
-    const el = document.getElementById(id);
-    if (!el) return;
-    el.value = value;
-    el.dispatchEvent(new Event("input", { bubbles: true }));
-  }
-
-  // Background crossfade
+  // ── Background crossfade ──────────────────────────────────────────
   let activeBg = "a";
-  function setBackground(tag) {
-    const slug = tag.replace(/\s+/g, "-");
-    const url  = "/static/images/tags/" + slug + "." + EXT;
-    const inc  = activeBg === "a" ? "bg-b" : "bg-a";
-    const out  = activeBg === "a" ? "bg-a" : "bg-b";
+  function setBackground(slug) {
+    const url = "/static/images/tags/" + slug + "." + EXT;
+    const inc = activeBg === "a" ? "bg-b" : "bg-a";
+    const out = activeBg === "a" ? "bg-a" : "bg-b";
     document.getElementById(inc).style.backgroundImage = "url(" + url + ")";
     document.getElementById(inc).style.opacity = "1";
     document.getElementById(out).style.opacity = "0";
     activeBg = activeBg === "a" ? "b" : "a";
   }
 
-  let ticker;
+  // ── Grid swap with View Transition ───────────────────────────────
+  let currentFocus = null;
 
-  // Use the first item's actual rendered height; fall back to 40px.
+  function swapGrid(slug) {
+    const tmpl = document.getElementById("grid-" + slug);
+    if (!tmpl || slug === currentFocus) return;
+    currentFocus = slug;
+    const doSwap = function () {
+      container.innerHTML = "";
+      container.appendChild(tmpl.content.cloneNode(true));
+    };
+    if (document.startViewTransition) {
+      document.startViewTransition(doSwap);
+    } else {
+      doSwap();
+    }
+  }
+
+  // ── Ticker scroll ─────────────────────────────────────────────────
   function itemH() {
     const el = ticker.querySelector(".tick-item");
     return el ? el.offsetHeight : 40;
   }
 
-  // Logical height used for scroll centring math.
-  // Kept fixed so totalH() > wrapH() regardless of column height,
-  // ensuring the infinite loop always has room to scroll.
-  function wrapH() { return 480; }
+  // Fixed logical wrap height so totalH() > wrapH() for looping
+  function wrapH()  { return 480; }
+  function totalH() { return ticker.querySelectorAll(".tick-item").length / 3 * itemH(); }
 
-  function totalH()   { return TAGS.length * itemH(); }
   function getItems() { return [...ticker.querySelectorAll(".tick-item")]; }
 
-  function buildItems() {
-    ticker.innerHTML = "";
-    [...TAGS, ...TAGS, ...TAGS].forEach(function (t) {
-      const el = document.createElement("div");
-      el.className   = "tick-item";
-      el.textContent = t;
-      el.dataset.tag = t;
-      el.addEventListener("click", function () { onItemClick(t); });
-      ticker.appendChild(el);
-    });
-  }
+  let offset = 0, locked = false, lockedFocus = null, lastFocus = null, lastT = null;
 
-  let offset = 0, locked = false, lockedTag = null, lastTag = null, lastT = null;
-
-  function tagAtCentre() {
+  function focusAtCentre() {
     const IH = itemH(), centre = wrapH() / 2 + IH / 2;
     let best = null, bestDist = Infinity;
     getItems().forEach(function (el) {
       const dist = Math.abs(el.offsetTop - offset + IH / 2 - centre);
-      if (dist < bestDist) { bestDist = dist; best = el.dataset.tag; }
+      if (dist < bestDist) { bestDist = dist; best = el.dataset.focus; }
     });
     return best;
   }
@@ -88,14 +67,20 @@
     getItems().forEach(function (el) {
       const dist = Math.abs(el.offsetTop - offset + IH / 2 - centre);
       el.classList.toggle("tick-item--centre", dist < IH * 0.55 && !locked);
-      el.classList.toggle("tick-item--locked",  locked && el.dataset.tag === lockedTag);
+      el.classList.toggle("tick-item--locked", locked && el.dataset.focus === lockedFocus);
     });
   }
 
-  function snapTo(tag) {
+  function normalise() {
+    const TH = totalH();
+    if (offset >= TH) offset -= TH;
+    if (offset < 0)   offset += TH;
+  }
+
+  function snapTo(focus) {
     const IH = itemH(), centre = wrapH() / 2 - IH / 2, TH = totalH();
     let best = null, bestDist = Infinity;
-    getItems().filter(function (el) { return el.dataset.tag === tag; }).forEach(function (el) {
+    getItems().filter(function (el) { return el.dataset.focus === focus; }).forEach(function (el) {
       const dist = Math.abs(el.offsetTop - offset - centre);
       if (dist < bestDist) { bestDist = dist; best = el; }
     });
@@ -108,32 +93,37 @@
     ticker.style.transform = "translateY(" + (-offset) + "px)";
   }
 
-  function onTagChange(tag) {
-    setBackground(tag);
-    patchSignal("focus-input", tag);
+  function onFocusChange(focus) {
+    setBackground(focus);
+    swapGrid(focus);
   }
 
-  function onItemClick(tag) {
-    if (locked && lockedTag === tag) {
-      locked    = false;
-      lockedTag = null;
-      patchSignal("locked-input", "false");
+  ticker.addEventListener("click", function (e) {
+    const item = e.target.closest(".tick-item");
+    if (!item) return;
+    const focus = item.dataset.focus;
+    if (locked && lockedFocus === focus) {
+      locked = false; lockedFocus = null;
     } else {
-      locked    = true;
-      lockedTag = tag;
-      lastTag   = tag;
-      snapTo(tag);
-      onTagChange(tag);
-      patchSignal("locked-input", "true");
+      locked = true; lockedFocus = focus;
+      lastFocus = focus;
+      snapTo(focus);
+      onFocusChange(focus);
     }
     updateClasses();
-  }
+  });
 
-  function normalise() {
-    const TH = totalH(); // one copy height
-    if (offset >= TH) offset -= TH;
-    if (offset < 0)   offset += TH;
-  }
+  // Triple the items for seamless looping (items already in HTML once;
+  // we clone them to make three copies)
+  (function tripleItems() {
+    const originals = [...ticker.querySelectorAll(".tick-item")];
+    originals.forEach(function (el) {
+      ticker.appendChild(el.cloneNode(true));
+    });
+    originals.forEach(function (el) {
+      ticker.insertBefore(el.cloneNode(true), ticker.firstChild);
+    });
+  })();
 
   function step(ts) {
     if (!lastT) lastT = ts;
@@ -144,51 +134,24 @@
       normalise();
       ticker.style.transform = "translateY(" + (-offset) + "px)";
       updateClasses();
-      const t = tagAtCentre();
-      if (t && t !== lastTag) { lastTag = t; onTagChange(t); }
+      const f = focusAtCentre();
+      if (f && f !== lastFocus) { lastFocus = f; onFocusChange(f); }
     }
     requestAnimationFrame(step);
   }
 
-  // Hidden input for $locked signal — created early, before DOM ready check
-  document.addEventListener("DOMContentLoaded", function () {
-    ticker = document.getElementById("tag-ticker");
-    if (!ticker) { console.error("ticker.js: #tag-ticker not found"); return; }
+  // Init: start at middle third, trigger first focus
+  offset = totalH();
+  normalise();
+  ticker.style.transform = "translateY(" + (-offset) + "px)";
+  updateClasses();
 
-    const lockedInput = document.createElement("input");
-    lockedInput.id = "locked-input";
-    lockedInput.type = "checkbox";
-    lockedInput.style.display = "none";
-    lockedInput.setAttribute("data-bind:locked", "");
-    document.getElementById("app").appendChild(lockedInput);
+  const firstItem = ticker.querySelector(".tick-item");
+  if (firstItem) {
+    const firstFocus = firstItem.dataset.focus;
+    lastFocus = firstFocus;
+    onFocusChange(firstFocus);
+  }
 
-    buildItems();
-    offset = totalH(); // start of middle third
-    normalise();
-    ticker.style.transform = "translateY(" + (-offset) + "px)";
-    updateClasses();
-
-    const firstTag = TAGS[0];
-    if (firstTag) {
-      document.getElementById("bg-a").style.backgroundImage =
-        "url(/static/images/tags/" + firstTag.replace(/\s+/g, "-") + "." + EXT + ")";
-      document.getElementById("bg-a").style.opacity = "1";
-    }
-
-    function init() {
-      if (firstTag) {
-        lastTag = firstTag;
-        patchSignal("focus-input", firstTag);
-      }
-    }
-
-    document.addEventListener("datastar-loaded", function () {
-      datastarReady = true;
-      init();
-    });
-
-    if (datastarReady) init();
-
-    requestAnimationFrame(step);
-  });
+  requestAnimationFrame(step);
 })();

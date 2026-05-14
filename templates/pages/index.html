@@ -1,0 +1,27 @@
+{{template "base" .}}
+
+{{define "picker"}}
+<div class="col-picker">
+  <div class="ticker-wrap">
+    <div class="ticker" id="tag-ticker">
+      {{range .AllFocuses}}
+      <div class="tick-item" data-focus="{{FocusSlug .}}">{{.}}</div>
+      {{end}}
+    </div>
+  </div>
+</div>
+{{end}}
+
+{{define "content"}}
+<div id="card-container">
+  {{range .AllFocuses}}
+  <template id="grid-{{FocusSlug .}}">
+    {{template "tag-grid" dict "Focus" . "Projects" $.Projects}}
+  </template>
+  {{end}}
+</div>
+{{end}}
+
+{{define "scripts"}}
+<script src="/static/ticker.js"></script>
+{{end}}

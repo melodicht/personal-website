@@ -1,0 +1,47 @@
+{{define "tag-grid"}}
+{{- $focus := .Focus -}}
+{{- $projects := .Projects -}}
+<div class="card-group-container" id="grid-{{FocusSlug $focus}}">
+  {{range $projects}}
+  {{- $p := . -}}
+  {{- $hasMatch := false -}}
+  {{range .Subsections}}
+    {{range .Bullets}}{{if HasFocus .Subproject .Focuses $p.Focuses $focus}}{{$hasMatch = true}}{{end}}{{end}}
+    {{range .Cards}}{{if HasFocus .Subproject .Focuses $p.Focuses $focus}}{{$hasMatch = true}}{{end}}{{end}}
+    {{if .Major}}{{if HasFocus .Major.Subproject .Focuses $p.Focuses $focus}}{{$hasMatch = true}}{{end}}{{end}}
+  {{end}}
+  {{if $hasMatch}}
+  <div class="card-group-header">
+    <span class="card-group-title">{{.Title}}</span>
+    <span class="chip chip--tech detail-type-badge--{{lower .Type}}">{{.Type}}</span>
+    {{range .TechTags}}<span class="chip chip--tech">{{.}}</span>{{end}}
+    <span class="card-group-link">View project →</span>
+  </div>
+  <div class="card-grid card-group-grid">
+    {{$cardIdx := 0}}
+    {{range .Subsections}}
+    {{- $sec := . -}}
+    {{range .Bullets}}
+      {{if HasFocus .Subproject .Focuses $sec.Focuses $p.Focuses $focus}}
+      {{template "subproject-card" dict "Subproject" .Subproject "InheritedTechTags" (MergeTechTags $p.TechTags $sec.TechTags) "Index" $cardIdx}}
+      {{$cardIdx = add $cardIdx 1}}
+      {{end}}
+    {{end}}
+    {{range .Cards}}
+      {{if HasFocus .Subproject .Focuses $sec.Focuses $p.Focuses $focus}}
+      {{template "subproject-card" dict "Subproject" .Subproject "InheritedTechTags" (MergeTechTags $p.TechTags $sec.TechTags) "Index" $cardIdx}}
+      {{$cardIdx = add $cardIdx 1}}
+      {{end}}
+    {{end}}
+    {{if .Major}}
+      {{if HasFocus .Major.Subproject .Focuses $sec.Focuses $p.Focuses $focus}}
+      {{template "subproject-card" dict "Subproject" .Major.Subproject "InheritedTechTags" (MergeTechTags $p.TechTags $sec.TechTags) "Index" $cardIdx}}
+      {{$cardIdx = add $cardIdx 1}}
+      {{end}}
+    {{end}}
+    {{end}}
+  </div>
+  {{end}}
+  {{end}}
+</div>
+{{end}}

@@ -1,65 +1,99 @@
 # personal-site
 
-A personal website with a Datastar-powered reactive project grid.
-Words scroll in the hero; when one centres (or is clicked/locked), the
-server streams fresh project cards via SSE.
+A statically-generated personal portfolio site using Go templates and Datastar.
 
 ## Stack
 
-- **Go** standard library — no web framework needed
-- **Datastar** (CDN) — signals + SSE merge-fragments
-- Vanilla HTML/CSS/JS for the ticker animation
+- **Go** standard library — static site generation and dev server
+- **Datastar** (CDN) — reactive signals for in-page interactions
+- **Vanilla JS** — ticker animation and grid swap only
+- **Atomic design** — components organized as atoms → molecules → organisms → pages
 
 ## Run locally
 
 ```bash
-go build -o site.exe .
-.\site.exe -generate   # writes data.json
+# Generate the static site (writes dist/ and static/style.css)
+go run . -generate
 
-# Then rebuild to embed the new data.json:
+# Serve it
+go run .
+```
+
+OR
+```
+go build -o site.exe .
+.\site.exe -generate
+
 go build -o site.exe .
 .\site.exe
 ```
 
-No dependencies to install. `go.mod` uses only the standard library.
+Open http://localhost:8080
 
 ## Project structure
 
 ```
 .
-├── main.go                 # HTTP server, SSE endpoint, project data
+├── types.go                    # Data types (Focus, TechTag, Project, etc.)
+├── render.go                   # Go-side rendering helpers (RenderDescription, etc.)
+├── generate.go                 # Static site generator (template rendering, CSS concat)
+├── generate_data.go            # Project data definitions
+├── main.go                     # Dev server (serves dist/ and static/)
+│
 ├── templates/
-│   ├── index.html          # Main page — Datastar store lives here
-│   └── cards.html          # Fragment streamed into #card-grid via SSE
-└── static/
-    ├── style.css
-    └── ticker.js           # Animation loop; writes $currentWord signal
+│   ├── layout/
+│   │   ├── base.html           # Shared HTML shell (head, body, nav slot)
+│   │   └── base.css            # Global reset, layout variables, mobile styles
+│   ├── components/
+│   │   ├── atoms/
+│   │   │   └── chip/           # Single tech tag or focus chip
+│   │   ├── molecules/
+│   │   │   ├── subproject-card/
+│   │   │   ├── bullet-point/
+│   │   │   ├── major-subproject/
+│   │   │   └── source-code-link/
+│   │   └── organisms/
+│   │       ├── nav/            # Left-hand navigation column
+│   │       ├── subsection/     # A titled group of bullets/cards/major within a project
+│   │       ├── job-detail/     # Full job detail view
+│   │       ├── project-detail/ # Full non-job project detail view
+│   │       └── tag-grid/       # Card grid for one focus tag ([I do] page)
+│   └── pages/
+│       ├── index.html          # [I do] — ticker + card grids
+│       ├── worked-at.html      # [I worked at]
+│       ├── worked-on.html      # [I worked on]
+│       ├── about.html          # [Hi, I'm Marvin]
+│       └── contact.html        # [Contact me at]
+│
+├── static/
+│   ├── style.css               # AUTO-GENERATED — do not edit by hand.
+│   │                           # Concatenation of all component CSS files.
+│   ├── ticker.js               # Ticker animation and grid swap (index page only)
+│   └── worked-at.js            # snapToJob helper (worked-at page only)
+│
+└── dist/                       # AUTO-GENERATED — output of go run . -generate
 ```
 
+## CSS scope
 
-- Go's template engine is used, hence the `{{...}}` in the html file. Go actually
-subs in data.
-- The main script has two non-overlapping cases. Either generates the files, or
-  runs the server. A flag distinguishes the two. The reason for combining these
-  two behaviours into one file is to get around problems with Windows device guard.
+**All CSS defined in component files is global.** There is no Shadow DOM or
+scoped CSS. The concatenated `static/style.css` contains every component's
+styles in one file. Class names follow a BEM-like convention (e.g.
+`.subproject-card`, `.subproject-card-title`) to avoid collisions.
 
-## How it works
+`static/style.css` is auto-generated — never edit it directly. Edit the
+individual `.css` files in `templates/components/` or `templates/layout/`.
 
-1. `ticker.js` runs a `requestAnimationFrame` loop scrolling the word list.
-2. When the centred word changes, it calls `setSignal("currentWord", word)`,
-   writing into the Datastar store on `#app`.
-3. `data-on-signal__currentword` in `index.html` fires a `$$get` to
-   `/projects?word=<word>` whenever the signal changes.
-4. The Go handler looks up projects for that word, renders `cards.html`,
-   and streams it back as a Datastar `merge-fragments` SSE event.
-5. Datastar swaps the fragment into `#card-grid` with a CSS entry animation.
+## Adding a project
 
-## Adding projects
+Edit `generate_data.go`. Run `go run . -generate` to rebuild the site.
 
-Edit the `projects` map in `main.go`. Keys are the ticker words (lowercase).
-Each value is a slice of `Project` structs with Title, Description, Tags,
-and Link fields.
+## Component conventions
 
-To add a new ticker word, also add it to the `WORDS` array in
-`static/ticker.js`.
-```
+- A **component** is a folder containing a `.html` Go template partial and a `.css` file.
+- Components in a given layer may only use components from the **same or lower** layers:
+  - atoms → no dependencies
+  - molecules → atoms only
+  - organisms → atoms + molecules
+  - pages → any component
+- Pages (`templates/pages/`) are full HTML documents that extend `base.html`.
