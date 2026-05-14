@@ -4,7 +4,7 @@
     {{range $i, $job := .Jobs}}
     {{- $exp := $job.Specifics.Job -}}
     {{- $end := "Present" -}}{{if $exp.DateRange.End}}{{$end = deref $exp.DateRange.End}}{{end}}
-    <div class="job-cell" data-on:click="$jobFocus = {{printf "%d" $i}}" data-class='{"job-cell--active": $jobFocus === {{printf "%d" $i}}}'>
+    <div class="job-cell" {{safeAttr "data-on:click" (printf "$jobFocus = %d" $i)}} {{safeAttrSingle "data-class" (printf "{\"job-cell--active\": $jobFocus === %d}" $i)}}>
       <span class="job-cell-company">{{$exp.Company}}</span>
       <span class="job-cell-role">{{$exp.Role}}</span>
       <span class="job-cell-range">{{$exp.DateRange.Start}} – {{$end}}</span>
