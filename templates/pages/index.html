@@ -1,6 +1,4 @@
-{{template "base" .}}
-
-{{define "picker"}}
+{{define "index-picker"}}
 <div class="col-picker">
   <div class="ticker-wrap">
     <div class="ticker" id="tag-ticker">
@@ -12,7 +10,7 @@
 </div>
 {{end}}
 
-{{define "content"}}
+{{define "index-content"}}
 <div id="card-container">
   {{range .AllFocuses}}
   <template id="grid-{{FocusSlug .}}">
@@ -22,6 +20,9 @@
 </div>
 {{end}}
 
-{{define "scripts"}}
+{{define "index-scripts"}}
+<script>window.TICKER_SPEED = 0.2; window.IMAGE_EXT = "jpg";</script>
 <script src="/static/ticker.js"></script>
 {{end}}
+
+{{define "index.html"}}{{template "base" dict "Nav" .Nav "Signals" .Signals "Picker" "index-picker" "Content" "index-content" "Scripts" "index-scripts" "AllFocuses" .AllFocuses "Projects" .Projects}}{{end}}

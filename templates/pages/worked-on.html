@@ -1,32 +1,35 @@
-{{template "base" .}}
-
-{{define "picker"}}{{end}}
-
-{{define "content"}}
-{{if eq .SelectedProject -1}}
+{{define "worked-on-content"}}
+<div data-show="$selectedProject === -1">
   {{range $cat, $projects := .ProjectsByCategory}}
   <h2 class="category-heading">{{$cat}}</h2>
   <div class="card-grid">
-    {{range $i, $p := $projects}}
+    {{range $projects}}
     <article class="card"
-             data-on-click="$selectedProject = {{$p.GlobalIndex}}"
+             data-on-click="$selectedProject = {{.GlobalIndex}}"
              style="cursor:pointer">
       <div class="card-body">
-        <h3 class="card-title">{{$p.Title}}</h3>
-        <p class="card-desc">{{$p.Description}}</p>
+        <h3 class="card-title">{{.Title}}</h3>
+        <p class="card-desc">{{.Description}}</p>
       </div>
       <div class="card-footer">
-        {{range $p.Focuses}}<span class="chip">{{.}}</span>{{end}}
+        {{range .Focuses}}<span class="chip">{{.}}</span>{{end}}
       </div>
     </article>
     {{end}}
   </div>
   {{end}}
-{{end}}
+</div>
 {{range $i, $p := .NonJobProjects}}
-{{template "project-detail" dict "Project" $p "Index" $i}}
+{{template "project-detail" dict "Project" $p.Project "Index" $i}}
 {{end}}
 {{end}}
 
-{{define "scripts"}}
+{{define "worked-on.html"}}
+{{template "base" dict
+  "Nav"                .Nav
+  "Signals"            .Signals
+  "Content"            "worked-on-content"
+  "NonJobProjects"     .NonJobProjects
+  "ProjectsByCategory" .ProjectsByCategory
+}}
 {{end}}

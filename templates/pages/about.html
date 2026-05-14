@@ -1,8 +1,4 @@
-{{template "base" .}}
-
-{{define "picker"}}{{end}}
-
-{{define "content"}}
+{{define "about-content"}}
 <div class="bio">
   <p>I am from Malaysia, and moved to the US for my college education. I graduated from Northeastern University with a Bachelor of Science in Computer Science and Game Development.</p>
   <p>I speak English natively, Mandarin fluently, and Malay conversationally.</p>
@@ -11,4 +7,10 @@
 </div>
 {{end}}
 
-{{define "scripts"}}{{end}}
+{{define "about.html"}}
+{{template "base" dict
+  "Nav"     .Nav
+  "Signals" .Signals
+  "Content" "about-content"
+}}
+{{end}}

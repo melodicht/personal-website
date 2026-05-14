@@ -149,9 +149,10 @@ func SubprojectEffectiveFocuses(sp Subproject, secFocuses, projFocuses []Focus) 
 	return MergeFocuses(projFocuses, MergeFocuses(secFocuses, sp.Focuses))
 }
 
-// HasFocus reports whether a subproject (with its inherited focuses) has the given focus.
-func HasFocus(sp Subproject, secFocuses, projFocuses []Focus, f Focus) bool {
-	for _, ef := range SubprojectEffectiveFocuses(sp, secFocuses, projFocuses) {
+// HasFocus reports whether a subproject (with its own and project focuses) has the given focus.
+func HasFocus(sp Subproject, spFocuses, projFocuses []Focus, f Focus) bool {
+	effective := MergeFocuses(projFocuses, spFocuses)
+	for _, ef := range effective {
 		if ef == f {
 			return true
 		}

@@ -6,9 +6,9 @@
   {{- $p := . -}}
   {{- $hasMatch := false -}}
   {{range .Subsections}}
-    {{range .Bullets}}{{if HasFocus .Subproject .Focuses $p.Focuses $focus}}{{$hasMatch = true}}{{end}}{{end}}
-    {{range .Cards}}{{if HasFocus .Subproject .Focuses $p.Focuses $focus}}{{$hasMatch = true}}{{end}}{{end}}
-    {{if .Major}}{{if HasFocus .Major.Subproject .Focuses $p.Focuses $focus}}{{$hasMatch = true}}{{end}}{{end}}
+    {{range .Bullets}}{{if HasFocus .Subproject .Subproject.Focuses $p.Focuses $focus}}{{$hasMatch = true}}{{end}}{{end}}
+    {{range .Cards}}{{if HasFocus .Subproject .Subproject.Focuses $p.Focuses $focus}}{{$hasMatch = true}}{{end}}{{end}}
+    {{if .Major}}{{if HasFocus .Major.Subproject .Major.Subproject.Focuses $p.Focuses $focus}}{{$hasMatch = true}}{{end}}{{end}}
   {{end}}
   {{if $hasMatch}}
   <div class="card-group-header">
@@ -22,19 +22,19 @@
     {{range .Subsections}}
     {{- $sec := . -}}
     {{range .Bullets}}
-      {{if HasFocus .Subproject .Focuses $sec.Focuses $p.Focuses $focus}}
+      {{if HasFocus .Subproject .Subproject.Focuses $p.Focuses $focus}}
       {{template "subproject-card" dict "Subproject" .Subproject "InheritedTechTags" (MergeTechTags $p.TechTags $sec.TechTags) "Index" $cardIdx}}
       {{$cardIdx = add $cardIdx 1}}
       {{end}}
     {{end}}
     {{range .Cards}}
-      {{if HasFocus .Subproject .Focuses $sec.Focuses $p.Focuses $focus}}
+      {{if HasFocus .Subproject .Subproject.Focuses $p.Focuses $focus}}
       {{template "subproject-card" dict "Subproject" .Subproject "InheritedTechTags" (MergeTechTags $p.TechTags $sec.TechTags) "Index" $cardIdx}}
       {{$cardIdx = add $cardIdx 1}}
       {{end}}
     {{end}}
     {{if .Major}}
-      {{if HasFocus .Major.Subproject .Focuses $sec.Focuses $p.Focuses $focus}}
+      {{if HasFocus .Major.Subproject .Major.Subproject.Focuses $p.Focuses $focus}}
       {{template "subproject-card" dict "Subproject" .Major.Subproject "InheritedTechTags" (MergeTechTags $p.TechTags $sec.TechTags) "Index" $cardIdx}}
       {{$cardIdx = add $cardIdx 1}}
       {{end}}

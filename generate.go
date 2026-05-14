@@ -33,19 +33,41 @@ type IndexedProject struct {
 
 func runGenerate() {
 	// ── Load and parse all templates ─────────────────────────────────
-	tmpl := template.New("").Funcs(templateFuncs())
+	// execTemplate needs the tmpl set but must be in the FuncMap before parsing.
+	// We use a pointer-to-template trick to break the circular dependency.
+	var tmplPtr *template.Template
+	funcs := templateFuncs()
+	funcs["execTemplate"] = func(name string, data interface{}) (template.HTML, error) {
+		var buf bytes.Buffer
+		err := tmplPtr.ExecuteTemplate(&buf, name, data)
+		return template.HTML(buf.String()), err
+	}
 
+	tmpl := template.New("").Funcs(funcs)
+
+	var templateFiles []string
 	err := filepath.WalkDir("templates", func(path string, d fs.DirEntry, err error) error {
 		if err != nil || d.IsDir() || !strings.HasSuffix(path, ".html") {
 			return err
 		}
-		_, parseErr := tmpl.ParseFiles(path)
-		return parseErr
+		templateFiles = append(templateFiles, path)
+		return nil
 	})
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "template parse error: %v\n", err)
+		fmt.Fprintf(os.Stderr, "template walk error: %v\n", err)
 		os.Exit(1)
 	}
+
+	if len(templateFiles) > 0 {
+		tmpl, err = tmpl.ParseFiles(templateFiles...)
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "template parse error: %v\n", err)
+			os.Exit(1)
+		}
+	}
+
+	// Point the pointer at the fully-parsed template set
+	tmplPtr = tmpl
 
 	// ── Concatenate all CSS files ─────────────────────────────────────
 	var cssBuilder strings.Builder

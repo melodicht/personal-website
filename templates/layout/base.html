@@ -16,14 +16,15 @@
   <div id="app" {{.Signals}}>
     <div class="layout">
       {{template "nav" .Nav}}
-      {{block "picker" .}}{{end}}
+      <!-- DEBUG: Picker={{.Picker}} Content={{.Content}} -->
+      {{if .Picker}}{{execTemplate .Picker .}}{{end}}
       <main class="col-content">
-        {{block "content" .}}{{end}}
+        {{if .Content}}{{execTemplate .Content .}}{{end}}
       </main>
     </div>
   </div>
 
-  {{block "scripts" .}}{{end}}
+  {{if .Scripts}}{{execTemplate .Scripts .}}{{end}}
 </body>
 </html>
 {{end}}
