@@ -1,6 +1,5 @@
 {{define "major-subproject"}}
 {{- $eff := EffectiveTechTags .Subproject .InheritedTechTags -}}
-{{- $allKnown := MergeTechTags .InheritedTechTags .Subproject.TechTags -}}
 <div class="major-subproject">
   {{if .Subproject.Title}}<h4 class="major-subproject-title">{{.Subproject.Title}}</h4>{{end}}
   {{if $eff}}
@@ -8,7 +7,7 @@
     {{range $eff}}<span class="chip chip--tech">{{.}}</span>{{end}}
   </div>
   {{end}}
-  <p class="major-subproject-desc">{{RenderDescription .Subproject.Description $allKnown}}</p>
+  <p class="major-subproject-desc">{{range .Subproject.ParsedDescription}}{{if .IsChip}}<span class="chip chip--tech chip--inline">{{.Value}}</span>{{else}}{{.Value}}{{end}}{{end}}</p>
   {{if .Video}}<video class="major-subproject-video" src="{{.Video}}" controls></video>{{end}}
   {{if .Subproject.SourceCode}}{{template "source-code-link" .Subproject.SourceCode}}{{end}}
 </div>

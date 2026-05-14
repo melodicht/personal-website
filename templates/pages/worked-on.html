@@ -18,7 +18,7 @@
   {{end}}
 </div>
 {{range $i, $p := .NonJobProjects}}
-{{template "project-detail" dict "Project" $p.Project "Index" $i}}
+{{template "project-detail" dict "Project" $p.RenderedProject "Index" $i}}
 {{end}}
 {{end}}
 

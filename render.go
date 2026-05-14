@@ -7,25 +7,23 @@ import (
 	"strings"
 )
 
-// ── Inline description parsing ────────────────────────────────────────────────
-// Parses {tag} tokens in a description string and returns an HTML string where
-// each token is rendered as an inline chip span.
+// ── Description parsing ───────────────────────────────────────────────────────
 
 var inlineTagRe = regexp.MustCompile(`\{([^}]+)\}`)
 
-// ParsedSegment is either plain text or an inline chip.
-type ParsedSegment struct {
+// DescriptionSegment is either a plain text run or an inline tech tag chip.
+type DescriptionSegment struct {
 	IsChip bool
-	Value  string // canonical value (matched against known tech tags if possible)
+	Value  string // plain text or canonical tech tag value
 }
 
-func parseDescription(desc string, knownTechTags []TechTag) []ParsedSegment {
-	var segments []ParsedSegment
+func parseDescription(desc string, knownTechTags []TechTag) []DescriptionSegment {
+	var segments []DescriptionSegment
 	last := 0
 	matches := inlineTagRe.FindAllStringIndex(desc, -1)
 	for _, loc := range matches {
 		if loc[0] > last {
-			segments = append(segments, ParsedSegment{Value: desc[last:loc[0]]})
+			segments = append(segments, DescriptionSegment{Value: html.EscapeString(desc[last:loc[0]])})
 		}
 		raw := desc[loc[0]+1 : loc[1]-1] // strip braces
 		canonical := raw
@@ -35,36 +33,46 @@ func parseDescription(desc string, knownTechTags []TechTag) []ParsedSegment {
 				break
 			}
 		}
-		segments = append(segments, ParsedSegment{IsChip: true, Value: canonical})
+		segments = append(segments, DescriptionSegment{IsChip: true, Value: html.EscapeString(canonical)})
 		last = loc[1]
 	}
 	if last < len(desc) {
-		segments = append(segments, ParsedSegment{Value: desc[last:]})
+		segments = append(segments, DescriptionSegment{Value: html.EscapeString(desc[last:])})
 	}
 	return segments
 }
 
-// RenderDescription returns an HTML string with inline chips substituted.
-// Safe to use with text/template since escaping is done manually.
-func RenderDescription(desc string, knownTechTags []TechTag) string {
-	var sb strings.Builder
-	for _, seg := range parseDescription(desc, knownTechTags) {
-		if seg.IsChip {
-			sb.WriteString(`<span class="chip chip--tech chip--inline">`)
-			sb.WriteString(html.EscapeString(seg.Value))
-			sb.WriteString(`</span>`)
-		} else {
-			sb.WriteString(html.EscapeString(seg.Value))
-		}
-	}
-	return sb.String()
+// ── Rendered types ────────────────────────────────────────────────────────────
+
+// RenderedSubproject is the template-ready version of Subproject.
+// Description has been parsed into DescriptionSegments; all other fields are copied.
+type RenderedSubproject struct {
+	Title             string               `json:"title"`
+	ParsedDescription []DescriptionSegment `json:"parsedDescription"`
+	Focuses           []Focus              `json:"focuses"`
+	TechTags          []TechTag            `json:"techTags"`
+	SourceCode        *SourceCode          `json:"sourceCode,omitempty"`
 }
 
-// InlinedTechTags returns the lowercased set of tech tag strings inlined in a
-// description via {tag} syntax, used to avoid duplicating them in the chip row.
-func InlinedTechTags(desc string) map[string]bool {
+// RenderSubproject transforms an authoring Subproject into a RenderedSubproject,
+// parsing the description against the known tech tags for canonical chip values.
+func RenderSubproject(sp Subproject, knownTechTags []TechTag) RenderedSubproject {
+	return RenderedSubproject{
+		Title:             sp.Title,
+		ParsedDescription: parseDescription(sp.Description, knownTechTags),
+		Focuses:           sp.Focuses,
+		TechTags:          sp.TechTags,
+		SourceCode:        sp.SourceCode,
+	}
+}
+
+// ── Inlined tag helpers ───────────────────────────────────────────────────────
+
+// inlinedTechTagsFromSegments returns the lowercased set of chip values from
+// an already-parsed description, used to avoid duplicating them in the chip row.
+func inlinedTechTagsFromSegments(segs []DescriptionSegment) map[string]bool {
 	out := map[string]bool{}
-	for _, seg := range parseDescription(desc, nil) {
+	for _, seg := range segs {
 		if seg.IsChip {
 			out[strings.ToLower(seg.Value)] = true
 		}
@@ -112,9 +120,9 @@ func MergeFocuses(a, b []Focus) []Focus {
 	return out
 }
 
-// OwnTechTags returns only the subproject's own non-inherited, non-inlined tech tags.
-func OwnTechTags(sp Subproject, inherited []TechTag) []TechTag {
-	inlined := InlinedTechTags(sp.Description)
+// OwnTechTags returns the subproject's own non-inherited, non-inlined tech tags.
+func OwnTechTags(sp RenderedSubproject, inherited []TechTag) []TechTag {
+	inlined := inlinedTechTagsFromSegments(sp.ParsedDescription)
 	inheritedSet := map[TechTag]bool{}
 	for _, t := range inherited {
 		inheritedSet[t] = true
@@ -130,9 +138,9 @@ func OwnTechTags(sp Subproject, inherited []TechTag) []TechTag {
 
 // EffectiveTechTags returns the full merged tech tag list for a subproject,
 // excluding any that are inlined in the description.
-func EffectiveTechTags(sp Subproject, inherited []TechTag) []TechTag {
+func EffectiveTechTags(sp RenderedSubproject, inherited []TechTag) []TechTag {
 	merged := MergeTechTags(inherited, sp.TechTags)
-	inlined := InlinedTechTags(sp.Description)
+	inlined := inlinedTechTagsFromSegments(sp.ParsedDescription)
 	var out []TechTag
 	for _, t := range merged {
 		if !inlined[strings.ToLower(string(t))] {
@@ -142,16 +150,103 @@ func EffectiveTechTags(sp Subproject, inherited []TechTag) []TechTag {
 	return out
 }
 
-// ── Focus matching ────────────────────────────────────────────────────────────
+// ── Rendered container types ──────────────────────────────────────────────────
+// These mirror the authoring types but with Subproject replaced by RenderedSubproject.
 
-// SubprojectEffectiveFocuses returns the full set of focuses for a subproject,
-// merging project → subsection → subproject.
-func SubprojectEffectiveFocuses(sp Subproject, secFocuses, projFocuses []Focus) []Focus {
-	return MergeFocuses(projFocuses, MergeFocuses(secFocuses, sp.Focuses))
+type RenderedBullet struct {
+	Subproject RenderedSubproject
 }
 
-// HasFocus reports whether a subproject (with its own and project focuses) has the given focus.
-func HasFocus(sp Subproject, spFocuses, projFocuses []Focus, f Focus) bool {
+type RenderedCard struct {
+	Subproject RenderedSubproject
+}
+
+type RenderedMajor struct {
+	Subproject RenderedSubproject
+	Video      *Video
+}
+
+type RenderedSubsection struct {
+	Title      string
+	Focuses    []Focus
+	TechTags   []TechTag
+	SourceCode *SourceCode
+	Bullets    []RenderedBullet
+	Cards      []RenderedCard
+	Major      *RenderedMajor
+}
+
+type RenderedProject struct {
+	Title       string
+	Description string
+	Type        ProjectType
+	Specifics   ProjectTypeSpecifics
+	Category    *ProjectCategory
+	Focuses     []Focus
+	TechTags    []TechTag
+	SourceCode  *SourceCode
+	Subsections []RenderedSubsection
+}
+
+// RenderProject transforms an authoring Project into a RenderedProject,
+// pre-parsing all subproject descriptions against the inherited tech tag context.
+func RenderProject(p Project) RenderedProject {
+	var secs []RenderedSubsection
+	for _, sec := range p.Subsections {
+		inherited := MergeTechTags(p.TechTags, sec.TechTags)
+		var bullets []RenderedBullet
+		for _, b := range sec.Bullets {
+			bullets = append(bullets, RenderedBullet{
+				Subproject: RenderSubproject(b.Subproject, MergeTechTags(inherited, b.Subproject.TechTags)),
+			})
+		}
+		var cards []RenderedCard
+		for _, c := range sec.Cards {
+			cards = append(cards, RenderedCard{
+				Subproject: RenderSubproject(c.Subproject, MergeTechTags(inherited, c.Subproject.TechTags)),
+			})
+		}
+		var major *RenderedMajor
+		if sec.Major != nil {
+			rs := RenderSubproject(sec.Major.Subproject, MergeTechTags(inherited, sec.Major.Subproject.TechTags))
+			major = &RenderedMajor{Subproject: rs, Video: sec.Major.Video}
+		}
+		secs = append(secs, RenderedSubsection{
+			Title:      sec.Title,
+			Focuses:    sec.Focuses,
+			TechTags:   sec.TechTags,
+			SourceCode: sec.SourceCode,
+			Bullets:    bullets,
+			Cards:      cards,
+			Major:      major,
+		})
+	}
+	return RenderedProject{
+		Title:       p.Title,
+		Description: p.Description,
+		Type:        p.Type,
+		Specifics:   p.Specifics,
+		Category:    p.Category,
+		Focuses:     p.Focuses,
+		TechTags:    p.TechTags,
+		SourceCode:  p.SourceCode,
+		Subsections: secs,
+	}
+}
+
+// RenderProjects transforms a slice of Projects into RenderedProjects.
+func RenderProjects(ps []Project) []RenderedProject {
+	out := make([]RenderedProject, len(ps))
+	for i, p := range ps {
+		out[i] = RenderProject(p)
+	}
+	return out
+}
+
+// ── Focus matching ────────────────────────────────────────────────────────────
+
+// HasFocus reports whether a subproject has the given focus.
+func HasFocus(sp RenderedSubproject, spFocuses, projFocuses []Focus, f Focus) bool {
 	effective := MergeFocuses(projFocuses, spFocuses)
 	for _, ef := range effective {
 		if ef == f {
@@ -161,22 +256,20 @@ func HasFocus(sp Subproject, spFocuses, projFocuses []Focus, f Focus) bool {
 	return false
 }
 
-// ── Flat subproject list for [I do] page ─────────────────────────────────────
+// ── Flat subproject list ──────────────────────────────────────────────────────
 
-// FlatSubproject is a subproject with its full inheritance context resolved.
+// FlatSubproject is a rendered subproject with its full inheritance context.
 type FlatSubproject struct {
-	Subproject       Subproject
-	Video            *Video
-	ProjectTitle     string
-	ProjectType      ProjectType
+	Subproject        RenderedSubproject
+	Video             *Video
+	ProjectTitle      string
+	ProjectType       ProjectType
 	InheritedTechTags []TechTag
-	// Index into the global flat list, used as the selectedSubproject signal value
-	Index int
+	Index             int
 }
 
-// FlattenSubprojects returns all subprojects across all projects in order,
-// with inherited tech tags resolved.
-func FlattenSubprojects(projects []Project) []FlatSubproject {
+// FlattenSubprojects returns all subprojects across all rendered projects in order.
+func FlattenSubprojects(projects []RenderedProject) []FlatSubproject {
 	var result []FlatSubproject
 	idx := 0
 	for _, p := range projects {
@@ -236,13 +329,6 @@ func AllFocuses(projects []Project) []Focus {
 			for _, f := range sec.Focuses {
 				add(f)
 			}
-			allSps := func(sps []Subproject) {
-				for _, sp := range sps {
-					for _, f := range sp.Focuses {
-						add(f)
-					}
-				}
-			}
 			var sps []Subproject
 			for _, b := range sec.Bullets {
 				sps = append(sps, b.Subproject)
@@ -253,7 +339,11 @@ func AllFocuses(projects []Project) []Focus {
 			if sec.Major != nil {
 				sps = append(sps, sec.Major.Subproject)
 			}
-			allSps(sps)
+			for _, sp := range sps {
+				for _, f := range sp.Focuses {
+					add(f)
+				}
+			}
 		}
 	}
 	return out

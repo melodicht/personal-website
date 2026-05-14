@@ -25,12 +25,6 @@ var navModes = []NavMode{
 	{ID: "contact",    Label: "Contact me at",   URL: "/contact.html"},
 }
 
-// IndexedProject wraps a non-job project with its index in the nonJobProjects slice.
-type IndexedProject struct {
-	Project
-	GlobalIndex int
-}
-
 func runGenerate() {
 	// ── Load and parse all templates ─────────────────────────────────
 	// execTemplate needs the tmpl set but must be in the FuncMap before parsing.
@@ -113,10 +107,11 @@ func runGenerate() {
 	fmt.Println("wrote static/style.css")
 
 	// ── Prepare data ─────────────────────────────────────────────────
-	jobs := filterJobs(projects)
-	nonJobProjects := filterNonJobs(projects)
+	rendered := RenderProjects(projects)
+	jobs := filterJobs(rendered)
+	nonJobProjects := filterNonJobs(rendered)
 	allFocuses := AllFocuses(projects)
-	flatSps := FlattenSubprojects(projects)
+	flatSps := FlattenSubprojects(rendered)
 	_ = flatSps // available for future use
 
 	// ── Render pages ─────────────────────────────────────────────────
@@ -136,7 +131,7 @@ func runGenerate() {
 			activeID: "do",
 			signals:  `{}`,
 			data: map[string]interface{}{
-				"Projects":   projects,
+				"Projects":   rendered,
 				"AllFocuses": allFocuses,
 			},
 		},
@@ -145,7 +140,6 @@ func runGenerate() {
 			outFile:  "dist/worked-at.html",
 			activeID: "worked-at",
 			signals:  `{"jobFocus": 0}`,
-			effect:   `console.log('jobFocus:', $jobFocus)`,
 			data: map[string]interface{}{
 				"Jobs": jobs,
 			},
@@ -205,8 +199,8 @@ func runGenerate() {
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
-func filterJobs(ps []Project) []Project {
-	var out []Project
+func filterJobs(ps []RenderedProject) []RenderedProject {
+	var out []RenderedProject
 	for _, p := range ps {
 		if p.Type == ProjectTypeJob {
 			out = append(out, p)
@@ -215,8 +209,8 @@ func filterJobs(ps []Project) []Project {
 	return out
 }
 
-func filterNonJobs(ps []Project) []Project {
-	var out []Project
+func filterNonJobs(ps []RenderedProject) []RenderedProject {
+	var out []RenderedProject
 	for _, p := range ps {
 		if p.Type != ProjectTypeJob && p.Category != nil {
 			out = append(out, p)
@@ -225,19 +219,25 @@ func filterNonJobs(ps []Project) []Project {
 	return out
 }
 
-func indexedNonJobs(ps []Project) []IndexedProject {
+// IndexedProject wraps a non-job rendered project with its index.
+type IndexedProject struct {
+	RenderedProject
+	GlobalIndex int
+}
+
+func indexedNonJobs(ps []RenderedProject) []IndexedProject {
 	out := make([]IndexedProject, len(ps))
 	for i, p := range ps {
-		out[i] = IndexedProject{Project: p, GlobalIndex: i}
+		out[i] = IndexedProject{RenderedProject: p, GlobalIndex: i}
 	}
 	return out
 }
 
-func groupByCategory(ps []Project) map[string][]IndexedProject {
+func groupByCategory(ps []RenderedProject) map[string][]IndexedProject {
 	out := map[string][]IndexedProject{}
 	for i, p := range ps {
 		cat := string(*p.Category)
-		out[cat] = append(out[cat], IndexedProject{Project: p, GlobalIndex: i})
+		out[cat] = append(out[cat], IndexedProject{RenderedProject: p, GlobalIndex: i})
 	}
 	return out
 }
@@ -246,13 +246,12 @@ func groupByCategory(ps []Project) map[string][]IndexedProject {
 func templateFuncs() template.FuncMap {
 	// NOTE(marvin): First letter uppercase if significant, otherwise lowercase.
 	return template.FuncMap{
-		"FocusSlug":         FocusSlug,
-		"RenderDescription": RenderDescription,
-		"MergeTechTags":     MergeTechTags,
-		"OwnTechTags":       OwnTechTags,
-		"EffectiveTechTags": EffectiveTechTags,
+		"FocusSlug":          FocusSlug,
+		"MergeTechTags":      MergeTechTags,
+		"OwnTechTags":        OwnTechTags,
+		"EffectiveTechTags":  EffectiveTechTags,
 		"CardAnimationDelay": CardAnimationDelay,
-		"HasFocus":          HasFocus,
+		"HasFocus":           HasFocus,
 		"lower": func(v interface{}) string {
 			return strings.ToLower(fmt.Sprintf("%v", v))
 		},

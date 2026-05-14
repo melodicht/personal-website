@@ -1,9 +1,8 @@
 {{define "bullet-point"}}
 {{- $own := OwnTechTags .Subproject .InheritedTechTags -}}
-{{- $allKnown := MergeTechTags .InheritedTechTags .Subproject.TechTags -}}
 <li class="bullet-point">
   <p class="bullet-point-text">
-    {{RenderDescription .Subproject.Description $allKnown}}
+    {{range .Subproject.ParsedDescription}}{{if .IsChip}}<span class="chip chip--tech chip--inline">{{.Value}}</span>{{else}}{{.Value}}{{end}}{{end}}
     {{range $own}}<span class="chip chip--tech chip--inline">{{.}}</span> {{end}}
   </p>
 </li>
