@@ -213,7 +213,9 @@ func templateFuncs() template.FuncMap {
 		"EffectiveTechTags": EffectiveTechTags,
 		"CardAnimationDelay": CardAnimationDelay,
 		"HasFocus":          HasFocus,
-		"lower":             strings.ToLower,
+		"lower": func(v interface{}) string {
+			return strings.ToLower(fmt.Sprintf("%v", v))
+		},
 		"deref":             func(s *string) string { if s == nil { return "" }; return *s },
 		"derefImg":          func(i *Image) string { if i == nil { return "" }; return string(*i) },
 		"add":               func(a, b int) int { return a + b },
