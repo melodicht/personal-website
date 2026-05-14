@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"html/template"
+	"html"
 	"regexp"
 	"strings"
 )
@@ -44,19 +44,20 @@ func parseDescription(desc string, knownTechTags []TechTag) []ParsedSegment {
 	return segments
 }
 
-// RenderDescription returns a safe HTML string with inline chips substituted.
-func RenderDescription(desc string, knownTechTags []TechTag) template.HTML {
+// RenderDescription returns an HTML string with inline chips substituted.
+// Safe to use with text/template since escaping is done manually.
+func RenderDescription(desc string, knownTechTags []TechTag) string {
 	var sb strings.Builder
 	for _, seg := range parseDescription(desc, knownTechTags) {
 		if seg.IsChip {
 			sb.WriteString(`<span class="chip chip--tech chip--inline">`)
-			sb.WriteString(template.HTMLEscapeString(seg.Value))
+			sb.WriteString(html.EscapeString(seg.Value))
 			sb.WriteString(`</span>`)
 		} else {
-			sb.WriteString(template.HTMLEscapeString(seg.Value))
+			sb.WriteString(html.EscapeString(seg.Value))
 		}
 	}
-	return template.HTML(sb.String())
+	return sb.String()
 }
 
 // InlinedTechTags returns the lowercased set of tech tag strings inlined in a

@@ -13,7 +13,7 @@
   <div class="bg-layer" id="bg-b"></div>
   <div class="bg-overlay"></div>
 
-  <div id="app" {{.Signals}}>
+  <div id="app" data-signals='{{.Signals}}'{{if .Effect}} data-effect="{{.Effect}}"{{end}}>
     <div class="layout">
       {{template "nav" .Nav}}
       <!-- DEBUG: Picker={{.Picker}} Content={{.Content}} -->

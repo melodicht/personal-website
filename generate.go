@@ -3,11 +3,11 @@ package main
 import (
 	"bytes"
 	"fmt"
-	"html/template"
 	"io/fs"
 	"os"
 	"path/filepath"
 	"strings"
+	"text/template"
 )
 
 // NavMode describes a navigation item.
@@ -37,20 +37,31 @@ func runGenerate() {
 	// We use a pointer-to-template trick to break the circular dependency.
 	var tmplPtr *template.Template
 	funcs := templateFuncs()
-	funcs["execTemplate"] = func(name string, data interface{}) (template.HTML, error) {
+	funcs["execTemplate"] = func(name string, data interface{}) (string, error) {
 		var buf bytes.Buffer
 		err := tmplPtr.ExecuteTemplate(&buf, name, data)
-		return template.HTML(buf.String()), err
+		if err != nil {
+			return "", fmt.Errorf("execTemplate %q: %w", name, err)
+		}
+		return buf.String(), nil
 	}
 
 	tmpl := template.New("").Funcs(funcs)
 
-	var templateFiles []string
+	var allTemplateContent strings.Builder
 	err := filepath.WalkDir("templates", func(path string, d fs.DirEntry, err error) error {
 		if err != nil || d.IsDir() || !strings.HasSuffix(path, ".html") {
 			return err
 		}
-		templateFiles = append(templateFiles, path)
+		data, readErr := os.ReadFile(path)
+		if readErr != nil {
+			return readErr
+		}
+		fmt.Printf("adding template file: %s (%d bytes)\n", path, len(data))
+		// Strip carriage returns for Windows CRLF compatibility
+		cleaned := strings.ReplaceAll(string(data), "\r\n", "\n")
+		allTemplateContent.WriteString(cleaned)
+		allTemplateContent.WriteString("\n")
 		return nil
 	})
 	if err != nil {
@@ -58,12 +69,15 @@ func runGenerate() {
 		os.Exit(1)
 	}
 
-	if len(templateFiles) > 0 {
-		tmpl, err = tmpl.ParseFiles(templateFiles...)
-		if err != nil {
-			fmt.Fprintf(os.Stderr, "template parse error: %v\n", err)
-			os.Exit(1)
-		}
+	tmpl, err = tmpl.Parse(allTemplateContent.String())
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "template parse error: %v\n", err)
+		os.Exit(1)
+	}
+
+	fmt.Println("Registered templates:")
+	for _, t := range tmpl.Templates() {
+		fmt.Println(" -", t.Name())
 	}
 
 	// Point the pointer at the fully-parsed template set
@@ -110,7 +124,8 @@ func runGenerate() {
 		name     string
 		outFile  string
 		activeID string
-		signals  template.HTMLAttr
+		signals  string
+		effect   string
 		data     map[string]interface{}
 	}
 
@@ -119,7 +134,7 @@ func runGenerate() {
 			name:     "index.html",
 			outFile:  "dist/index.html",
 			activeID: "do",
-			signals:  `data-signals='{}'`,
+			signals:  `{}`,
 			data: map[string]interface{}{
 				"Projects":   projects,
 				"AllFocuses": allFocuses,
@@ -129,7 +144,8 @@ func runGenerate() {
 			name:     "worked-at.html",
 			outFile:  "dist/worked-at.html",
 			activeID: "worked-at",
-			signals:  `data-signals='{"jobFocus": 0}'`,
+			signals:  `{"jobFocus": 0}`,
+			effect:   `console.log('jobFocus:', $jobFocus)`,
 			data: map[string]interface{}{
 				"Jobs": jobs,
 			},
@@ -138,7 +154,7 @@ func runGenerate() {
 			name:     "worked-on.html",
 			outFile:  "dist/worked-on.html",
 			activeID: "worked-on",
-			signals:  `data-signals='{"selectedProject": -1}'`,
+			signals:  `{"selectedProject": -1}`,
 			data: map[string]interface{}{
 				"NonJobProjects":     indexedNonJobs(nonJobProjects),
 				"ProjectsByCategory": groupByCategory(nonJobProjects),
@@ -148,14 +164,14 @@ func runGenerate() {
 			name:     "about.html",
 			outFile:  "dist/about.html",
 			activeID: "about",
-			signals:  `data-signals='{}'`,
+			signals:  `{}`,
 			data:     map[string]interface{}{},
 		},
 		{
 			name:     "contact.html",
 			outFile:  "dist/contact.html",
 			activeID: "contact",
-			signals:  `data-signals='{}'`,
+			signals:  `{}`,
 			data:     map[string]interface{}{},
 		},
 	}
@@ -171,7 +187,8 @@ func runGenerate() {
 			"ActiveMode": p.activeID,
 			"Modes":      navModes,
 		}
-		pageData["Signals"] = template.HTMLAttr(p.signals)
+		pageData["Signals"] = p.signals
+		pageData["Effect"] = p.effect
 
 		var buf bytes.Buffer
 		if err := tmpl.ExecuteTemplate(&buf, p.name, pageData); err != nil {
@@ -238,6 +255,7 @@ func templateFuncs() template.FuncMap {
 		"lower": func(v interface{}) string {
 			return strings.ToLower(fmt.Sprintf("%v", v))
 		},
+		"printf": fmt.Sprintf,
 		"deref":             func(s *string) string { if s == nil { return "" }; return *s },
 		"derefImg":          func(i *Image) string { if i == nil { return "" }; return string(*i) },
 		"add":               func(a, b int) int { return a + b },
