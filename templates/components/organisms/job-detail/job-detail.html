@@ -2,8 +2,8 @@
 {{- $job := .Project -}}
 {{- $exp := $job.Specifics.Job -}}
 {{- $end := "Present" -}}{{if $exp.DateRange.End}}{{$end = deref $exp.DateRange.End}}{{end}}
-<div class="job-detail" id="job-detail-{{printf "%d" .Index}}"
-     {{safeAttr "data-show" (printf "$jobFocus === %d" .Index)}}>
+<div class="job-detail" id="job-detail-{{.Index}}"
+     data-show="$jobFocus === {{.Index}}">
   <div class="job-detail-hero" style="background-image:url({{$exp.BackgroundImage}})">
     <div class="job-detail-hero-overlay"></div>
     <div class="job-detail-hero-content">

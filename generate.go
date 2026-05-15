@@ -237,20 +237,6 @@ func templateFuncs(tmplPtr **template.Template) template.FuncMap {
 			}
 			return template.HTML(buf.String()), nil
 		},
-		"htmlAttr": func(s string) template.HTMLAttr {
-			return template.HTMLAttr(s)
-		},
-		// safeAttr produces a complete HTML attribute: name="value"
-		// Use for attributes whose values contain signal expressions that
-		// html/template would otherwise escape.
-		"safeAttr": func(name, value string) template.HTMLAttr {
-			return template.HTMLAttr(name + `="` + value + `"`)
-		},
-		// safeAttrSingle is like safeAttr but wraps the value in single quotes.
-		// Use when the value itself contains double quotes (e.g. JSON in data-class).
-		"safeAttrSingle": func(name, value string) template.HTMLAttr {
-			return template.HTMLAttr(name + `='` + value + `'`)
-		},
 		"FocusSlug":          FocusSlug,
 		"MergeTechTags":      MergeTechTags,
 		"OwnTechTags":        OwnTechTags,
@@ -260,7 +246,6 @@ func templateFuncs(tmplPtr **template.Template) template.FuncMap {
 		"lower": func(v interface{}) string {
 			return strings.ToLower(fmt.Sprintf("%v", v))
 		},
-		"printf":   fmt.Sprintf,
 		"deref":    func(s *string) string { if s == nil { return "" }; return *s },
 		"derefImg": func(i *Image) string { if i == nil { return "" }; return string(*i) },
 		"add":      func(a, b int) int { return a + b },

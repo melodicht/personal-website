@@ -1,6 +1,6 @@
 {{define "project-detail"}}
 {{- $p := .Project -}}
-<div class="project-detail" {{safeAttr "data-show" (printf "$selectedProject === %d" .Index)}}>
+<div class="project-detail" data-show="$selectedProject === {{.Index}}">
   <div class="detail-header">
     <span class="detail-type-badge detail-type-badge--{{lower $p.Type}}">{{$p.Type}}</span>
     <h2 class="detail-title">{{$p.Title}}</h2>
