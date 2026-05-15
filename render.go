@@ -265,59 +265,6 @@ func HasFocus(sp RenderedSubproject, spFocuses, projFocuses []Focus, f Focus) bo
 
 // ── Flat subproject list ──────────────────────────────────────────────────────
 
-// FlatSubproject is a rendered subproject with its full inheritance context.
-type FlatSubproject struct {
-	Subproject        RenderedSubproject
-	Video             *Video
-	ProjectTitle      string
-	ProjectType       ProjectType
-	InheritedTechTags []TechTag
-	Index             int
-}
-
-// FlattenSubprojects returns all subprojects across all rendered projects in order.
-func FlattenSubprojects(projects []RenderedProject) []FlatSubproject {
-	var result []FlatSubproject
-	idx := 0
-	for _, p := range projects {
-		for _, sec := range p.Subsections {
-			inherited := MergeTechTags(p.TechTags, sec.TechTags)
-			for _, b := range sec.Bullets {
-				result = append(result, FlatSubproject{
-					Subproject:        b.Subproject,
-					ProjectTitle:      p.Title,
-					ProjectType:       p.Type,
-					InheritedTechTags: inherited,
-					Index:             idx,
-				})
-				idx++
-			}
-			for _, c := range sec.Cards {
-				result = append(result, FlatSubproject{
-					Subproject:        c.Subproject,
-					ProjectTitle:      p.Title,
-					ProjectType:       p.Type,
-					InheritedTechTags: inherited,
-					Index:             idx,
-				})
-				idx++
-			}
-			if sec.Major != nil {
-				result = append(result, FlatSubproject{
-					Subproject:        sec.Major.Subproject,
-					Video:             sec.Major.Video,
-					ProjectTitle:      p.Title,
-					ProjectType:       p.Type,
-					InheritedTechTags: inherited,
-					Index:             idx,
-				})
-				idx++
-			}
-		}
-	}
-	return result
-}
-
 // AllFocuses returns the deduplicated set of all focuses used across all projects.
 func AllFocuses(projects []Project) []Focus {
 	seen := map[Focus]bool{}
