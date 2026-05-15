@@ -92,8 +92,6 @@ func runGenerate() {
 	jobs := filterJobs(rendered)
 	nonJobProjects := filterNonJobs(rendered)
 	allFocuses := AllFocuses(projects)
-	flatSps := FlattenSubprojects(rendered)
-	_ = flatSps // available for future use
 
 	// ── Render pages ─────────────────────────────────────────────────
 	type pageSpec struct {
