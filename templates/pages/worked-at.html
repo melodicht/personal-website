@@ -1,11 +1,7 @@
 {{define "worked-at-content"}}
-{{range $i, $job := .Jobs}}
-{{template "job-detail" dict "Project" $job "Index" $i}}
-{{end}}
-{{end}}
-
-{{define "worked-at-scripts"}}
-<script src="/static/worked-at.js"></script>
+<main class="col-content">
+  <p class="worked-at-placeholder">Select a job to view details.</p>
+</main>
 {{end}}
 
-{{define "worked-at.html"}}{{template "base" dict "Nav" .Nav "Signals" .Signals "Picker" "job-picker" "Content" "worked-at-content" "Scripts" "worked-at-scripts" "Jobs" .Jobs}}{{end}}
+{{define "worked-at.html"}}{{template "base" dict "Nav" .Nav "Signals" .Signals "Picker" "job-picker" "Content" "worked-at-content" "Jobs" .Jobs}}{{end}}

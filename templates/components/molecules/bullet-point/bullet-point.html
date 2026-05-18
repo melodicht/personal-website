@@ -7,3 +7,13 @@
   </p>
 </li>
 {{end}}
+
+{{define "bullet-point-anchored"}}
+{{- $own := OwnTechTags .Subproject .InheritedTechTags -}}
+<li class="bullet-point" id="{{TitleSlug .Subproject.Title}}">
+  <p class="bullet-point-text">
+    {{range .Subproject.ParsedDescription}}{{if .IsChip}}<span class="chip chip--tech chip--inline">{{.Value}}</span>{{else}}{{.Value}}{{end}}{{end}}
+    {{range $own}}<span class="chip chip--tech chip--inline">{{.}}</span> {{end}}
+  </p>
+</li>
+{{end}}

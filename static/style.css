@@ -230,6 +230,8 @@
   border-radius: 0 8px 8px 0;
   transition: background 0.15s;
   white-space: nowrap;
+  text-decoration: none;
+  color: inherit;
 }
 
 .job-cell:hover {
@@ -601,6 +603,20 @@
 }
 
 /* templates\layout\base.css */
+/* ── Cross-document view transitions ─────────────────────────────── */
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition {
+    navigation: auto;
+  }
+}
+
+/* ── Card link wrapper (I do page) ───────────────────────────────── */
+.card-link-wrapper {
+  display: contents;
+  text-decoration: none;
+  color: inherit;
+}
+
 /* ── Reset & base ─────────────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -706,6 +722,8 @@ body {
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   transition: background 0.15s, border-color 0.15s;
+  text-decoration: none;
+  color: inherit;
 }
 
 .card:hover {

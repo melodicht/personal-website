@@ -1,0 +1,29 @@
+{{define "subsection-anchored"}}
+{{- $inherited := MergeTechTags .ProjectTechTags .Subsection.TechTags -}}
+<div class="subsection">
+  <div class="subsection-heading">
+    {{.Subsection.Title}}
+    {{range .Subsection.TechTags}}<span class="chip chip--tech">{{.}}</span>{{end}}
+  </div>
+  {{if .Subsection.Bullets}}
+  <ul class="subsection-bullet-list">
+    {{range .Subsection.Bullets}}
+    {{template "bullet-point-anchored" dict "Subproject" .Subproject "InheritedTechTags" $inherited}}
+    {{end}}
+  </ul>
+  {{else if .Subsection.Cards}}
+  <div class="subproject-list">
+    {{range .Subsection.Cards}}
+    <div id="{{TitleSlug .Subproject.Title}}">
+      {{template "subproject-card" dict "Subproject" .Subproject "InheritedTechTags" $inherited "Index" 0}}
+    </div>
+    {{end}}
+  </div>
+  {{else if .Subsection.Major}}
+  <div id="{{TitleSlug .Subsection.Major.Subproject.Title}}">
+    {{template "major-subproject" dict "Subproject" .Subsection.Major.Subproject "Video" .Subsection.Major.Video "InheritedTechTags" $inherited}}
+  </div>
+  {{end}}
+  {{if .Subsection.SourceCode}}{{template "source-code-link" .Subsection.SourceCode}}{{end}}
+</div>
+{{end}}

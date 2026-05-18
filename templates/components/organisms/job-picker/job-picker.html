@@ -1,16 +1,15 @@
 {{define "job-picker"}}
 <div class="col-picker" id="col-picker">
-  <div class="job-list" id="job-list" data-effect="snapToJob($jobFocus)">
-    {{range $i, $job := .Jobs}}
-    {{- $exp := $job.Specifics.Job -}}
+  <div class="job-list" id="job-list">
+    {{range .Jobs}}
+    {{- $exp := .Specifics.Job -}}
     {{- $end := "Present" -}}{{if $exp.DateRange.End}}{{$end = deref $exp.DateRange.End}}{{end}}
-    <div class="job-cell"
-         data-on:click="$jobFocus = {{$i}}"
-         data-class='{"job-cell--active": $jobFocus === {{$i}}}'>
+    {{- $active := "" -}}{{if and $.Job (eq .URLSlug $.Job.URLSlug)}}{{$active = " job-cell--active"}}{{end}}
+    <a class="job-cell{{$active}}" href="/i-worked-at/{{.URLSlug}}">
       <span class="job-cell-company">{{$exp.Company}}</span>
       <span class="job-cell-role">{{$exp.Role}}</span>
       <span class="job-cell-range">{{$exp.DateRange.Start}} – {{$end}}</span>
-    </div>
+    </a>
     {{end}}
   </div>
 </div>

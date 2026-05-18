@@ -1,10 +1,10 @@
 {{define "worked-on-content"}}
-<div data-show="$selectedProject === -1">
+<main class="col-content">
   {{range $cat, $projects := .ProjectsByCategory}}
   <h2 class="category-heading">{{$cat}}</h2>
   <div class="card-grid">
     {{range $projects}}
-    <article class="card" data-on:click="$selectedProject = {{.GlobalIndex}}" style="cursor:pointer">
+    <a class="card" href="/i-worked-on/{{.URLSlug}}">
       <div class="card-body">
         <h3 class="card-title">{{.Title}}</h3>
         <p class="card-desc">{{.Description}}</p>
@@ -12,14 +12,11 @@
       <div class="card-footer">
         {{range .Focuses}}<span class="chip">{{.}}</span>{{end}}
       </div>
-    </article>
+    </a>
     {{end}}
   </div>
   {{end}}
-</div>
-{{range $i, $p := .NonJobProjects}}
-{{template "project-detail" dict "Project" $p.RenderedProject "Index" $i}}
-{{end}}
+</main>
 {{end}}
 
-{{define "worked-on.html"}}{{template "base" dict "Nav" .Nav "Signals" .Signals "Content" "worked-on-content" "NonJobProjects" .NonJobProjects "ProjectsByCategory" .ProjectsByCategory}}{{end}}
+{{define "worked-on.html"}}{{template "base" dict "Nav" .Nav "Signals" .Signals "Content" "worked-on-content" "ProjectsByCategory" .ProjectsByCategory}}{{end}}

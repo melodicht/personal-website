@@ -19,6 +19,8 @@
   border-radius: 0 8px 8px 0;
   transition: background 0.15s;
   white-space: nowrap;
+  text-decoration: none;
+  color: inherit;
 }
 
 .job-cell:hover {

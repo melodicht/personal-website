@@ -1,0 +1,50 @@
+{{define "job-detail-full"}}
+{{- $job := . -}}
+{{- $exp := $job.Specifics.Job -}}
+{{- $end := "Present" -}}{{if $exp.DateRange.End}}{{$end = deref $exp.DateRange.End}}{{end}}
+<div class="job-detail">
+  <div class="job-detail-hero" style="background-image:url(/{{$exp.BackgroundImage}})">
+    <div class="job-detail-hero-overlay"></div>
+    <div class="job-detail-hero-content">
+      {{if $exp.PortraitImage}}
+      <img class="job-portrait" src="/{{derefImg $exp.PortraitImage}}" alt="{{$exp.Company}}" />
+      {{end}}
+      <div class="job-detail-titles">
+        <h2 class="job-detail-company">{{$exp.Company}}</h2>
+        <p class="job-detail-role">{{$exp.Role}}</p>
+        <p class="job-detail-range">{{$exp.DateRange.Start}} – {{$end}}</p>
+      </div>
+    </div>
+  </div>
+  <div class="job-detail-body">
+    <p class="job-detail-desc">{{$job.Description}}</p>
+    {{if or $job.Focuses $job.TechTags}}
+    <div class="detail-chips">
+      {{range $job.Focuses}}<span class="chip">{{.}}</span>{{end}}
+      {{range $job.TechTags}}<span class="chip chip--tech">{{.}}</span>{{end}}
+    </div>
+    {{end}}
+    {{if $job.SourceCode}}{{template "source-code-link" $job.SourceCode}}{{end}}
+    {{range $job.Subsections}}
+    {{template "subsection" dict "Subsection" . "ProjectTechTags" $job.TechTags}}
+    {{end}}
+    {{if $exp.Reviews}}
+    <h3 class="job-reviews-heading">Recommendations</h3>
+    <div class="job-reviews">
+      {{range $exp.Reviews}}
+      <div class="review">
+        <div class="review-header">
+          <img class="review-avatar" src="/{{.ProfilePicture}}" alt="{{.Name}}" />
+          <div class="review-meta">
+            <span class="review-name">{{.Name}}</span>
+            <span class="review-role">{{.Role}}</span>
+          </div>
+        </div>
+        <p class="review-text">{{.Text}}</p>
+      </div>
+      {{end}}
+    </div>
+    {{end}}
+  </div>
+</div>
+{{end}}

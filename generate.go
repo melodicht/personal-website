@@ -118,7 +118,7 @@ func runGenerate() {
 			name:     "worked-at.html",
 			outFile:  "dist/worked-at.html",
 			activeID: "worked-at",
-			signals:  `{"jobFocus": 0}`,
+			signals:  `{}`,
 			data: map[string]interface{}{
 				"Jobs": jobs,
 			},
@@ -127,9 +127,8 @@ func runGenerate() {
 			name:     "worked-on.html",
 			outFile:  "dist/worked-on.html",
 			activeID: "worked-on",
-			signals:  `{"selectedProject": -1}`,
+			signals:  `{}`,
 			data: map[string]interface{}{
-				"NonJobProjects":     indexedNonJobs(nonJobProjects),
 				"ProjectsByCategory": groupByCategory(nonJobProjects),
 			},
 		},
@@ -174,6 +173,67 @@ func runGenerate() {
 		}
 		fmt.Println("wrote", p.outFile)
 	}
+
+	// ── Per-job pages ─────────────────────────────────────────────────
+	if err := os.MkdirAll("dist/i-worked-at", 0755); err != nil {
+		fmt.Fprintf(os.Stderr, "mkdir error: %v\n", err)
+		os.Exit(1)
+	}
+	for _, job := range jobs {
+		dir := "dist/i-worked-at/" + job.URLSlug
+		if err := os.MkdirAll(dir, 0755); err != nil {
+			fmt.Fprintf(os.Stderr, "mkdir error: %v\n", err)
+			os.Exit(1)
+		}
+		pageData := map[string]interface{}{
+			"Nav":     map[string]interface{}{"ActiveMode": "worked-at", "Modes": navModes},
+			"Signals": template.HTMLAttr(`data-signals='{}'`),
+			"Effect":  template.HTMLAttr(""),
+			"Job":     job,
+			"Jobs":    jobs,
+		}
+		var buf bytes.Buffer
+		if err := tmpl.ExecuteTemplate(&buf, "job.html", pageData); err != nil {
+			fmt.Fprintf(os.Stderr, "render job %s error: %v\n", job.URLSlug, err)
+			os.Exit(1)
+		}
+		outFile := dir + "/index.html"
+		if err := os.WriteFile(outFile, buf.Bytes(), 0644); err != nil {
+			fmt.Fprintf(os.Stderr, "write %s error: %v\n", outFile, err)
+			os.Exit(1)
+		}
+		fmt.Println("wrote", outFile)
+	}
+
+	// ── Per-project pages ─────────────────────────────────────────────
+	if err := os.MkdirAll("dist/i-worked-on", 0755); err != nil {
+		fmt.Fprintf(os.Stderr, "mkdir error: %v\n", err)
+		os.Exit(1)
+	}
+	for _, p := range nonJobProjects {
+		dir := "dist/i-worked-on/" + p.URLSlug
+		if err := os.MkdirAll(dir, 0755); err != nil {
+			fmt.Fprintf(os.Stderr, "mkdir error: %v\n", err)
+			os.Exit(1)
+		}
+		pageData := map[string]interface{}{
+			"Nav":     map[string]interface{}{"ActiveMode": "worked-on", "Modes": navModes},
+			"Signals": template.HTMLAttr(`data-signals='{}'`),
+			"Effect":  template.HTMLAttr(""),
+			"Project": p,
+		}
+		var buf bytes.Buffer
+		if err := tmpl.ExecuteTemplate(&buf, "project.html", pageData); err != nil {
+			fmt.Fprintf(os.Stderr, "render project %s error: %v\n", p.URLSlug, err)
+			os.Exit(1)
+		}
+		outFile := dir + "/index.html"
+		if err := os.WriteFile(outFile, buf.Bytes(), 0644); err != nil {
+			fmt.Fprintf(os.Stderr, "write %s error: %v\n", outFile, err)
+			os.Exit(1)
+		}
+		fmt.Println("wrote", outFile)
+	}
 }
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
@@ -198,25 +258,11 @@ func filterNonJobs(ps []RenderedProject) []RenderedProject {
 	return out
 }
 
-// IndexedProject wraps a non-job rendered project with its index.
-type IndexedProject struct {
-	RenderedProject
-	GlobalIndex int
-}
-
-func indexedNonJobs(ps []RenderedProject) []IndexedProject {
-	out := make([]IndexedProject, len(ps))
-	for i, p := range ps {
-		out[i] = IndexedProject{RenderedProject: p, GlobalIndex: i}
-	}
-	return out
-}
-
-func groupByCategory(ps []RenderedProject) map[string][]IndexedProject {
-	out := map[string][]IndexedProject{}
-	for i, p := range ps {
+func groupByCategory(ps []RenderedProject) map[string][]RenderedProject {
+	out := map[string][]RenderedProject{}
+	for _, p := range ps {
 		cat := string(*p.Category)
-		out[cat] = append(out[cat], IndexedProject{RenderedProject: p, GlobalIndex: i})
+		out[cat] = append(out[cat], p)
 	}
 	return out
 }
@@ -236,6 +282,7 @@ func templateFuncs(tmplPtr **template.Template) template.FuncMap {
 			return template.HTML(buf.String()), nil
 		},
 		"FocusSlug":          FocusSlug,
+		"TitleSlug":          TitleSlug,
 		"MergeTechTags":      MergeTechTags,
 		"OwnTechTags":        OwnTechTags,
 		"EffectiveTechTags":  EffectiveTechTags,

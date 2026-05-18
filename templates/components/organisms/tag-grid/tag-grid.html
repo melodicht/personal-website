@@ -11,8 +11,9 @@
     {{if .Major}}{{if HasFocus .Major.Subproject .Major.Subproject.Focuses $p.Focuses $focus}}{{$hasMatch = true}}{{end}}{{end}}
   {{end}}
   {{if $hasMatch}}
-  {{- $url := "/worked-on.html" -}}{{if eq $p.Type "Job"}}{{$url = "/worked-at.html"}}{{end}}
-  <a class="card-group-header" href="{{$url}}">
+  {{- $baseURL := "" -}}
+  {{if eq $p.Type "Job"}}{{$baseURL = (printf "/i-worked-at/%s" $p.URLSlug)}}{{else}}{{$baseURL = (printf "/i-worked-on/%s" $p.URLSlug)}}{{end}}
+  <a class="card-group-header" href="{{$baseURL}}">
     <span class="card-group-title">{{.Title}}</span>
     <span class="chip detail-type-badge--{{lower .Type}}">{{.Type}}</span>
     {{range .TechTags}}<span class="chip chip--tech">{{.}}</span>{{end}}
@@ -24,19 +25,25 @@
     {{- $sec := . -}}
     {{range .Bullets}}
       {{if HasFocus .Subproject .Subproject.Focuses $p.Focuses $focus}}
-      {{template "subproject-card" dict "Subproject" .Subproject "InheritedTechTags" (MergeTechTags $p.TechTags $sec.TechTags) "Index" $cardIdx}}
+      <a href="{{$baseURL}}#{{TitleSlug .Subproject.Title}}" class="card-link-wrapper">
+        {{template "subproject-card" dict "Subproject" .Subproject "InheritedTechTags" (MergeTechTags $p.TechTags $sec.TechTags) "Index" $cardIdx}}
+      </a>
       {{$cardIdx = add $cardIdx 1}}
       {{end}}
     {{end}}
     {{range .Cards}}
       {{if HasFocus .Subproject .Subproject.Focuses $p.Focuses $focus}}
-      {{template "subproject-card" dict "Subproject" .Subproject "InheritedTechTags" (MergeTechTags $p.TechTags $sec.TechTags) "Index" $cardIdx}}
+      <a href="{{$baseURL}}#{{TitleSlug .Subproject.Title}}" class="card-link-wrapper">
+        {{template "subproject-card" dict "Subproject" .Subproject "InheritedTechTags" (MergeTechTags $p.TechTags $sec.TechTags) "Index" $cardIdx}}
+      </a>
       {{$cardIdx = add $cardIdx 1}}
       {{end}}
     {{end}}
     {{if .Major}}
       {{if HasFocus .Major.Subproject .Major.Subproject.Focuses $p.Focuses $focus}}
-      {{template "subproject-card" dict "Subproject" .Major.Subproject "InheritedTechTags" (MergeTechTags $p.TechTags $sec.TechTags) "Index" $cardIdx}}
+      <a href="{{$baseURL}}#{{TitleSlug .Major.Subproject.Title}}" class="card-link-wrapper">
+        {{template "subproject-card" dict "Subproject" .Major.Subproject "InheritedTechTags" (MergeTechTags $p.TechTags $sec.TechTags) "Index" $cardIdx}}
+      </a>
       {{$cardIdx = add $cardIdx 1}}
       {{end}}
     {{end}}

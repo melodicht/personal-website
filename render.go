@@ -185,6 +185,7 @@ type RenderedSubsection struct {
 
 type RenderedProject struct {
 	Title       string
+	URLSlug     string
 	Description string
 	Type        ProjectType
 	Specifics   ProjectTypeSpecifics
@@ -230,6 +231,7 @@ func RenderProject(p Project) RenderedProject {
 	}
 	return RenderedProject{
 		Title:       p.Title,
+		URLSlug:     ProjectSlug(p),
 		Description: p.Description,
 		Type:        p.Type,
 		Specifics:   p.Specifics,
@@ -306,6 +308,34 @@ func AllFocuses(projects []Project) []Focus {
 // FocusSlug converts a focus string to a URL/ID-safe slug.
 func FocusSlug(f Focus) string {
 	return strings.ReplaceAll(strings.ToLower(string(f)), " ", "-")
+}
+
+// TitleSlug converts a title string to a URL/ID-safe slug.
+func TitleSlug(s string) string {
+	// lowercase, replace spaces with hyphens, strip non-alphanumeric-or-hyphen chars
+	s = strings.ToLower(s)
+	s = strings.ReplaceAll(s, " ", "-")
+	var b strings.Builder
+	for _, r := range s {
+		if (r >= 'a' && r <= 'z') || (r >= '0' && r <= '9') || r == '-' {
+			b.WriteRune(r)
+		}
+	}
+	// collapse multiple hyphens
+	result := b.String()
+	for strings.Contains(result, "--") {
+		result = strings.ReplaceAll(result, "--", "-")
+	}
+	return strings.Trim(result, "-")
+}
+
+// ProjectSlug returns the URL slug for a project — URLSlug if set, otherwise
+// derived from the title via TitleSlug.
+func ProjectSlug(p Project) string {
+	if p.URLSlug != "" {
+		return p.URLSlug
+	}
+	return TitleSlug(p.Title)
 }
 
 // CardAnimationDelay returns the CSS animation-delay for a card at position i (0-based).

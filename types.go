@@ -216,6 +216,7 @@ type Subsection struct {
 // Focuses and TechTags are inherited by all subsections and their subprojects.
 type Project struct {
 	Title       string               `json:"title"`
+	URLSlug     string               `json:"urlSlug,omitempty"`
 	Description string               `json:"description"`
 	Type        ProjectType          `json:"type"`
 	Specifics   ProjectTypeSpecifics `json:"specifics"`

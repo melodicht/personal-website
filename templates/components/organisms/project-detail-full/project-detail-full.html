@@ -1,0 +1,56 @@
+{{define "project-detail-full"}}
+{{- $p := . -}}
+<div class="project-detail">
+  <div class="detail-header">
+    <span class="detail-type-badge detail-type-badge--{{lower $p.Type}}">{{$p.Type}}</span>
+    <h2 class="detail-title">{{$p.Title}}</h2>
+    {{if $p.Focuses}}
+    <div class="detail-chips">
+      {{range $p.Focuses}}<span class="chip">{{.}}</span>{{end}}
+    </div>
+    {{end}}
+    {{if $p.TechTags}}
+    <div class="detail-chips">
+      {{range $p.TechTags}}<span class="chip chip--tech">{{.}}</span>{{end}}
+    </div>
+    {{end}}
+    {{if $p.SourceCode}}{{template "source-code-link" $p.SourceCode}}{{end}}
+  </div>
+  <p class="detail-desc">{{$p.Description}}</p>
+  {{range $p.Subsections}}
+  {{template "subsection-anchored" dict "Subsection" . "ProjectTechTags" $p.TechTags}}
+  {{end}}
+  {{if $p.Specifics.NonJob}}
+  {{- $nj := $p.Specifics.NonJob -}}
+  {{- $hasReflection := or $nj.WhatWentWell $nj.WhatCouldBeBetter $nj.WhatILearned -}}
+  {{if $hasReflection}}
+  <div class="detail-reflection">
+    {{if $nj.WhatWentWell}}
+    <div class="detail-reflection-block">
+      <h4 class="detail-reflection-heading">What went well</h4>
+      <ul class="detail-reflection-list">
+        {{range $nj.WhatWentWell}}<li>{{.}}</li>{{end}}
+      </ul>
+    </div>
+    {{end}}
+    {{if $nj.WhatCouldBeBetter}}
+    <div class="detail-reflection-block">
+      <h4 class="detail-reflection-heading">What could be better</h4>
+      <ul class="detail-reflection-list">
+        {{range $nj.WhatCouldBeBetter}}<li>{{.}}</li>{{end}}
+      </ul>
+    </div>
+    {{end}}
+    {{if $nj.WhatILearned}}
+    <div class="detail-reflection-block">
+      <h4 class="detail-reflection-heading">What I learned</h4>
+      <ul class="detail-reflection-list">
+        {{range $nj.WhatILearned}}<li>{{.}}</li>{{end}}
+      </ul>
+    </div>
+    {{end}}
+  </div>
+  {{end}}
+  {{end}}
+</div>
+{{end}}

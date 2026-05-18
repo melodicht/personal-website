@@ -1,0 +1,12 @@
+{{define "job-page-content"}}
+{{template "job-picker" .}}
+<main class="col-content">
+  {{template "job-detail-full" .Job}}
+</main>
+{{end}}
+
+{{define "job-page-scripts"}}
+<script src="/static/worked-at.js"></script>
+{{end}}
+
+{{define "job.html"}}{{template "base" dict "Nav" .Nav "Signals" .Signals "Content" "job-page-content" "Scripts" "job-page-scripts" "Job" .Job "Jobs" .Jobs}}{{end}}
