@@ -1,3 +1,15 @@
+/* ── Anchor target highlight ─────────────────────────────────────── */
+:target {
+  scroll-margin-top: 2rem;
+  animation: targetHighlight 3.0s ease;
+  border-radius: 8px;
+}
+
+@keyframes targetHighlight {
+  0%   { background: rgba(169, 159, 240, 0.25); }
+  100% { background: transparent; }
+}
+
 /* ── Cross-document view transitions ─────────────────────────────── */
 @media (prefers-reduced-motion: no-preference) {
   @view-transition {

@@ -26,7 +26,7 @@
     {{end}}
     {{if $job.SourceCode}}{{template "source-code-link" $job.SourceCode}}{{end}}
     {{range $job.Subsections}}
-    {{template "subsection" dict "Subsection" . "ProjectTechTags" $job.TechTags}}
+    {{template "subsection-anchored" dict "Subsection" . "ProjectTechTags" $job.TechTags}}
     {{end}}
     {{if $exp.Reviews}}
     <h3 class="job-reviews-heading">Recommendations</h3>
