@@ -1,7 +1,5 @@
 {{define "project-page-content"}}
-<main class="col-content">
-  {{template "project-detail-full" .Project}}
-</main>
+{{template "project-detail-full" .Project}}
 {{end}}
 
 {{define "project.html"}}{{template "base" dict "Nav" .Nav "Signals" .Signals "Content" "project-page-content" "Project" .Project}}{{end}}

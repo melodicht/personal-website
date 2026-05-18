@@ -16,7 +16,6 @@
   <div id="app" {{.Signals}}{{if .Effect}} data-effect="{{.Effect}}"{{end}}>
     <div class="layout">
       {{template "nav" .Nav}}
-      <!-- DEBUG: Picker={{.Picker}} Content={{.Content}} -->
       {{if .Picker}}{{execTemplate .Picker .}}{{end}}
       <main class="col-content">
         {{if .Content}}{{execTemplate .Content .}}{{end}}
