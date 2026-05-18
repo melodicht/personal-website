@@ -121,6 +121,7 @@ func runGenerate() {
 			signals:  `{}`,
 			data: map[string]interface{}{
 				"Jobs": jobs,
+				"Job":  jobs[0],
 			},
 		},
 		{

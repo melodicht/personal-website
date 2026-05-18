@@ -1,7 +1,1 @@
-{{define "worked-at-content"}}
-<main class="col-content">
-  <p class="worked-at-placeholder">Select a job to view details.</p>
-</main>
-{{end}}
-
-{{define "worked-at.html"}}{{template "base" dict "Nav" .Nav "Signals" .Signals "Picker" "job-picker" "Content" "worked-at-content" "Jobs" .Jobs}}{{end}}
+{{define "worked-at.html"}}{{template "base" dict "Nav" .Nav "Signals" .Signals "Picker" "job-picker" "Content" "job-page-content" "Scripts" "job-page-scripts" "Job" .Job "Jobs" .Jobs}}{{end}}
