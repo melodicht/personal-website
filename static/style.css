@@ -810,13 +810,16 @@ body {
 .card-footer { display: flex; align-items: center; flex-wrap: wrap; gap: 0.4rem; margin-top: auto; }
 
 /* ── Bio / contact ───────────────────────────────────────────────── */
-.bio {
-  max-width: 60ch;
+#bio {
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  gap: 0.5rem;
+  text-align: center;
 }
-.bio p { font-size: 1rem; color: var(--text-muted); line-height: 1.75; }
+#bio p { font-size: 1rem; color: var(--text-muted); line-height: 1.75; }
 
 /* ── Mobile ──────────────────────────────────────────────────────── */
 @media (max-width: 680px) {
