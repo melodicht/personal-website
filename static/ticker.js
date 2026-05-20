@@ -21,7 +21,7 @@
     activeBg = activeBg === "a" ? "b" : "a";
   }
 
-  // ── Grid swap with View Transition ───────────────────────────────
+  // ── Grid swap  ────────────────────────────────────────────────────
   let currentFocus = null;
 
   function swapGrid(slug) {
@@ -32,11 +32,12 @@
       container.innerHTML = "";
       container.appendChild(tmpl.content.cloneNode(true));
     };
-    if (document.startViewTransition) {
-      document.startViewTransition(doSwap);
-    } else {
+    // NOTE(marvin): Disabling view transition because of the lag it causes.
+    // if (document.startViewTransition) {
+      // document.startViewTransition(doSwap);
+    // } else {
       doSwap();
-    }
+    // }
   }
 
   // ── Ticker scroll ─────────────────────────────────────────────────

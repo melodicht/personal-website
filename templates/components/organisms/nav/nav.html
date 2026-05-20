@@ -1,6 +1,6 @@
 {{define "nav"}}
 {{- $active := .ActiveMode -}}
-<nav class="col-nav">
+<nav class="col-nav" id="nav-bar">
   <div class="nav-ticker" id="nav-ticker">
     {{range .Modes}}
     <a class="nav-item{{if eq .ID $active}} nav-item--active{{end}}"

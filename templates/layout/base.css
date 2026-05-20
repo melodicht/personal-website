@@ -11,34 +11,65 @@
 }
 
 /* ── Cross-document view transitions ─────────────────────────────── */
+
+
+/*
+NOTE(marvin): Disabling view transitions because there is a white flash when transitioning between pages.
+
 @media (prefers-reduced-motion: no-preference) {
   @view-transition {
     navigation: auto;
   }
 
-  ::view-transition {
-    background: var(--bg);
+  :root {
+    view-transition-name: none;
   }
 
-  ::view-transition-old(root) {
-    animation: fadeOut 0.15s ease forwards;
+  #nav-bar {
+    view-transition-name: nav-bar;
   }
 
-  ::view-transition-new(root) {
-    animation: fadeIn 0.15s ease forwards;
-    animation-delay: 0.15s;
+  #non-nav {
+    view-transition-name: non-nav;
   }
 
-  @keyframes fadeOut {
-    from { opacity: 1; }
-    to   { opacity: 0; }
+  ::view-transition-group(nav-bar) {
+    animation: none;
   }
 
-  @keyframes fadeIn {
-    from { opacity: 0; }
-    to   { opacity: 1; }
+  ::view-transition-old(nav-bar) {
+    display: none;
   }
+
+  ::view-transition-new(nav-bar) {
+    animation: none;
+  }
+
+   ::view-transition {
+     background: var(--bg);
+   }
+ 
+   ::view-transition-old(root) {
+     animation: fadeOut 0.15s ease forwards;
+   }
+ 
+   ::view-transition-new(root) {
+     animation: fadeIn 0.15s ease forwards;
+     animation-delay: 0.15s;
+   }
+ 
+   @keyframes fadeOut {
+     from { opacity: 1; }
+     to   { opacity: 0; }
+   }
+ 
+   @keyframes fadeIn {
+     from { opacity: 0; }
+     to   { opacity: 1; }
+   }
 }
+
+*/
 
 /* ── Card link wrapper (I do page) ───────────────────────────────── */
 .card-link-wrapper {
@@ -102,6 +133,13 @@ body {
 
 .layout {
   display: flex;
+  height: 100vh;
+}
+
+#non-nav {
+  flex: 1;
+  display: flex;
+  min-width: 0;
   height: 100vh;
 }
 

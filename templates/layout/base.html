@@ -16,10 +16,12 @@
   <div id="app" {{.Signals}}{{if .Effect}} data-effect="{{.Effect}}"{{end}}>
     <div class="layout">
       {{template "nav" .Nav}}
-      {{if .Picker}}{{execTemplate .Picker .}}{{end}}
-      <main class="col-content">
-        {{if .Content}}{{execTemplate .Content .}}{{end}}
-      </main>
+      <div id="non-nav">
+        {{if .Picker}}{{execTemplate .Picker .}}{{end}}
+        <main class="col-content">
+          {{if .Content}}{{execTemplate .Content .}}{{end}}
+        </main>
+      </div>
     </div>
   </div>
 
