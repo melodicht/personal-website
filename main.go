@@ -10,7 +10,7 @@ import (
 const port = 8080
 
 func main() {
-	generate := flag.Bool("generate", false, "generate static site into dist/ and exit")
+	generate := flag.Bool("generate", false, "generate static site into docs/ and exit")
 	flag.Parse()
 
 	if *generate {
@@ -22,9 +22,9 @@ func main() {
 }
 
 func runServer() {
-	// Serve the generated static site from dist/ and static assets from static/
+	// Serve the generated static site from docs/ and static assets from static/
 	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
-	http.Handle("/", http.FileServer(http.Dir("dist")))
+	http.Handle("/", http.FileServer(http.Dir("docs")))
 
 	addr := fmt.Sprintf(":%d", port)
 	log.Println("Listening on http://localhost" + addr)

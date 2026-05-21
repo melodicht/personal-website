@@ -12,7 +12,7 @@ A statically-generated personal portfolio site using Go templates and Datastar.
 ## Run locally
 
 ```bash
-# Generate the static site (writes dist/ and static/style.css)
+# Generate the static site (writes docs/ and static/style.css)
 go run . -generate
 
 # Serve it
@@ -38,7 +38,7 @@ Open http://localhost:8080
 ├── render.go                   # Go-side rendering helpers (RenderDescription, etc.)
 ├── generate.go                 # Static site generator (template rendering, CSS concat)
 ├── generate_data.go            # Project data definitions
-├── main.go                     # Dev server (serves dist/ and static/)
+├── main.go                     # Dev server (serves docs/ and static/)
 │
 ├── templates/
 │   ├── layout/
@@ -71,7 +71,7 @@ Open http://localhost:8080
 │   ├── ticker.js               # Ticker animation and grid swap (index page only)
 │   └── worked-at.js            # snapToJob helper (worked-at page only)
 │
-└── dist/                       # AUTO-GENERATED — output of go run . -generate
+└── docs/                       # AUTO-GENERATED — output of go run . -generate
 ```
 
 ## CSS scope

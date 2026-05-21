@@ -106,7 +106,7 @@ func runGenerate() {
 	pages := []pageSpec{
 		{
 			name:     "index.html",
-			outFile:  "dist/index.html",
+			outFile:  "docs/index.html",
 			activeID: "do",
 			signals:  `{}`,
 			data: map[string]interface{}{
@@ -116,7 +116,7 @@ func runGenerate() {
 		},
 		{
 			name:     "worked-at.html",
-			outFile:  "dist/worked-at.html",
+			outFile:  "docs/worked-at.html",
 			activeID: "worked-at",
 			signals:  `{}`,
 			data: map[string]interface{}{
@@ -126,7 +126,7 @@ func runGenerate() {
 		},
 		{
 			name:     "worked-on.html",
-			outFile:  "dist/worked-on.html",
+			outFile:  "docs/worked-on.html",
 			activeID: "worked-on",
 			signals:  `{}`,
 			data: map[string]interface{}{
@@ -135,22 +135,22 @@ func runGenerate() {
 		},
 		{
 			name:     "about.html",
-			outFile:  "dist/about.html",
+			outFile:  "docs/about.html",
 			activeID: "about",
 			signals:  `{}`,
 			data:     map[string]interface{}{},
 		},
 		{
 			name:     "contact.html",
-			outFile:  "dist/contact.html",
+			outFile:  "docs/contact.html",
 			activeID: "contact",
 			signals:  `{}`,
 			data:     map[string]interface{}{},
 		},
 	}
 
-	if err := os.MkdirAll("dist", 0755); err != nil {
-		fmt.Fprintf(os.Stderr, "mkdir dist error: %v\n", err)
+	if err := os.MkdirAll("docs", 0755); err != nil {
+		fmt.Fprintf(os.Stderr, "mkdir docs error: %v\n", err)
 		os.Exit(1)
 	}
 
@@ -176,12 +176,12 @@ func runGenerate() {
 	}
 
 	// ── Per-job pages ─────────────────────────────────────────────────
-	if err := os.MkdirAll("dist/i-worked-at", 0755); err != nil {
+	if err := os.MkdirAll("docs/i-worked-at", 0755); err != nil {
 		fmt.Fprintf(os.Stderr, "mkdir error: %v\n", err)
 		os.Exit(1)
 	}
 	for _, job := range jobs {
-		dir := "dist/i-worked-at/" + job.URLSlug
+		dir := "docs/i-worked-at/" + job.URLSlug
 		if err := os.MkdirAll(dir, 0755); err != nil {
 			fmt.Fprintf(os.Stderr, "mkdir error: %v\n", err)
 			os.Exit(1)
@@ -207,12 +207,12 @@ func runGenerate() {
 	}
 
 	// ── Per-project pages ─────────────────────────────────────────────
-	if err := os.MkdirAll("dist/i-worked-on", 0755); err != nil {
+	if err := os.MkdirAll("docs/i-worked-on", 0755); err != nil {
 		fmt.Fprintf(os.Stderr, "mkdir error: %v\n", err)
 		os.Exit(1)
 	}
 	for _, p := range nonJobProjects {
-		dir := "dist/i-worked-on/" + p.URLSlug
+		dir := "docs/i-worked-on/" + p.URLSlug
 		if err := os.MkdirAll(dir, 0755); err != nil {
 			fmt.Fprintf(os.Stderr, "mkdir error: %v\n", err)
 			os.Exit(1)
