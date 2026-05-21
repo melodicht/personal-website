@@ -12,6 +12,8 @@
   // ── Background crossfade ──────────────────────────────────────────
   let activeBg = "a";
   function setBackground(slug) {
+    /*
+      TODO(marvin): Disabling background crossfade for now due to laziness.
     const url = "/static/images/tags/" + slug + "." + EXT;
     const inc = activeBg === "a" ? "bg-b" : "bg-a";
     const out = activeBg === "a" ? "bg-a" : "bg-b";
@@ -19,6 +21,7 @@
     document.getElementById(inc).style.opacity = "1";
     document.getElementById(out).style.opacity = "0";
     activeBg = activeBg === "a" ? "b" : "a";
+    */
   }
 
   // ── Grid swap  ────────────────────────────────────────────────────

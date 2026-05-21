@@ -15,8 +15,8 @@ var projects = []Project{
 			Job: &JobExperience{
 				Company:         "Eyebot",
 				Role:            "Software Engineer Intern",
-				BackgroundImage: "static/images/jobs/eyebot-bg.jpg",
-				PortraitImage:   imgPtr("static/images/jobs/eyebot-portrait.jpg"),
+				// BackgroundImage: "static/images/jobs/eyebot-bg.jpg",
+				// PortraitImage:   imgPtr("static/images/jobs/eyebot-portrait.jpg"),
 				DateRange:       DateRange{Start: "May 2025", End: strPtr("Dec 2025")},
 				Website:         strPtr("https://www.eyebot.co/"),
 				Reviews: []Review{
@@ -139,7 +139,7 @@ var projects = []Project{
 			Job: &JobExperience{
 				Company:         "AirAsia",
 				Role:            "Software Engineer Apprentice",
-				BackgroundImage: "static/images/jobs/airasia-bg.jpg",
+				// BackgroundImage: "static/images/jobs/airasia-bg.jpg",
 				DateRange:       DateRange{Start: "Nov 2023", End: strPtr("Aug 2024")},
 				Website:         strPtr("https://ikhlas.com/en/gb"),
 				Reviews: []Review{},
@@ -214,7 +214,7 @@ var projects = []Project{
 			Job: &JobExperience{
 				Company:         "Khoury College",
 				Role:            "Teaching Assistant",
-				BackgroundImage: "static/images/jobs/khoury-bg.jpg",
+				// BackgroundImage: "static/images/jobs/khoury-bg.jpg",
 				DateRange:       DateRange{Start: "Sep 2022", End: strPtr("Apr 2026")},
 				Reviews:         []Review{},
 			},
