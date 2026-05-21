@@ -1,3 +1,9 @@
+.project-detail {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
 .detail-header {
   display: flex;
   flex-direction: column;

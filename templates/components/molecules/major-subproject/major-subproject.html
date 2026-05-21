@@ -1,7 +1,9 @@
 {{define "major-subproject"}}
 {{- $eff := EffectiveTechTags .Subproject .InheritedTechTags -}}
 <div class="major-subproject">
+  <!--
   {{if .Subproject.Title}}<h4 class="major-subproject-title">{{.Subproject.Title}}</h4>{{end}}
+   -->
   {{if $eff}}
   <div class="major-subproject-chips">
     {{range $eff}}<span class="chip chip--tech">{{.}}</span>{{end}}

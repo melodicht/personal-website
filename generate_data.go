@@ -20,22 +20,10 @@ var projects = []Project{
 				DateRange:       DateRange{Start: "May 2025", End: strPtr("Dec 2025")},
 				Reviews: []Review{
 					{
-						ProfilePicture: "static/images/reviews/eyebot-manager.jpg",
-						Name:           "Sarah Chen",
-						Role:           "Engineering Manager, Eyebot",
-						Text:           "Marvin joined us mid-sprint and was shipping production code within the first week. His ability to reason about low-latency systems and communicate trade-offs clearly made him an asset to the team. I'd hire him full-time without hesitation.",
-					},
-					{
-						ProfilePicture: "static/images/reviews/eyebot-peer1.jpg",
-						Name:           "James Okafor",
-						Role:           "Senior Software Engineer, Eyebot",
-						Text:           "Working alongside Marvin was a genuine pleasure. He took ownership of the game engine integration end-to-end, asked sharp questions, and consistently delivered clean, well-documented code. A rare intern who makes the people around him better.",
-					},
-					{
-						ProfilePicture: "static/images/reviews/eyebot-peer2.jpg",
-						Name:           "Priya Nair",
-						Role:           "Software Engineer, Eyebot",
-						Text:           "Marvin has an impressive range — he could jump between writing a performant Go service in the morning and debugging a gnarly rendering issue in the afternoon. He's also just a great person to have on a team.",
+						ProfilePicture: "static/images/reviews/erin-burba.jpg",
+						Name:           "Erin Burba",
+						Role:           "Lead Software Engineer",
+						Text:           "Marvin was an excellent teammate at Eyebot during a very dynamic season for the company. He immediately dove into mission-critical projects with no boundaries of expertise or job description. Depending on the day, Marvin could be found optimizing algorithms, building new web tools, or building physical kiosks, always ready to learn a new topic or skill to reach our objectives. Throughout the internship Marvin showed consistent growth as an engineer and a professional, integrating into the team and demonstrating adaptation to our fast-paced workflows. I can't write this without also mentioning Marvin's contributions to the team culture: we miss his well-timed humor, unstoppable positive attitude, and helpful kindness to teammates in any department.\n\nI welcome anyone considering Marvin for a role to contact me for a recommendation or specific question.",
 					},
 				},
 			},
@@ -152,14 +140,7 @@ var projects = []Project{
 				Role:            "Software Engineer Apprentice",
 				BackgroundImage: "static/images/jobs/airasia-bg.jpg",
 				DateRange:       DateRange{Start: "Nov 2023", End: strPtr("Aug 2024")},
-				Reviews: []Review{
-					{
-						ProfilePicture: "static/images/reviews/airasia-manager.jpg",
-						Name:           "Wei Liang Tan",
-						Role:           "Tech Lead, AirAsia Platform",
-						Text:           "Marvin was one of the strongest apprentices we've had on the platform team. He picked up our internal tooling stack quickly and delivered the weekly digest feature with minimal guidance. His code quality and attention to edge cases were well above what we'd typically expect at this stage.",
-					},
-				},
+				Reviews: []Review{},
 			},
 		},
 		Subsections: []Subsection{
@@ -232,7 +213,7 @@ var projects = []Project{
 				Company:         "Khoury College",
 				Role:            "Teaching Assistant",
 				BackgroundImage: "static/images/jobs/khoury-bg.jpg",
-				DateRange:       DateRange{Start: "Sep 2022", End: nil},
+				DateRange:       DateRange{Start: "Sep 2022", End: strPtr("Apr 2026")},
 				Reviews:         []Review{},
 			},
 		},
@@ -305,9 +286,9 @@ var projects = []Project{
 		TechTags:    []TechTag{TechTagTypedRacket},
 		Specifics: ProjectTypeSpecifics{
 			NonJob: &NonJobExperience{
-				WhatWentWell:      []string{"Macros for tests, nice organization"},
-				WhatCouldBeBetter: []string{"The macros could be better"},
-				WhatILearned:      []string{"Making a language via a machine, logic, "},
+				WhatWentWell:      []string{},
+				WhatCouldBeBetter: []string{},
+				WhatILearned:      []string{},
 			},
 		},
 		Subsections: []Subsection{
@@ -395,9 +376,9 @@ var projects = []Project{
 		TechTags:    []TechTag{TechTagRacket},
 		Specifics: ProjectTypeSpecifics{
 			NonJob: &NonJobExperience{
-				WhatWentWell:      []string{"Fairly good organization, network/logic interactions with that design pattern"},
-				WhatCouldBeBetter: []string{"Brute force algorithm should have used streams instead of whole lists."},
-				WhatILearned:      []string{"Software comes in layers.", "Got to be really meticulous when reading the specifications, take notes while reading."},
+				WhatWentWell:      []string{},
+				WhatCouldBeBetter: []string{},
+				WhatILearned:      []string{},
 			},
 		},
 		Subsections: []Subsection{
@@ -471,9 +452,9 @@ var projects = []Project{
 		SourceCode: &SourceCode{OnRequest: true},
 		Specifics: ProjectTypeSpecifics{
 			NonJob: &NonJobExperience{
-				WhatWentWell:      []string{"The custom allocator built for the log structure makes it memory efficient. A lot of the memory are contiguous. There is no fragmentation.", "As long as one node lives, the log structure will continue to live."},
-				WhatCouldBeBetter: []string{"Leader will block for response after sending RPC for a period of time. If the response misses the window, it will be dropped.", "The logs are not very clean. When a server is shut down, all the other servers will flood the logs saying that they cannot connect to the server.", "There isn't a clear clean separation between the logical RAFT layer and the server layer. This makes no difference to the user, but isn't good for maintenance.", "The printing node data looks ugly. Invalid log index is long string of digits instead of saying invalid log index."},
-				WhatILearned:      []string{"Take advantage of leeways in the specifications."},
+				WhatWentWell:      []string{},
+				WhatCouldBeBetter: []string{},
+				WhatILearned:      []string{},
 			},
 		},
 		Subsections: []Subsection{
@@ -568,7 +549,7 @@ var projects = []Project{
 			NonJob: &NonJobExperience{
 				WhatWentWell:      []string{},
 				WhatCouldBeBetter: []string{},
-				WhatILearned:      []string{"Using Datastar for the first time"},
+				WhatILearned:      []string{},
 			},
 		},
 		Subsections: []Subsection{},
@@ -584,9 +565,9 @@ var projects = []Project{
 		TechTags:    []TechTag{TechTagCPP},
 		Specifics: ProjectTypeSpecifics{
 			NonJob: &NonJobExperience{
-				WhatWentWell:      []string{"Lots of content from simple mechanics, gravity ball allows for lots of different consequences."},
-				WhatCouldBeBetter: []string{"Due to limitations of the graphics-portion of the engine, a lot of visual feedback that really needed to be there weren't. It would have gave players intuition about the nature of gravity balls.", "There is also no sound."},
-				WhatILearned:      []string{"Before you can walk, you must crawl. I thought the game was going to have enemies that could shoot bullets, but I decided to focus on the mechanics even without enemies. With what I know now, I know what kind of enemies to design for that would optimize for how gravity balls work."},
+				WhatWentWell:      []string{},
+				WhatCouldBeBetter: []string{},
+				WhatILearned:      []string{},
 			},
 		},
 		Subsections: []Subsection{
@@ -618,8 +599,8 @@ var projects = []Project{
 		Specifics: ProjectTypeSpecifics{
 			NonJob: &NonJobExperience{
 				WhatWentWell:      []string{},
-				WhatCouldBeBetter: []string{"Boids like to fly towards a wall, and at the very last minute make a sharp turn. This isn't very realistic.", "Boids ocassionally fly in circles far from the goals. likely caused by counter-balancing forces between the the structure of the walls and the goals.", "There is no way to level-edit while the program is running. The placement of walls are hard-coded.", "Boids sometimes move in a staircase pattern, likely caused by the fact that the path-finding only considers cardinal directios and doesn't smooth out the paths. "},
-				WhatILearned:      []string{"The sum of forces is a powerful idea."},
+				WhatCouldBeBetter: []string{},
+				WhatILearned:      []string{},
 			},
 		},
 		Subsections: []Subsection{
@@ -662,9 +643,9 @@ var projects = []Project{
 		TechTags:    []TechTag{TechTagCSharp, TechTagUnity, TechTag2D},
 		Specifics: ProjectTypeSpecifics{
 			NonJob: &NonJobExperience{
-				WhatWentWell:      []string{"The user experience is on point."},
-				WhatCouldBeBetter: []string{"The dialogue system is a pain."},
-				WhatILearned:      []string{"Take advantage of Unity's UI system as much as possible, so that there's less work on my part."},
+				WhatWentWell:      []string{},
+				WhatCouldBeBetter: []string{},
+				WhatILearned:      []string{},
 			},
 		},
 		Subsections: []Subsection{
@@ -706,9 +687,9 @@ var projects = []Project{
 		TechTags:    []TechTag{TechTagJavaScript},
 		Specifics: ProjectTypeSpecifics{
 			NonJob: &NonJobExperience{
-				WhatWentWell:      []string{"Gameplay system is easy to work with."},
-				WhatCouldBeBetter: []string{"The game is too hard, and without written instructions, it's hard to figure out how to play the game."},
-				WhatILearned:      []string{"This game has a lot of information and actions. I should have designed the game around that, instead of the raw systems. Start with what the user experience, and not the underlying physics of the game."},
+				WhatWentWell:      []string{},
+				WhatCouldBeBetter: []string{},
+				WhatILearned:      []string{},
 			},
 		},
 		Subsections: []Subsection{},
