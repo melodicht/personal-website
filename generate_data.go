@@ -205,7 +205,7 @@ var projects = []Project{
 	// ── JOB: Khoury College ───────────────────────────────────────
 	{
 		Title:       "Khoury College of Computer Sciences",
-		Description: "I was teaching assistant for undergraduate computer science courses, supporting students and professors through office hours, grading, exam review sessions and exam proctoring.",
+		Description: "I was a teaching assistant for undergraduate computer science courses, supporting students and professors through office hours, grading, exam review sessions and exam proctoring.",
 		Type:        ProjectTypeJob,
 		Category:    catPtr(CategorySystems),
 		Focuses:        []Focus{},
@@ -219,7 +219,33 @@ var projects = []Project{
 				Reviews:         []Review{},
 			},
 		},
-		Subsections: []Subsection{},
+		Subsections: []Subsection{
+			{
+				Title: "Semesters",
+				Cards: []Card{
+					{Subproject: Subproject{
+						Title: "Fall 2022 - Discrete Structures (CS1800)",
+						Description: "Grading, hosting office hours, and hosting exam review sessions.",
+					}},
+					{Subproject: Subproject{
+						Title: "Spring 2023 - CS Fundamentals II (CS2510)",
+						Description: "Grading, hosting office hours, leading the lab, hosting exam review sessions, testing the exams and proctoring the exams. Fun fact, I hosted the earliest lab section (8AM in the morning), and the office hours slot right before the 9PM homework deadline. There were a few weeks I stayed a few more hours to help and accompany students as they finish their assignments right at the deadline.",
+					}},
+					{Subproject: Subproject{
+						Title: "Fall 2024 - CS Fundamentals I Accelerated (CS2500)",
+						Description: "Grading, hosting office hours, leading the lab, hosting exam review sessions, and proctoring the exams.",
+					}},
+					{Subproject: Subproject{
+						Title: "Spring 2025 - CS Fundamentals II Accelerated (CS2510)",
+						Description: "Grading, hosting office hours, leading the lab, hosting exam review sessions, and proctoring the exams.",
+					}},
+					{Subproject: Subproject{
+						Title: "Spring 2026 - Algorithms & Data (CS3000)",
+						Description: "Grading, hosting office hours, and proctoring the exams.",
+					}},
+				},
+			},
+		},
 	},
 
 	// ── UNIVERSITY: Ocaml Compiler  ───────────────────────────────
@@ -670,7 +696,22 @@ var projects = []Project{
 		Focuses:        []Focus{FocusGameDev, FocusWebDev},
 		TechTags:    []TechTag{TechTagJavaScript},
 		SourceCode: &SourceCode{OnRequest: true},
-		Subsections: []Subsection{},
+		Subsections: []Subsection{
+			{
+				Title: "Notable Features",
+				Bullets: []BulletPoint{
+					{Subproject: Subproject{
+						Title: "AI Path-finding With A* Search",
+						Description: "Implemented A* Search to allow enemies to path-find between two points on a grid map.",
+						TechTags: []TechTag{TechTagAlgorithms},
+					}},
+					{Subproject: Subproject{
+						Title: "Rendering with Canvas API",
+						Description: "Used HTML5 Canvas API to render everything.",
+					}},
+				},
+			},
+		},
 	},
 }
 
