@@ -230,6 +230,7 @@ var projects = []Project{
 		Category:    catPtr(CategoryProgrammingLanguages),
 		Focuses:        []Focus{FocusProgrammingLangs},
 		TechTags:    []TechTag{TechTagOCaml},
+		SourceCode: &SourceCode{OnRequest: true},
 		Subsections: []Subsection{
 			{
 				Title:    "Subprojects",
@@ -279,6 +280,7 @@ var projects = []Project{
 		Category:    catPtr(CategoryProgrammingLanguages),
 		Focuses:        []Focus{FocusProgrammingLangs},
 		TechTags:    []TechTag{TechTagTypedRacket},
+		SourceCode: &SourceCode{OnRequest: true},
 		Subsections: []Subsection{
 			{
 				Title:    "CESK Machine",
@@ -362,6 +364,7 @@ var projects = []Project{
 		Category:    catPtr(CategorySystems),
 		Focuses:        []Focus{FocusFullStack},
 		TechTags:    []TechTag{TechTagRacket},
+		SourceCode: &SourceCode{OnRequest: true},
 		Subsections: []Subsection{
 			{
 				Title:    "Notable Features",
@@ -512,6 +515,7 @@ var projects = []Project{
 		Category:    catPtr(CategorySystems),
 		Focuses:        []Focus{FocusFullStack},
 		TechTags:    []TechTag{},
+		SourceCode: &SourceCode{OnRequest: true},
 		Subsections: []Subsection{},
 	},
 
@@ -624,6 +628,7 @@ var projects = []Project{
 		Category:    catPtr(CategoryGames),
 		Focuses:        []Focus{FocusGameDev, FocusWebDev},
 		TechTags:    []TechTag{TechTagJavaScript},
+		SourceCode: &SourceCode{OnRequest: true},
 		Subsections: []Subsection{},
 	},
 }
