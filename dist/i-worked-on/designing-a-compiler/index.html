@@ -1,0 +1,149 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Marvin's Website</title>
+  <script type="module" src="https://cdn.jsdelivr.net/gh/starfederation/datastar@v1.0.1/bundles/datastar.js"></script>
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+  <div class="bg-layer" id="bg-a"></div>
+  <div class="bg-layer" id="bg-b"></div>
+  <div class="bg-overlay"></div>
+
+  <div id="app" data-signals='{}'>
+    <div class="layout">
+      <nav class="col-nav" id="nav-bar">
+  <div class="nav-ticker" id="nav-ticker">
+    
+    <a class="nav-item"
+       href="/about.html">Hi, I&#39;m Marvin</a>
+    
+    <a class="nav-item"
+       href="/index.html">I do</a>
+    
+    <a class="nav-item"
+       href="/worked-at.html">I worked at</a>
+    
+    <a class="nav-item nav-item--active"
+       href="/worked-on.html">I worked on</a>
+    
+    <a class="nav-item"
+       href="/contact.html">Contact me at</a>
+    
+  </div>
+</nav>
+
+      <div id="non-nav">
+        
+        <main class="col-content">
+          
+<div class="project-detail">
+  <div class="detail-header">
+    <span class="detail-type-badge detail-type-badge--university">University</span>
+    <h2 class="detail-title">Designing a Compiler</h2>
+    
+    <div class="detail-chips">
+      <span class="chip">programming languages</span>
+    </div>
+    
+    
+    <div class="detail-chips">
+      <span class="chip chip--tech">OCaml</span>
+    </div>
+    
+    
+
+<a class="source-code-link source-code-link--request"
+   href="/contact.html">Source code available upon request</a>
+
+
+  </div>
+  <p class="detail-desc">Written in OCaml, my compiler generates X86-64 from my progrmming language, with C as the run-time. My language features tests as first-class citizens, that can be compiled away for release.</p>
+  
+  <div class="subsection">
+  <div class="subsection-heading">
+    Subprojects
+    
+  </div>
+  
+  <div class="subproject-list">
+    
+    <div id="garbage-collection">
+      <div class="subproject-card" style="animation-delay: 0.00s">
+  <h4 class="subproject-card-title">Garbage Collection</h4>
+  
+  <p class="subproject-card-desc">A stop-the-world garbage collector, by applying graph theory to implement Cheney&#39;s semispace collector, implemented with <span class="chip chip--tech chip--inline">C</span>.</p>
+  
+</div>
+
+    </div>
+    
+    <div id="a-normal-form-anf">
+      <div class="subproject-card" style="animation-delay: 0.00s">
+  <h4 class="subproject-card-title">A-normal Form (ANF)</h4>
+  
+  <div class="subproject-card-chips">
+    <span class="chip chip--tech">Data Structures</span>
+  </div>
+  
+  <p class="subproject-card-desc">There is a compiler phase that turns the abstract syntax tree to ANF, an intermediary representation that makes every intermediate computation named. This makes it easier to compile down to Assembly.</p>
+  
+</div>
+
+    </div>
+    
+    <div id="graph-colouring-register-allocation">
+      <div class="subproject-card" style="animation-delay: 0.00s">
+  <h4 class="subproject-card-title">Graph Colouring Register Allocation</h4>
+  
+  <div class="subproject-card-chips">
+    <span class="chip chip--tech">Algorithms</span><span class="chip chip--tech">Data Structures</span>
+  </div>
+  
+  <p class="subproject-card-desc">Accessing a value in a register is faster than accessing it on the stack, so we want to keep values in registers for as long as possible. To do this, we track the liveness of each value — the range of the program over which it is needed — and use Chaitin&#39;s graph colouring algorithm to assign values to registers optimally</p>
+  
+</div>
+
+    </div>
+    
+    <div id="exceptions">
+      <div class="subproject-card" style="animation-delay: 0.00s">
+  <h4 class="subproject-card-title">Exceptions</h4>
+  
+  <p class="subproject-card-desc">This programming language allows users to throw and catch exceptions.</p>
+  
+</div>
+
+    </div>
+    
+    <div id="built-in-testing-functionality">
+      <div class="subproject-card" style="animation-delay: 0.00s">
+  <h4 class="subproject-card-title">Built-in Testing Functionality</h4>
+  
+  <p class="subproject-card-desc">Normally, to run tests in a programming language, one has to use a library. This makes test organization awkward, and the library would have to use reflection magic to test for errors. In this programming language, tests are first-class citizens and can be woven into the code, and the code can be executed without the tests. The <span class="chip chip--tech chip--inline">C</span> run-time accumulates the test information and prints them out at the end.</p>
+  
+</div>
+
+    </div>
+    
+  </div>
+  
+  
+</div>
+
+  
+  
+</div>
+
+
+        </main>
+      </div>
+    </div>
+  </div>
+
+  
+</body>
+</html>

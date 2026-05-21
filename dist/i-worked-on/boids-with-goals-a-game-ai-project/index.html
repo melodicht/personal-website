@@ -1,0 +1,126 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Marvin's Website</title>
+  <script type="module" src="https://cdn.jsdelivr.net/gh/starfederation/datastar@v1.0.1/bundles/datastar.js"></script>
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+  <div class="bg-layer" id="bg-a"></div>
+  <div class="bg-layer" id="bg-b"></div>
+  <div class="bg-overlay"></div>
+
+  <div id="app" data-signals='{}'>
+    <div class="layout">
+      <nav class="col-nav" id="nav-bar">
+  <div class="nav-ticker" id="nav-ticker">
+    
+    <a class="nav-item"
+       href="/about.html">Hi, I&#39;m Marvin</a>
+    
+    <a class="nav-item"
+       href="/index.html">I do</a>
+    
+    <a class="nav-item"
+       href="/worked-at.html">I worked at</a>
+    
+    <a class="nav-item nav-item--active"
+       href="/worked-on.html">I worked on</a>
+    
+    <a class="nav-item"
+       href="/contact.html">Contact me at</a>
+    
+  </div>
+</nav>
+
+      <div id="non-nav">
+        
+        <main class="col-content">
+          
+<div class="project-detail">
+  <div class="detail-header">
+    <span class="detail-type-badge detail-type-badge--university">University</span>
+    <h2 class="detail-title">Boids with Goals: A Game AI Project</h2>
+    
+    <div class="detail-chips">
+      <span class="chip">game development</span>
+    </div>
+    
+    
+    <div class="detail-chips">
+      <span class="chip chip--tech">JavaScript</span><span class="chip chip--tech">Physics</span><span class="chip chip--tech">Algorithms</span><span class="chip chip--tech">2D</span>
+    </div>
+    
+    
+
+<a class="source-code-link" href="https://github.com/melodicht/boids" target="_blank" rel="noopener">View source code →</a>
+
+
+  </div>
+  <p class="detail-desc">Boids movement simulate the movement of flocks/schools of animals, like birds and fishes. This project extends Reynold&#39;s Boids movement algorithm with goal-oriented behaviour and obstacle collision.</p>
+  
+  <div class="subsection">
+  <div class="subsection-heading">
+    Boids Movement with Multi-layered Dijkstra Path-finding
+    
+  </div>
+  
+  <div id="boids-movement-with-multi-layered-dijkstra-path-finding">
+    <div class="major-subproject">
+  
+  
+  <div class="major-subproject-chips">
+    <span class="chip chip--tech">JavaScript</span><span class="chip chip--tech">Physics</span><span class="chip chip--tech">Algorithms</span><span class="chip chip--tech">2D</span>
+  </div>
+  
+  <p class="major-subproject-desc">A boid&#39;s movement is based on local conditions close to its proximity, like distance and alignment to neighbouring boids, as well as obstacles to not fly into. However, goal-oriented behaviour requires the boid to navigate to a point which may exist beyond said proximity. With obstacles, there needs to exist some intelligence to not fly blindly into a dead end. While the twin goals of navigation by local and global conditions conflict, my approach uses multi-layered Dijkstra&#39;s algorithm to create a field of forces, generating local conditions from global ones. Where a boid moves is the sum of its regular boid&#39;s movement and the vector at the position of the map as produced by Dikstra&#39;s algorithm.</p>
+  
+  
+</div>
+
+  </div>
+  
+  
+</div>
+
+  
+  <div class="subsection">
+  <div class="subsection-heading">
+    Collision Detection
+    
+  </div>
+  
+  <div id="collision-detection">
+    <div class="major-subproject">
+  
+  
+  <div class="major-subproject-chips">
+    <span class="chip chip--tech">JavaScript</span><span class="chip chip--tech">Physics</span><span class="chip chip--tech">Algorithms</span><span class="chip chip--tech">2D</span>
+  </div>
+  
+  <p class="major-subproject-desc">Each boid determines whether it&#39;s about to fly into an obstacle by shooting a ray in front of it and seeing if it intersects with an obstacle. All obstacles are rectangles.</p>
+  
+  
+</div>
+
+  </div>
+  
+  
+</div>
+
+  
+  
+</div>
+
+
+        </main>
+      </div>
+    </div>
+  </div>
+
+  
+</body>
+</html>

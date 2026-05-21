@@ -1,0 +1,97 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Marvin's Website</title>
+  <script type="module" src="https://cdn.jsdelivr.net/gh/starfederation/datastar@v1.0.1/bundles/datastar.js"></script>
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+  <div class="bg-layer" id="bg-a"></div>
+  <div class="bg-layer" id="bg-b"></div>
+  <div class="bg-overlay"></div>
+
+  <div id="app" data-signals='{}'>
+    <div class="layout">
+      <nav class="col-nav" id="nav-bar">
+  <div class="nav-ticker" id="nav-ticker">
+    
+    <a class="nav-item"
+       href="/about.html">Hi, I&#39;m Marvin</a>
+    
+    <a class="nav-item"
+       href="/index.html">I do</a>
+    
+    <a class="nav-item"
+       href="/worked-at.html">I worked at</a>
+    
+    <a class="nav-item nav-item--active"
+       href="/worked-on.html">I worked on</a>
+    
+    <a class="nav-item"
+       href="/contact.html">Contact me at</a>
+    
+  </div>
+</nav>
+
+      <div id="non-nav">
+        
+        <main class="col-content">
+          
+<div class="project-detail">
+  <div class="detail-header">
+    <span class="detail-type-badge detail-type-badge--university">University</span>
+    <h2 class="detail-title">Dreams of Celestial Pull: A Physics-based First-person Shooter Platformer</h2>
+    
+    <div class="detail-chips">
+      <span class="chip">game development</span>
+    </div>
+    
+    
+    <div class="detail-chips">
+      <span class="chip chip--tech">C&#43;&#43;</span>
+    </div>
+    
+    
+  </div>
+  <p class="detail-desc">My solo project for my game capstone class at Northeastern University, made in a custom-built game engine, Skyline Engine.</p>
+  
+  <div class="subsection">
+  <div class="subsection-heading">
+    FPS Movement &amp; RK4
+    
+  </div>
+  
+  <div id="fps-movement-rk4">
+    <div class="major-subproject">
+  
+  
+  <div class="major-subproject-chips">
+    <span class="chip chip--tech">C&#43;&#43;</span><span class="chip chip--tech">Algorithms</span><span class="chip chip--tech">3D</span>
+  </div>
+  
+  <p class="major-subproject-desc">This game features an interesting marriage between two contrasting notions of <span class="chip chip--tech chip--inline">Physics</span> simulation. FPS movement includes on-ground movement and jumping. On-ground movement has acceleration with max velocity. As the game is a platformer, the player can cut a jump short by letting go of jump fast rather than holding down the button. There is also air control, where acceleration in the air is lower. The other notion of physics simulation is RK4, or fourth-order Runge-kutta method. Given a position and velocity of an object, and a function that computes the object&#39;s acceleration, the method can produce the next object&#39;s position and velocity. The method uses calculus effectively in order to get good approximations with minimal additional computations. This is not the standard approach to movement physics. I used it in my game anyway because the movements physics is tremendously better and the game still runs smoothly. These two notions of movement physics don&#39;t naturally work together. The FPS-specific physics has a lot of edge cases and handles player input, whereas RK4 is a general purpose function and does not consider player input. Still, I made it work.</p>
+  
+  
+</div>
+
+  </div>
+  
+  
+</div>
+
+  
+  
+</div>
+
+
+        </main>
+      </div>
+    </div>
+  </div>
+
+  
+</body>
+</html>

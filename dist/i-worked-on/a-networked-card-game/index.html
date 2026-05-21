@@ -1,0 +1,185 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Marvin's Website</title>
+  <script type="module" src="https://cdn.jsdelivr.net/gh/starfederation/datastar@v1.0.1/bundles/datastar.js"></script>
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+  <div class="bg-layer" id="bg-a"></div>
+  <div class="bg-layer" id="bg-b"></div>
+  <div class="bg-overlay"></div>
+
+  <div id="app" data-signals='{}'>
+    <div class="layout">
+      <nav class="col-nav" id="nav-bar">
+  <div class="nav-ticker" id="nav-ticker">
+    
+    <a class="nav-item"
+       href="/about.html">Hi, I&#39;m Marvin</a>
+    
+    <a class="nav-item"
+       href="/index.html">I do</a>
+    
+    <a class="nav-item"
+       href="/worked-at.html">I worked at</a>
+    
+    <a class="nav-item nav-item--active"
+       href="/worked-on.html">I worked on</a>
+    
+    <a class="nav-item"
+       href="/contact.html">Contact me at</a>
+    
+  </div>
+</nav>
+
+      <div id="non-nav">
+        
+        <main class="col-content">
+          
+<div class="project-detail">
+  <div class="detail-header">
+    <span class="detail-type-badge detail-type-badge--university">University</span>
+    <h2 class="detail-title">A Networked Card Game</h2>
+    
+    <div class="detail-chips">
+      <span class="chip">full-stack development</span>
+    </div>
+    
+    
+    <div class="detail-chips">
+      <span class="chip chip--tech">Racket</span>
+    </div>
+    
+    
+
+<a class="source-code-link source-code-link--request"
+   href="/contact.html">Source code available upon request</a>
+
+
+  </div>
+  <p class="detail-desc">For the Software Development course at Northeastern University, also known as &#34;hell&#34;, we implemented a networked card game in about 12 weeks.</p>
+  
+  <div class="subsection">
+  <div class="subsection-heading">
+    Notable Features
+    
+  </div>
+  
+  <div class="subproject-list">
+    
+    <div id="client-server-interactions-with-fault-tolerant-networking">
+      <div class="subproject-card" style="animation-delay: 0.00s">
+  <h4 class="subproject-card-title">Client-server Interactions with Fault-tolerant Networking</h4>
+  
+  <div class="subproject-card-chips">
+    <span class="chip chip--tech">TCP</span>
+  </div>
+  
+  <p class="subproject-card-desc">Upon starting the server, it waits until the maximum number of clients connects or until the timer runs out, before starting the server. If the minimum number of players needed to play the game is not reached, the server terminates. Players can connect to the server. Once the game starts, the server is responsible for running all the game logic, listening to player actions, and informing the players of the game state and results through the network. Players crashing does not bring down the server.</p>
+  
+</div>
+
+    </div>
+    
+    <div id="ai-players">
+      <div class="subproject-card" style="animation-delay: 0.00s">
+  <h4 class="subproject-card-title">AI Players</h4>
+  
+  <div class="subproject-card-chips">
+    <span class="chip chip--tech">Algorithms</span><span class="chip chip--tech">Design Patterns</span>
+  </div>
+  
+  <p class="subproject-card-desc">For testing purposes, we have AI players that behave deterministically given some game state. The AI player uses a greedy algorithm to maximize some value in the short-term. The strategy pattern is used. This AI player is one such strategy, and in theory any other algorithms could be subbed in. For the released game, a strategy that communicates with the actual player and waits for user input would be used.</p>
+  
+</div>
+
+    </div>
+    
+    <div id="remote-proxy-pattern">
+      <div class="subproject-card" style="animation-delay: 0.00s">
+  <h4 class="subproject-card-title">Remote Proxy Pattern</h4>
+  
+  <div class="subproject-card-chips">
+    <span class="chip chip--tech">Design Patterns</span>
+  </div>
+  
+  <p class="subproject-card-desc">When interacting with players, the code on the host server goes through a logical interface. An implementation interface could make <span class="chip chip--tech chip--inline">RPC</span>s. However, for testing, it is useful for no RPCs to be made, and for the host server to run the logic immediately.</p>
+  
+</div>
+
+    </div>
+    
+    <div id="json-messages-deserialization">
+      <div class="subproject-card" style="animation-delay: 0.00s">
+  <h4 class="subproject-card-title">JSON Messages De/serialization</h4>
+  
+  <div class="subproject-card-chips">
+    <span class="chip chip--tech">Macros</span>
+  </div>
+  
+  <p class="subproject-card-desc">The server and connecting players communicate with <span class="chip chip--tech chip--inline">JSON</span>, and so de/serialization code is needed. The would-be duplicate and boilerplate de/serialization code responsible are handled by macros, and also makes the code more present to look at.</p>
+  
+</div>
+
+    </div>
+    
+  </div>
+  
+  
+</div>
+
+  
+  <div class="subsection">
+  <div class="subsection-heading">
+    Testing
+    <span class="chip chip--tech">Testing</span>
+  </div>
+  
+  <ul class="subsection-bullet-list">
+    
+    <li class="bullet-point" id="unit-testing-game-logic">
+  <p class="bullet-point-text">
+    There are unit tests written for game logic.
+    
+  </p>
+</li>
+
+    
+    <li class="bullet-point" id="integration-testing-without-networks">
+  <p class="bullet-point-text">
+    There are integration tests that could simulate the game and (AI) players without involving the network, by using the aforementioned remote proxy design pattern.
+    
+  </p>
+</li>
+
+    
+    <li class="bullet-point" id="integration-testing-with-networks">
+  <p class="bullet-point-text">
+    There are <span class="chip chip--tech chip--inline">Bash</span> scripts that can launch servers and clients, and the clients use the AI players, to test the game with networking without having to manually provide input.
+    
+  </p>
+</li>
+
+    
+  </ul>
+  
+  
+</div>
+
+  
+  
+</div>
+
+
+        </main>
+      </div>
+    </div>
+  </div>
+
+  
+</body>
+</html>

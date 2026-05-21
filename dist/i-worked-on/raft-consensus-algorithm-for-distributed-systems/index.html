@@ -1,0 +1,133 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Marvin's Website</title>
+  <script type="module" src="https://cdn.jsdelivr.net/gh/starfederation/datastar@v1.0.1/bundles/datastar.js"></script>
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+  <div class="bg-layer" id="bg-a"></div>
+  <div class="bg-layer" id="bg-b"></div>
+  <div class="bg-overlay"></div>
+
+  <div id="app" data-signals='{}'>
+    <div class="layout">
+      <nav class="col-nav" id="nav-bar">
+  <div class="nav-ticker" id="nav-ticker">
+    
+    <a class="nav-item"
+       href="/about.html">Hi, I&#39;m Marvin</a>
+    
+    <a class="nav-item"
+       href="/index.html">I do</a>
+    
+    <a class="nav-item"
+       href="/worked-at.html">I worked at</a>
+    
+    <a class="nav-item nav-item--active"
+       href="/worked-on.html">I worked on</a>
+    
+    <a class="nav-item"
+       href="/contact.html">Contact me at</a>
+    
+  </div>
+</nav>
+
+      <div id="non-nav">
+        
+        <main class="col-content">
+          
+<div class="project-detail">
+  <div class="detail-header">
+    <span class="detail-type-badge detail-type-badge--university">University</span>
+    <h2 class="detail-title">RAFT: Consensus Algorithm For Distributed Systems</h2>
+    
+    <div class="detail-chips">
+      <span class="chip">systems programming</span><span class="chip">full-stack development</span>
+    </div>
+    
+    
+    <div class="detail-chips">
+      <span class="chip chip--tech">C&#43;&#43;</span>
+    </div>
+    
+    
+
+<a class="source-code-link source-code-link--request"
+   href="/contact.html">Source code available upon request</a>
+
+
+  </div>
+  <p class="detail-desc">Digital services today involve several computers working together, but how do the computers agree on things given faulty conditions? I implement the RAFT algorithm from the ground-up to solve this problem.</p>
+  
+  <div class="subsection">
+  <div class="subsection-heading">
+    Subprojects
+    
+  </div>
+  
+  <div class="subproject-list">
+    
+    <div id="client-server-interactions-with-fault-tolerance">
+      <div class="subproject-card" style="animation-delay: 0.00s">
+  <h4 class="subproject-card-title">Client-server Interactions with Fault-tolerance</h4>
+  
+  <div class="subproject-card-chips">
+    <span class="chip chip--tech">Linux</span><span class="chip chip--tech">TCP</span>
+  </div>
+  
+  <p class="subproject-card-desc">The servers are nodes of the RAFT algorithm. Clients are those who wish to submit commands for the RAFT algorithm to persist. The networking interactions are done through the <span class="chip chip--tech chip--inline">Unix Socket Library</span>. Any of the servers can crash (and that is assumed to be the only mode of failure), without crashing the other servers. As long as majority of the nodes are alive, the system can continue to make progress. If majority of the nodes are no longer alive, the data will persist as one node is alive, but the system can no longer agree on new values.</p>
+  
+</div>
+
+    </div>
+    
+    <div id="leader-election">
+      <div class="subproject-card" style="animation-delay: 0.00s">
+  <h4 class="subproject-card-title">Leader Election</h4>
+  
+  <div class="subproject-card-chips">
+    <span class="chip chip--tech">Algorithms</span>
+  </div>
+  
+  <p class="subproject-card-desc">A key element of the algorithm is leader election. A server by itself is just a hunk of metal capable of computation, but RAFT consensus algorithm associates each server node with a role. The two essentials roles are leader and follower. There can only at most be one leader. Followers are able to be promoted to leader, which happens in the case where the system just started and there are no leaders to begin with, or the leader crashes. How this happens is defined in the RAFT specifications, specifically the &#34;Vote Request&#34; <span class="chip chip--tech chip--inline">RPC</span>, which I implemented. A follower that wants to be a leader sends the request to all the other nodes, and if it receives yes from the majority, it becomes the leader.</p>
+  
+</div>
+
+    </div>
+    
+    <div id="log-replication-with-custom-memory-slab-allocator">
+      <div class="subproject-card" style="animation-delay: 0.00s">
+  <h4 class="subproject-card-title">Log Replication With Custom Memory Slab Allocator</h4>
+  
+  <div class="subproject-card-chips">
+    <span class="chip chip--tech">Data Structures</span>
+  </div>
+  
+  <p class="subproject-card-desc">Another key element is that each node keeps track of the full history of commands, in a log data structure. What it means for nodes to be in sync is for their logs to be the same. The leader&#39;s log is replicated to the followers. My implementation of the log data structure uses my own memory allocator that allocates in memory-aligned chunks, that are a multiple of page sizes. The allocator holds a linked list of the chunks, and a chunk holds tightly-packed log entries.</p>
+  
+</div>
+
+    </div>
+    
+  </div>
+  
+  
+</div>
+
+  
+  
+</div>
+
+
+        </main>
+      </div>
+    </div>
+  </div>
+
+  
+</body>
+</html>

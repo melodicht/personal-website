@@ -1,0 +1,200 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Marvin's Website</title>
+  <script type="module" src="https://cdn.jsdelivr.net/gh/starfederation/datastar@v1.0.1/bundles/datastar.js"></script>
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+  <div class="bg-layer" id="bg-a"></div>
+  <div class="bg-layer" id="bg-b"></div>
+  <div class="bg-overlay"></div>
+
+  <div id="app" data-signals='{}'>
+    <div class="layout">
+      <nav class="col-nav" id="nav-bar">
+  <div class="nav-ticker" id="nav-ticker">
+    
+    <a class="nav-item"
+       href="/about.html">Hi, I&#39;m Marvin</a>
+    
+    <a class="nav-item"
+       href="/index.html">I do</a>
+    
+    <a class="nav-item"
+       href="/worked-at.html">I worked at</a>
+    
+    <a class="nav-item nav-item--active"
+       href="/worked-on.html">I worked on</a>
+    
+    <a class="nav-item"
+       href="/contact.html">Contact me at</a>
+    
+  </div>
+</nav>
+
+      <div id="non-nav">
+        
+        <main class="col-content">
+          
+<div class="project-detail">
+  <div class="detail-header">
+    <span class="detail-type-badge detail-type-badge--university">University</span>
+    <h2 class="detail-title">Typed-untyped Interactions Through Machine</h2>
+    
+    <div class="detail-chips">
+      <span class="chip">programming languages</span>
+    </div>
+    
+    
+    <div class="detail-chips">
+      <span class="chip chip--tech">Typed Racket</span>
+    </div>
+    
+    
+
+<a class="source-code-link source-code-link--request"
+   href="/contact.html">Source code available upon request</a>
+
+
+  </div>
+  <p class="detail-desc">I implement a programming language that runs on an abstract machine. The language features a module system, where a module could be typed or untyped, and could import one or the other.</p>
+  
+  <div class="subsection">
+  <div class="subsection-heading">
+    CESK Machine
+    <span class="chip chip--tech">Logic</span>
+  </div>
+  
+  <div id="cesk-machine">
+    <div class="major-subproject">
+  
+  
+  <div class="major-subproject-chips">
+    <span class="chip chip--tech">Typed Racket</span><span class="chip chip--tech">Logic</span>
+  </div>
+  
+  <p class="major-subproject-desc">Implemented a programming language via a CESK abstract machine — a formal model of computation where program execution is expressed as a sequence of discrete state transitions. Each state is a tuple of four components: the Control (the expression currently being evaluated), the Environment (bindings of variables to values), the Store (mutable memory), and the Kontinuation (the rest of the computation). Execution begins at a well-defined initial state and steps through intermediate states until it reaches a final one, giving the language a rigorous, mathematically grounded operational semantics.</p>
+  
+  
+</div>
+
+  </div>
+  
+  
+</div>
+
+  
+  <div class="subsection">
+  <div class="subsection-heading">
+    Notable Language Features
+    
+  </div>
+  
+  <div class="subproject-list">
+    
+    <div id="classes-modules">
+      <div class="subproject-card" style="animation-delay: 0.00s">
+  <h4 class="subproject-card-title">Classes &amp; Modules</h4>
+  
+  <p class="subproject-card-desc">This language features classes, methods, and objects. On top of that, the language also features typed and untyped modules, and both can import each other. A module can only contain one class.</p>
+  
+</div>
+
+    </div>
+    
+    <div id="tail-calls">
+      <div class="subproject-card" style="animation-delay: 0.00s">
+  <h4 class="subproject-card-title">Tail Calls</h4>
+  
+  <p class="subproject-card-desc">This language has tail calls. That is, when a function call is the last thing that is being computed, a new stack will not be allocated.</p>
+  
+</div>
+
+    </div>
+    
+  </div>
+  
+  
+</div>
+
+  
+  <div class="subsection">
+  <div class="subsection-heading">
+    Typed-untyped Interactions
+    
+  </div>
+  
+  <div class="subproject-list">
+    
+    <div id="typed-untyped-interactions-javascript-style">
+      <div class="subproject-card" style="animation-delay: 0.00s">
+  <h4 class="subproject-card-title">Typed-untyped Interactions (JavaScript Style)</h4>
+  
+  <p class="subproject-card-desc">The <span class="chip chip--tech chip--inline">JavaScript</span> way of handling typed-untyped interactions is by running all type checks statically, and then strip away all the types prior to execution.</p>
+  
+</div>
+
+    </div>
+    
+    <div id="typed-untyped-interactions-racket-style">
+      <div class="subproject-card" style="animation-delay: 0.00s">
+  <h4 class="subproject-card-title">Typed-untyped Interactions (Racket Style)</h4>
+  
+  <p class="subproject-card-desc">The Racket way of handling typed-untyped interactions is by running all type checks statically, and wrapping values that would be passed from typed modules to untyped modules in run-time checks for actual execution.</p>
+  
+</div>
+
+    </div>
+    
+  </div>
+  
+  
+</div>
+
+  
+  <div class="subsection">
+  <div class="subsection-heading">
+    Unit and Integration Tests
+    <span class="chip chip--tech">Testing</span>
+  </div>
+  
+  <ul class="subsection-bullet-list">
+    
+    <li class="bullet-point" id="unit-and-integration-testing-featuring-macros">
+  <p class="bullet-point-text">
+    On top of unit tests for specific functions, there exist integration tests for specific phases of the language implementation. There are integration tests that targets the core logic of the CESK machine specifically, and through the use of <span class="chip chip--tech chip--inline">Macros</span>, allows me to write the intermediate states of the abstract machine in a sequence, and the test runner would check that the state of machine goes through the sequence correctly.
+    
+  </p>
+</li>
+
+    
+    <li class="bullet-point" id="programming-language-level-test-harness">
+  <p class="bullet-point-text">
+    An overarching test harness, a script written in Typed Racket, takes in entire programs written in the programming language, as well as a file that just contains the expected output, and checks if the actual output as produced by the implementation of the programming language equals to the expected output.
+    
+  </p>
+</li>
+
+    
+  </ul>
+  
+  
+</div>
+
+  
+  
+</div>
+
+
+        </main>
+      </div>
+    </div>
+  </div>
+
+  
+</body>
+</html>

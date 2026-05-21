@@ -1,0 +1,128 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Marvin's Website</title>
+  <script type="module" src="https://cdn.jsdelivr.net/gh/starfederation/datastar@v1.0.1/bundles/datastar.js"></script>
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+  <div class="bg-layer" id="bg-a"></div>
+  <div class="bg-layer" id="bg-b"></div>
+  <div class="bg-overlay"></div>
+
+  <div id="app" data-signals='{}'>
+    <div class="layout">
+      <nav class="col-nav" id="nav-bar">
+  <div class="nav-ticker" id="nav-ticker">
+    
+    <a class="nav-item"
+       href="/about.html">Hi, I&#39;m Marvin</a>
+    
+    <a class="nav-item"
+       href="/index.html">I do</a>
+    
+    <a class="nav-item"
+       href="/worked-at.html">I worked at</a>
+    
+    <a class="nav-item nav-item--active"
+       href="/worked-on.html">I worked on</a>
+    
+    <a class="nav-item"
+       href="/contact.html">Contact me at</a>
+    
+  </div>
+</nav>
+
+      <div id="non-nav">
+        
+        <main class="col-content">
+          
+<div class="project-detail">
+  <div class="detail-header">
+    <span class="detail-type-badge detail-type-badge--personal">Personal</span>
+    <h2 class="detail-title">Toxic Texting: A Chill Texting Game Where You Only Respond with Yes or No</h2>
+    
+    <div class="detail-chips">
+      <span class="chip">game development</span>
+    </div>
+    
+    
+    <div class="detail-chips">
+      <span class="chip chip--tech">C#</span><span class="chip chip--tech">Unity</span><span class="chip chip--tech">2D</span>
+    </div>
+    
+    
+  </div>
+  <p class="detail-desc">Made initially for the Summer 2021 NEU Game Development Club 48-hour game jam, and heavily features Unity&#39;s UI system. I was one of the two programmers, the composer, sound designer and writer.</p>
+  
+  <div class="subsection">
+  <div class="subsection-heading">
+    Subprojects
+    
+  </div>
+  
+  <div class="subproject-list">
+    
+    <div id="dialogue-game-systems">
+      <div class="subproject-card" style="animation-delay: 0.00s">
+  <h4 class="subproject-card-title">Dialogue &amp; Game Systems</h4>
+  
+  <div class="subproject-card-chips">
+    <span class="chip chip--tech">Data Structures</span>
+  </div>
+  
+  <p class="subproject-card-desc">The writer writes all the dialogue in the spreadsheet, which is then imported into the game in CSV format. The game parses the CSV file and constructs the dialogue tree. A level can be understood as the navigation of the tree, where the user&#39;s yes/no moves the player from one dialogue to the next. A writer can also write game events into the dialogue, like music change or screen shake, and the dialogue system will invoke the corresponding methods in the corresponding systems.</p>
+  
+</div>
+
+    </div>
+    
+    <div id="uiux">
+      <div class="subproject-card" style="animation-delay: 0.00s">
+  <h4 class="subproject-card-title">UI/UX</h4>
+  
+  <div class="subproject-card-chips">
+    <span class="chip chip--tech">UI/UX</span>
+  </div>
+  
+  <p class="subproject-card-desc">Using Unity&#39;s UI system and with the help of the artist on our team, I implemented and partially designed the phone UI and animations.</p>
+  
+</div>
+
+    </div>
+    
+    <div id="sound-music">
+      <div class="subproject-card" style="animation-delay: 0.00s">
+  <h4 class="subproject-card-title">Sound &amp; Music</h4>
+  
+  <div class="subproject-card-chips">
+    <span class="chip chip--tech">SFX/Music</span>
+  </div>
+  
+  <p class="subproject-card-desc">On top of making all the sound effects and music in Logic Pro X (except for one song that is creditted in the game), I also hooked them into the game. A lot of it is through Unity&#39;s event system. The writer can also make sound cueues in the dialogue. Upon seeing a sound queue, the dialogue system tells the sound system to play sounds. When the music switches, there is a crossfade.</p>
+  
+</div>
+
+    </div>
+    
+  </div>
+  
+  
+</div>
+
+  
+  
+</div>
+
+
+        </main>
+      </div>
+    </div>
+  </div>
+
+  
+</body>
+</html>
