@@ -87,6 +87,14 @@ const (
 	TechTagCPP      TechTag = "C++"
 	TechTagAssembly TechTag = "Assembly"
 
+	TechTagSDL3      TechTag = "SDL3"
+	TechTagVulkan    TechTag = "Vulkan"
+	TechTagJolt      TechTag = "Jolt"
+	TechTagDearIMGUI TechTag = "Dear IMGUI"
+	TechTagCMake     TechTag = "CMake"
+	TechTagGCC       TechTag = "GCC"
+	TechTagClang     TechTag = "Clang"
+
 	TechTagOCaml TechTag = "OCaml"
 
 	TechTagPuppeteer TechTag = "Puppeteer"

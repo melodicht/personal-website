@@ -225,7 +225,7 @@ var projects = []Project{
 	// ── UNIVERSITY: Ocaml Compiler  ───────────────────────────────
 	{
 		Title:       "Designing a Compiler",
-		Description: "(Insert explanation of what a compiler is and what kind of compiler we are building.) Written in OCaml, that generates my language into X86-64 assembly with C as the run-time.",
+		Description: "Written in OCaml, my compiler generates X86-64 from my progrmming language, with C as the run-time. My language features tests as first-class citizens, that can be compiled away for release.",
 		Type:        ProjectTypeUniversity,
 		Category:    catPtr(CategoryProgrammingLanguages),
 		Focuses:        []Focus{FocusProgrammingLangs},
@@ -275,7 +275,7 @@ var projects = []Project{
 	// ── UNIVERSITY: Typed-untyped interactions  ───────────────────
 	{
 		Title:       "Typed-untyped Interactions Through Machine",
-		Description: "There are many way to implement a programming languages. One of the is through an abstract machine. On top of have all the basic features of a programming lanaguage (arithmetic, conditionals...), this programming language features the co-existence of typed and untyped modules. There are two distinct versions. One where the types are checked to the extent at possible, and then thrown away when the program actually runs. Another one where the types are checked, and become run-time checks during the program run.",
+		Description: "I implement a programming language that runs on an abstract machine. The language features a module system, where a module could be typed or untyped, and could import one or the other.",
 		Type:        ProjectTypeUniversity,
 		Category:    catPtr(CategoryProgrammingLanguages),
 		Focuses:        []Focus{FocusProgrammingLangs},
@@ -428,7 +428,7 @@ var projects = []Project{
 	// ── UNIVERSITY: RAFT  ───────────────────
 	{
 		Title:       "RAFT: Consensus Algorithm For Distributed Systems",
-		Description: "Even when we are working on a single device, the digital services we use normally have several computers working together behind the scenes. But how could these computers work together when communication between them could be faulty and go down at any time? Consensus algorithms are a key feature to make communication possible, by allowing many computers to agree on a value. RAFT is one such algorithm for this, which I have implemented for my final project for the Distributed Systems course at Northeastern University. It is important to note that I was under a very strict time constrain.",
+		Description: "Digital services today involve several computers working together, but how do the computers agree on things given faulty conditions? I implement the RAFT algorithm from the ground-up to solve this problem.",
 		Type:        ProjectTypeUniversity,
 		Category:    catPtr(CategorySystems),
 		Focuses:        []Focus{FocusSystems, FocusFullStack},
@@ -465,8 +465,8 @@ var projects = []Project{
 
 	// ── PERSONAL: Skyline Engine  ─────────────────────────────────
 	{
-		Title:       "A Custom Game Engine",
-		Description: "C++ 20 (even though the code looks like C),- SDL3 for the platform layer, - Vulkan for hardware-accelerated graphics,- Jolt for physics (the physics engine developed for the second Horizon Zero Dawn game), - Dear Imgui for UI for internal tooling (though we will probably that for the actual game's UI),- CMake for the build system, - We require GCC or Clang for the C++ compiler, with compiler extensions enabled",
+		Title:       "Skyline Engine: A Custom-built Game Engine",
+		Description: "A game engine built from the ground up, featuring a custom-built thread-safe memory management system, a custom instrumental profiler that uses compiler intrinsics, a memory viewer, hot reloading, and looped live playback with input streaming.",
 		Type:        ProjectTypePersonal,
 		Category:    catPtr(CategorySystems),
 		Focuses:        []Focus{FocusGameEngineDev},
@@ -474,7 +474,48 @@ var projects = []Project{
 		SourceCode: &SourceCode{Link: strPtr("https://github.com/melodicht/skyline-engine")},
 		Subsections: []Subsection{
 			{
-				Title:    "Subprojects",
+				Title: "Technology Stack",
+				Bullets: []BulletPoint{
+					{Subproject: Subproject{
+						Title: "SDL3 for Platform Layer",
+						Description: "{SDL3}: Platform layer",
+						TechTags: []TechTag{TechTagSDL3},
+					}},
+					{Subproject: Subproject{
+						Title: "C++20 for Programming Language",
+						Description: "{C++} 20: Programming language (though most of it looks like C)",
+						TechTags: []TechTag{TechTagCPP},
+					}},
+					{Subproject: Subproject{
+						Title: "Vulkan for Hardware-accelerated Graphics",
+						Description: "{Vulkan}: Hardware-accelerated graphics",
+						TechTags: []TechTag{TechTagVulkan},
+					}},
+					{Subproject: Subproject{
+						Title: "Jolt for Physics",
+						Description: "{Jolt}: {Physics} engine (used in Horizon Forbidden West)",
+						TechTags: []TechTag{TechTagJolt, TechTagPhysics},
+					}},
+					{Subproject: Subproject{
+						Title: "Dear IMGUI for UI",
+						Description: "{Dear IMGUI}: UI",
+						TechTags: []TechTag{TechTagDearIMGUI},
+					}},
+					{Subproject: Subproject{
+						Title: "CMake for Build System",
+						Description: "{CMake}: Build system",
+						Focuses: []Focus{FocusDevOps},
+						TechTags: []TechTag{TechTagCMake},
+					}},
+					{Subproject: Subproject{
+						Title: "GCC or Clang for Compiler",
+						Description: "{GCC} or {Clang}: Compiler, with compiler extensions enabled",
+						TechTags: []TechTag{TechTagGCC, TechTagClang},
+					}},
+				},
+			},
+			{
+				Title:    "Notable Features",
 				Focuses:     []Focus{},
 				TechTags: []TechTag{},
 				Cards: []Card{
@@ -510,7 +551,7 @@ var projects = []Project{
 	// ── PERSONAL: My Personal Portfolio  ──────────────────────────
 	{
 		Title:       "My Personal Portfolio (This Website)",
-		Description: "The website is designed to be able to be read by hiring managers efficiently from different fields, game development, game engine development, full-stack development and so on. The [I do] mode allows hiring managers to focus on seeing what content that's relevant to them only. The other modes provide all data unfiltered.",
+		Description: "The personal portfolio is designed to be able to be efficiently read by people of different fields, while housing my work that spans the various fields.",
 		Type:        ProjectTypePersonal,
 		Category:    catPtr(CategorySystems),
 		Focuses:        []Focus{FocusFullStack},
@@ -522,7 +563,7 @@ var projects = []Project{
 	// ── UNIVERSITY: Dreams of Celestial Pull  ──────────────────────
 	{
 		Title:       "Dreams of Celestial Pull: A Physics-based First-person Shooter Platformer",
-		Description: "For Game Capstone, the final games course at Northeastern University where you spend an entire semester developing a game, I single-handedly developed Dreams of Celestial Pull. The game is made with the custom game engine, Skyline Engine. If you are into game design, I recommend giving the game a try first before reading the below, as there will be game design spoilers.",
+		Description: "My solo project for my game capstone class at Northeastern University, made in a custom-built game engine, Skyline Engine.",
 		Type:        ProjectTypeUniversity,
 		Category:    catPtr(CategoryGames),
 		Focuses:        []Focus{FocusGameDev},
@@ -547,7 +588,7 @@ var projects = []Project{
 	// ── UNIVERSITY: Boids with Goals  ──────────────────────
 	{
 		Title:       "Boids with Goals: A Game AI Project",
-		Description: "XXX studied how a flock of birds move in the air and found a simple algorithm that seem to mimic how they actually do it in real-life. However, the algorithm itself doesn't consider boids interacting with obstructions, and also boids flying towards a goal. So, this projects takes the idea one step further to create boids that do.",
+		Description: "Boids movement simulate the movement of flocks/schools of animals, like birds and fishes. This project extends Reynold's Boids movement algorithm with goal-oriented behaviour and obstacle collision.",
 		Type:        ProjectTypeUniversity,
 		Category:    catPtr(CategoryGames),
 		Focuses:        []Focus{FocusGameDev},
@@ -586,7 +627,7 @@ var projects = []Project{
 	// ── PERSONAL: Toxic Texting  ──────────────────────
 	{
 		Title:       "Toxic Texting: A Chill Texting Game Where You Only Respond with Yes or No",
-		Description: "Made initially for the Summer 2021 NEU Game Development Club 48-hour game jam, Toxic Texting is a fun, short and sweet texting game where you respond with either yes or no. It is made in Unity 2D, and I was one of the two programmers, the composer, sounnd designer and writer.",
+		Description: "Made initially for the Summer 2021 NEU Game Development Club 48-hour game jam, and heavily features Unity's UI system. I was one of the two programmers, the composer, sound designer and writer.",
 		Type:        ProjectTypePersonal,
 		Category:    catPtr(CategoryGames),
 		Focuses:        []Focus{FocusGameDev},
@@ -623,7 +664,7 @@ var projects = []Project{
 	// ── PERSONAL: Tower Takeover  ──────────────────────
 	{
 		Title:       "Tower Takeover: A vanilla JavaScript Tower Defense Game That Runs on your Web Browser",
-		Description: "This is a game that I led for formerly Hometeam Game Dev (now DevPods). Hometeam Game Dev is a community of game developers that makes games without pay. I was responsible for structuring tasks on a kanban board, running playtests, and making sure that the game ships.",
+		Description: "On top of programming the AI and gameplay systems, I was also the project lead, maintaining a kanban board, running playtests and meeting deadlines.",
 		Type:        ProjectTypePersonal,
 		Category:    catPtr(CategoryGames),
 		Focuses:        []Focus{FocusGameDev, FocusWebDev},
