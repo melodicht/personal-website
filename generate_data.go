@@ -18,6 +18,7 @@ var projects = []Project{
 				BackgroundImage: "static/images/jobs/eyebot-bg.jpg",
 				PortraitImage:   imgPtr("static/images/jobs/eyebot-portrait.jpg"),
 				DateRange:       DateRange{Start: "May 2025", End: strPtr("Dec 2025")},
+				Website:         strPtr("https://www.eyebot.co/"),
 				Reviews: []Review{
 					{
 						ProfilePicture: "static/images/reviews/erin-burba.jpg",
@@ -140,6 +141,7 @@ var projects = []Project{
 				Role:            "Software Engineer Apprentice",
 				BackgroundImage: "static/images/jobs/airasia-bg.jpg",
 				DateRange:       DateRange{Start: "Nov 2023", End: strPtr("Aug 2024")},
+				Website:         strPtr("https://ikhlas.com/en/gb"),
 				Reviews: []Review{},
 			},
 		},

@@ -17,6 +17,7 @@
     </div>
   </div>
   <div class="job-detail-body">
+    {{if $exp.Website}} <p class="job-detail-desc">Website: <a class="job-website" href="{{$exp.Website}}" target="_blank" rel="noopener">{{$exp.Website}}</a></p>{{end}}
     <p class="job-detail-desc">{{$job.Description}}</p>
     {{if or $job.Focuses $job.TechTags}}
     <div class="detail-chips">

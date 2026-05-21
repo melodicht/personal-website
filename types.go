@@ -152,6 +152,7 @@ type JobExperience struct {
 	BackgroundImage Image     `json:"backgroundImage"`
 	PortraitImage   *Image    `json:"portraitImage,omitempty"`
 	DateRange       DateRange `json:"dateRange"`
+	Website         *string   `json:"website"`
 	Reviews         []Review  `json:"reviews"`
 }
 

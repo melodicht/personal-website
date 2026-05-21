@@ -32,6 +32,20 @@
   flex-shrink: 0;
 }
 
+.job-website {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(169, 159, 240, 0.3);
+  transition: border-color 0.15s, color 0.15s;
+}
+
+.job-website:hover {
+  color: var(--text);
+  border-color: var(--text);
+}
+
 .job-detail-titles      { display: flex; flex-direction: column; gap: 0.2rem; }
 .job-detail-company     { font-size: 1.5rem; font-weight: 700; color: #fff; }
 .job-detail-role        { font-size: 0.9rem; color: rgba(255,255,255,0.75); }
