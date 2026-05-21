@@ -2,7 +2,7 @@
 <div id="template-store" style="display:none">
   {{range .AllFocuses}}
   <template id="grid-{{FocusSlug .}}">
-    {{template "tag-grid" dict "Focus" . "Projects" $.Projects}}
+    {{template "tag-grid" dict "Focus" . "Projects" $.Projects "BasePath" $.BasePath}}
   </template>
   {{end}}
 </div>
@@ -11,7 +11,7 @@
 
 {{define "index-scripts"}}
 <script>window.TICKER_SPEED = 0.2; window.IMAGE_EXT = "jpg";</script>
-<script src="/static/ticker.js"></script>
+<script src="{{.BasePath}}/static/ticker.js"></script>
 {{end}}
 
-{{define "index.html"}}{{template "base" dict "Nav" .Nav "Signals" .Signals "Picker" "ticker" "Content" "index-content" "Scripts" "index-scripts" "AllFocuses" .AllFocuses "Projects" .Projects}}{{end}}
+{{define "index.html"}}{{template "base" dict "Nav" .Nav "Signals" .Signals "Picker" "ticker" "Content" "index-content" "Scripts" "index-scripts" "AllFocuses" .AllFocuses "Projects" .Projects "BasePath" .BasePath}}{{end}}

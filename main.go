@@ -9,22 +9,30 @@ import (
 
 const port = 8080
 
+const PROD_BASE_PATH = "/personal-website"
+
 func main() {
+	local := flag.Bool("local", false, "generating for hosting locally")
 	generate := flag.Bool("generate", false, "generate static site into docs/ and exit")
 	flag.Parse()
 
+	basePath := ""
+	if !*local {
+		basePath = PROD_BASE_PATH
+	}
+	
 	if *generate {
-		runGenerate()
+		runGenerate(basePath)
 		return
 	}
 
-	runServer()
+	runServer(basePath)
 }
 
-func runServer() {
+func runServer(basePath string) {
 	// Serve the generated static site from docs/ and static assets from static/
-	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
-	http.Handle("/", http.FileServer(http.Dir("docs")))
+	http.Handle(basePath+"/static/", http.StripPrefix(basePath+"/static/", http.FileServer(http.Dir("static"))))
+	http.Handle(basePath+"/", http.StripPrefix(basePath+"/", http.FileServer(http.Dir("docs"))))
 
 	addr := fmt.Sprintf(":%d", port)
 	log.Println("Listening on http://localhost" + addr)

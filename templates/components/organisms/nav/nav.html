@@ -1,10 +1,11 @@
 {{define "nav"}}
 {{- $active := .ActiveMode -}}
+{{- $basePath := .BasePath -}}
 <nav class="col-nav" id="nav-bar">
   <div class="nav-ticker" id="nav-ticker">
-    {{range .Modes}}
+    {{range .Nav.Modes}}
     <a class="nav-item{{if eq .ID $active}} nav-item--active{{end}}"
-       href="{{.URL}}">{{.Label}}</a>
+       href="{{$basePath}}{{.URL}}">{{.Label}}</a>
     {{end}}
   </div>
 </nav>

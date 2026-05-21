@@ -25,7 +25,7 @@ var navModes = []NavMode{
 	{ID: "contact",    Label: "Contact me at",   URL: "/contact.html"},
 }
 
-func runGenerate() {
+func runGenerate(basePath string) {
 	// ── Load and parse all templates ─────────────────────────────────
 	// tmplPtr starts nil; templateFuncs captures &tmpl so execTemplate
 	// dereferences the correct set at call time, after parsing completes.
@@ -162,6 +162,7 @@ func runGenerate() {
 		}
 		pageData["Signals"] = template.HTMLAttr(`data-signals='` + p.signals + `'`)
 		pageData["Effect"] = template.HTMLAttr(p.effect)
+		pageData["BasePath"] = basePath
 
 		var buf bytes.Buffer
 		if err := tmpl.ExecuteTemplate(&buf, p.name, pageData); err != nil {

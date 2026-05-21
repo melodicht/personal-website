@@ -1,6 +1,7 @@
 {{define "tag-grid"}}
 {{- $focus := .Focus -}}
 {{- $projects := .Projects -}}
+{{- $basePath := .BasePath -}}
 <div class="card-group-container" id="grid-{{FocusSlug $focus}}">
   {{range $projects}}
   {{- $p := . -}}
@@ -12,7 +13,7 @@
   {{end}}
   {{if $hasMatch}}
   {{- $baseURL := "" -}}
-  {{if eq $p.Type "Job"}}{{$baseURL = (printf "/i-worked-at/%s" $p.URLSlug)}}{{else}}{{$baseURL = (printf "/i-worked-on/%s" $p.URLSlug)}}{{end}}
+  {{if eq $p.Type "Job"}}{{$baseURL = (printf "%s/i-worked-at/%s" $basePath $p.URLSlug)}}{{else}}{{$baseURL = (printf "%s/i-worked-on/%s" $basePath $p.URLSlug)}}{{end}}
   <a class="card-group-header" href="{{$baseURL}}">
     <span class="card-group-title">{{.Title}}</span>
     <span class="chip detail-type-badge--{{lower .Type}}">{{.Type}}</span>
