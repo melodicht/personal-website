@@ -384,58 +384,6 @@
   border: 0.5px solid rgba(169,159,240,0.3);
 }
 
-.detail-reflection {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1.25rem;
-  padding: 1.5rem;
-  background: var(--card-bg);
-  border: 0.5px solid var(--border);
-  border-radius: 12px;
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-}
-
-@media (max-width: 700px) {
-  .detail-reflection { grid-template-columns: 1fr; }
-}
-
-.detail-reflection-block {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.detail-reflection-heading {
-  font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.07em;
-  text-transform: uppercase;
-  color: var(--text-dim);
-}
-
-.detail-reflection-list {
-  list-style: none;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 0.35rem;
-}
-
-.detail-reflection-list li {
-  font-size: 0.875rem;
-  color: var(--text-muted);
-  line-height: 1.6;
-  padding-left: 1rem;
-  position: relative;
-}
-
-.detail-reflection-list li::before {
-  content: "–";
-  position: absolute;
-  left: 0;
-  color: var(--text-dim);
-}
 
 /* templates\components\organisms\subsection\subsection.css */
 .subsection {
@@ -863,6 +811,5 @@ body {
   }
   .col-content { padding: 2rem 1.25rem; overflow-y: visible; }
   .detail-title { font-size: 1.3rem; }
-  .detail-reflection { padding: 1rem; }
 }
 

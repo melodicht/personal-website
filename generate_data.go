@@ -228,13 +228,6 @@ var projects = []Project{
 		Category:    catPtr(CategoryProgrammingLanguages),
 		Focuses:        []Focus{FocusProgrammingLangs},
 		TechTags:    []TechTag{TechTagOCaml},
-		Specifics: ProjectTypeSpecifics{
-			NonJob: &NonJobExperience{
-				WhatWentWell:      []string{},
-				WhatCouldBeBetter: []string{},
-				WhatILearned:      []string{},
-			},
-		},
 		Subsections: []Subsection{
 			{
 				Title:    "Subprojects",
@@ -284,13 +277,6 @@ var projects = []Project{
 		Category:    catPtr(CategoryProgrammingLanguages),
 		Focuses:        []Focus{FocusProgrammingLangs},
 		TechTags:    []TechTag{TechTagTypedRacket},
-		Specifics: ProjectTypeSpecifics{
-			NonJob: &NonJobExperience{
-				WhatWentWell:      []string{},
-				WhatCouldBeBetter: []string{},
-				WhatILearned:      []string{},
-			},
-		},
 		Subsections: []Subsection{
 			{
 				Title:    "CESK Machine",
@@ -374,13 +360,6 @@ var projects = []Project{
 		Category:    catPtr(CategorySystems),
 		Focuses:        []Focus{FocusFullStack},
 		TechTags:    []TechTag{TechTagRacket},
-		Specifics: ProjectTypeSpecifics{
-			NonJob: &NonJobExperience{
-				WhatWentWell:      []string{},
-				WhatCouldBeBetter: []string{},
-				WhatILearned:      []string{},
-			},
-		},
 		Subsections: []Subsection{
 			{
 				Title:    "Notable Features",
@@ -450,13 +429,6 @@ var projects = []Project{
 		Focuses:        []Focus{FocusSystems, FocusFullStack},
 		TechTags:    []TechTag{TechTagCPP},
 		SourceCode: &SourceCode{OnRequest: true},
-		Specifics: ProjectTypeSpecifics{
-			NonJob: &NonJobExperience{
-				WhatWentWell:      []string{},
-				WhatCouldBeBetter: []string{},
-				WhatILearned:      []string{},
-			},
-		},
 		Subsections: []Subsection{
 			{
 				Title:    "Subprojects",
@@ -495,13 +467,6 @@ var projects = []Project{
 		Focuses:        []Focus{FocusGameEngineDev},
 		TechTags:    []TechTag{TechTagCPP},
 		SourceCode: &SourceCode{Link: strPtr("https://github.com/melodicht/skyline-engine")},
-		Specifics: ProjectTypeSpecifics{
-			NonJob: &NonJobExperience{
-				WhatWentWell:      []string{""},
-				WhatCouldBeBetter: []string{""},
-				WhatILearned:      []string{""},
-			},
-		},
 		Subsections: []Subsection{
 			{
 				Title:    "Subprojects",
@@ -545,13 +510,6 @@ var projects = []Project{
 		Category:    catPtr(CategorySystems),
 		Focuses:        []Focus{FocusFullStack},
 		TechTags:    []TechTag{},
-		Specifics: ProjectTypeSpecifics{
-			NonJob: &NonJobExperience{
-				WhatWentWell:      []string{},
-				WhatCouldBeBetter: []string{},
-				WhatILearned:      []string{},
-			},
-		},
 		Subsections: []Subsection{},
 	},
 
@@ -563,13 +521,6 @@ var projects = []Project{
 		Category:    catPtr(CategoryGames),
 		Focuses:        []Focus{FocusGameDev},
 		TechTags:    []TechTag{TechTagCPP},
-		Specifics: ProjectTypeSpecifics{
-			NonJob: &NonJobExperience{
-				WhatWentWell:      []string{},
-				WhatCouldBeBetter: []string{},
-				WhatILearned:      []string{},
-			},
-		},
 		Subsections: []Subsection{
 			{
 				Title:    "FPS Movement & RK4",
@@ -596,13 +547,6 @@ var projects = []Project{
 		Focuses:        []Focus{FocusGameDev},
 		TechTags:    []TechTag{TechTagJavaScript, TechTagPhysics, TechTagAlgorithms, TechTag2D},
 		SourceCode: &SourceCode{Link: strPtr("https://github.com/melodicht/boids")},
-		Specifics: ProjectTypeSpecifics{
-			NonJob: &NonJobExperience{
-				WhatWentWell:      []string{},
-				WhatCouldBeBetter: []string{},
-				WhatILearned:      []string{},
-			},
-		},
 		Subsections: []Subsection{
 			{
 				Title:    "Boids Movement with Multi-layered Dijkstra Path-finding",
@@ -641,13 +585,6 @@ var projects = []Project{
 		Category:    catPtr(CategoryGames),
 		Focuses:        []Focus{FocusGameDev},
 		TechTags:    []TechTag{TechTagCSharp, TechTagUnity, TechTag2D},
-		Specifics: ProjectTypeSpecifics{
-			NonJob: &NonJobExperience{
-				WhatWentWell:      []string{},
-				WhatCouldBeBetter: []string{},
-				WhatILearned:      []string{},
-			},
-		},
 		Subsections: []Subsection{
 			{
 				Title:    "Subprojects",
@@ -685,13 +622,6 @@ var projects = []Project{
 		Category:    catPtr(CategoryGames),
 		Focuses:        []Focus{FocusGameDev, FocusWebDev},
 		TechTags:    []TechTag{TechTagJavaScript},
-		Specifics: ProjectTypeSpecifics{
-			NonJob: &NonJobExperience{
-				WhatWentWell:      []string{},
-				WhatCouldBeBetter: []string{},
-				WhatILearned:      []string{},
-			},
-		},
 		Subsections: []Subsection{},
 	},
 }

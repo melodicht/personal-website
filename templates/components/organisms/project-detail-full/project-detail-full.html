@@ -22,35 +22,6 @@
   {{end}}
   {{if $p.Specifics.NonJob}}
   {{- $nj := $p.Specifics.NonJob -}}
-  {{- $hasReflection := or $nj.WhatWentWell $nj.WhatCouldBeBetter $nj.WhatILearned -}}
-  {{if $hasReflection}}
-  <div class="detail-reflection">
-    {{if $nj.WhatWentWell}}
-    <div class="detail-reflection-block">
-      <h4 class="detail-reflection-heading">What went well</h4>
-      <ul class="detail-reflection-list">
-        {{range $nj.WhatWentWell}}<li>{{.}}</li>{{end}}
-      </ul>
-    </div>
-    {{end}}
-    {{if $nj.WhatCouldBeBetter}}
-    <div class="detail-reflection-block">
-      <h4 class="detail-reflection-heading">What could be better</h4>
-      <ul class="detail-reflection-list">
-        {{range $nj.WhatCouldBeBetter}}<li>{{.}}</li>{{end}}
-      </ul>
-    </div>
-    {{end}}
-    {{if $nj.WhatILearned}}
-    <div class="detail-reflection-block">
-      <h4 class="detail-reflection-heading">What I learned</h4>
-      <ul class="detail-reflection-list">
-        {{range $nj.WhatILearned}}<li>{{.}}</li>{{end}}
-      </ul>
-    </div>
-    {{end}}
-  </div>
-  {{end}}
   {{end}}
 </div>
 {{end}}

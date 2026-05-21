@@ -157,9 +157,6 @@ type JobExperience struct {
 
 // NonJobExperience holds reflection data for university and personal projects.
 type NonJobExperience struct {
-	WhatWentWell      []string `json:"whatWentWell"`
-	WhatCouldBeBetter []string `json:"whatCouldBeBetter"`
-	WhatILearned      []string `json:"whatILearned"`
 }
 
 // SourceCode represents the availability of source code.
