@@ -193,6 +193,7 @@ func runGenerate(basePath string) {
 			"Effect":  template.HTMLAttr(""),
 			"Job":     job,
 			"Jobs":    jobs,
+			"BasePath": basePath,
 		}
 		var buf bytes.Buffer
 		if err := tmpl.ExecuteTemplate(&buf, "job.html", pageData); err != nil {
@@ -223,6 +224,7 @@ func runGenerate(basePath string) {
 			"Signals": template.HTMLAttr(`data-signals='{}'`),
 			"Effect":  template.HTMLAttr(""),
 			"Project": p,
+			"BasePath": basePath,
 		}
 		var buf bytes.Buffer
 		if err := tmpl.ExecuteTemplate(&buf, "project.html", pageData); err != nil {

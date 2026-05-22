@@ -14,7 +14,7 @@
       {{range $p.TechTags}}<span class="chip chip--tech">{{.}}</span>{{end}}
     </div>
     {{end}}
-    {{if $p.SourceCode}}{{template "source-code-link" $p.SourceCode}}{{end}}
+    {{if $p.SourceCode}}{{template "source-code-link" dict "SourceCode" $p.SourceCode "BasePath" .BasePath}}{{end}}
   </div>
   <p class="detail-desc">{{$p.Description}}</p>
   {{range $p.Subsections}}

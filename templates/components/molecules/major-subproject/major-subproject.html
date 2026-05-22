@@ -11,6 +11,6 @@
   {{end}}
   <p class="major-subproject-desc">{{range .Subproject.ParsedDescription}}{{if .IsChip}}<span class="chip chip--tech chip--inline">{{.Value}}</span>{{else}}{{.Value}}{{end}}{{end}}</p>
   {{if .Video}}<video class="major-subproject-video" src="{{.Video}}" controls></video>{{end}}
-  {{if .Subproject.SourceCode}}{{template "source-code-link" .Subproject.SourceCode}}{{end}}
+  {{if .Subproject.SourceCode}}{{template "source-code-link" dict "SourceCode" .Subproject.SourceCode "BasePath" .basePath}}{{end}}
 </div>
 {{end}}

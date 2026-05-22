@@ -1,5 +1,5 @@
 {{define "project-page-content"}}
-{{template "project-detail-full" .Project}}
+{{template "project-detail-full" dict "Project" .Project "BasePath" .BasePath}}
 {{end}}
 
-{{define "project.html"}}{{template "base" dict "Nav" .Nav "Signals" .Signals "Content" "project-page-content" "Project" .Project}}{{end}}
+{{define "project.html"}}{{template "base" dict "Nav" .Nav "Signals" .Signals "Content" "project-page-content" "Project" .Project "BasePath" .BasePath}}{{end}}

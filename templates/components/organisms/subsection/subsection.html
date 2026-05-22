@@ -20,6 +20,6 @@
   {{else if .Subsection.Major}}
   {{template "major-subproject" dict "Subproject" .Subsection.Major.Subproject "Video" .Subsection.Major.Video "InheritedTechTags" $inherited}}
   {{end}}
-  {{if .Subsection.SourceCode}}{{template "source-code-link" .Subsection.SourceCode}}{{end}}
+  {{if .Subsection.SourceCode}}{{template "source-code-link" dict "SourceCode" .Subsection.SourceCode "BasePath" .BasePath}}{{end}}
 </div>
 {{end}}

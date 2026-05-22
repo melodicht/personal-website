@@ -1,10 +1,11 @@
 {{define "worked-on-content"}}
 <main class="col-content">
+  {{- $basePath := .BasePath -}}
   {{range $cat, $projects := .ProjectsByCategory}}
   <h2 class="category-heading">{{$cat}}</h2>
   <div class="card-grid">
     {{range $projects}}
-    <a class="card" href="/i-worked-on/{{.URLSlug}}">
+    <a class="card" href="{{$basePath}}/i-worked-on/{{.URLSlug}}">
       <div class="card-body">
         <h3 class="card-title">{{.Title}}</h3>
         <p class="card-desc">{{.Description}}</p>
@@ -19,4 +20,4 @@
 </main>
 {{end}}
 
-{{define "worked-on.html"}}{{template "base" dict "Nav" .Nav "Signals" .Signals "Content" "worked-on-content" "ProjectsByCategory" .ProjectsByCategory}}{{end}}
+{{define "worked-on.html"}}{{template "base" dict "Nav" .Nav "Signals" .Signals "Content" "worked-on-content" "ProjectsByCategory" .ProjectsByCategory "BasePath" .BasePath}}{{end}}

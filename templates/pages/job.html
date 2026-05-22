@@ -6,4 +6,4 @@
 <script src="{{.BasePath}}/static/worked-at.js"></script>
 {{end}}
 
-{{define "job.html"}}{{template "base" dict "Nav" .Nav "Signals" .Signals "Picker" "job-picker" "Content" "job-page-content" "Scripts" "job-page-scripts" "Job" .Job "Jobs" .Jobs}}{{end}}
+{{define "job.html"}}{{template "base" dict "Nav" .Nav "Signals" .Signals "Picker" "job-picker" "Content" "job-page-content" "Scripts" "job-page-scripts" "Job" .Job "Jobs" .Jobs "BasePath" .BasePath}}{{end}}

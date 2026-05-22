@@ -9,7 +9,7 @@
   {{end}}
   <p class="subproject-card-desc">{{range .Subproject.ParsedDescription}}{{if .IsChip}}<span class="chip chip--tech chip--inline">{{.Value}}</span>{{else}}{{.Value}}{{end}}{{end}}</p>
   {{if .Subproject.SourceCode}}
-    {{template "source-code-link" .Subproject.SourceCode}}
+    {{template "source-code-link" dict "SourceCode" .Subproject.SourceCode "BasePath" .BasePath}}
   {{end}}
 </div>
 {{end}}

@@ -25,7 +25,7 @@
       {{range $job.TechTags}}<span class="chip chip--tech">{{.}}</span>{{end}}
     </div>
     {{end}}
-    {{if $job.SourceCode}}{{template "source-code-link" $job.SourceCode}}{{end}}
+    {{if $job.SourceCode}}{{template "source-code-link" dict "SourceCode" $job.SourceCode "BasePath" .BasePath}}{{end}}
     {{range $job.Subsections}}
     {{template "subsection-anchored" dict "Subsection" . "ProjectTechTags" $job.TechTags}}
     {{end}}
