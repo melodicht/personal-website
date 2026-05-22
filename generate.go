@@ -77,15 +77,43 @@ func runGenerate(basePath string) {
 		fmt.Fprintf(os.Stderr, "css concat error: %v\n", err)
 		os.Exit(1)
 	}
-	if err := os.MkdirAll("static", 0755); err != nil {
+	if err := os.MkdirAll("docs/static", 0755); err != nil {
 		fmt.Fprintf(os.Stderr, "mkdir error: %v\n", err)
 		os.Exit(1)
 	}
-	if err := os.WriteFile("static/style.css", []byte(cssBuilder.String()), 0644); err != nil {
+	if err := os.WriteFile("docs/static/style.css", []byte(cssBuilder.String()), 0644); err != nil {
 		fmt.Fprintf(os.Stderr, "write style.css error: %v\n", err)
 		os.Exit(1)
 	}
-	fmt.Println("wrote static/style.css")
+	fmt.Println("wrote docs/static/style.css")
+
+	// ── Copy static/ into docs/static/ ───────────────────────────────
+	err = filepath.WalkDir("static", func(path string, d fs.DirEntry, err error) error {
+		if err != nil {
+			return err
+		}
+		rel, relErr := filepath.Rel("static", path)
+		if relErr != nil {
+			return relErr
+		}
+		dest := filepath.Join("docs/static", rel)
+		if d.IsDir() {
+			return os.MkdirAll(dest, 0755)
+		}
+		data, readErr := os.ReadFile(path)
+		if readErr != nil {
+			return readErr
+		}
+		if writeErr := os.WriteFile(dest, data, 0644); writeErr != nil {
+			return writeErr
+		}
+		fmt.Println("copied", path, "->", dest)
+		return nil
+	})
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "static copy error: %v\n", err)
+		os.Exit(1)
+	}
 
 	// ── Prepare data ─────────────────────────────────────────────────
 	rendered := RenderProjects(projects)

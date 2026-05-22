@@ -66,8 +66,6 @@ Open http://localhost:8080
 │       └── contact.html        # [Contact me at]
 │
 ├── static/
-│   ├── style.css               # AUTO-GENERATED — do not edit by hand.
-│   │                           # Concatenation of all component CSS files.
 │   ├── ticker.js               # Ticker animation and grid swap (index page only)
 │   └── worked-at.js            # snapToJob helper (worked-at page only)
 │

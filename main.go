@@ -31,7 +31,7 @@ func main() {
 
 func runServer(basePath string) {
 	// Serve the generated static site from docs/ and static assets from static/
-	http.Handle(basePath+"/static/", http.StripPrefix(basePath+"/static/", http.FileServer(http.Dir("static"))))
+	http.Handle(basePath+"/static/", http.StripPrefix(basePath+"/static/", http.FileServer(http.Dir("docs/static"))))
 	http.Handle(basePath+"/", http.StripPrefix(basePath+"/", http.FileServer(http.Dir("docs"))))
 
 	addr := fmt.Sprintf(":%d", port)
